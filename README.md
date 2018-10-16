@@ -1,2 +1,2 @@
-# marketplace-partners
-Scripts, documentation, and other resources for DigitalOcean Marketplace partners
+# Marketplace Partners
+Automation tooling, documentation, and other resources for DigitalOcean Marketplace partners.
