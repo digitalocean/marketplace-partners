@@ -34,7 +34,7 @@ To truncate log files, bash_history, and authorized keys, you can use any file c
 
 `$ truncate --size 0 <path/to/file.log>`
 
-## byoi_validation**
+## byoi_validation
 
 ### Supported distributions 
 
