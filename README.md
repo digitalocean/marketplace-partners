@@ -10,7 +10,7 @@ This repository includes bash scripts intended for use by Marketplace partners a
 
 **marketplace_validation**
 
-###Supported Distributions 
+### Supported Distributions 
 
 CentOS 6.x, CentOS 7.x, Ubuntu 16.04, Ubuntu 18.04
 
@@ -36,7 +36,7 @@ To truncate log files, bash_history, and authorized keys, you can use any file c
 
 **byoi_validation**
 
-###Supported distributions 
+### Supported distributions 
 
 CentOS 6.x, CentOS 7.x, Ubuntu 16.04, Ubuntu 18.04 (may be expanded to support other popular distributions in future versions)
 
