@@ -1,8 +1,9 @@
-# Marketplace Partners
+# Marketplace partner tools
 
 [![MIT license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Pull Requests Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat)](http://makeapullrequest.com)
 
-Image validation scripts for DigitalOcean Marketplace partners and Custom Image users
+Image validation, automation, and other tools for DigitalOcean Marketplace partners and Custom Image users.
 
 ![Screenshot](screenshot.png)
 
@@ -14,7 +15,7 @@ This repository includes bash scripts intended for use by Marketplace partners a
 
 CentOS 6.x, CentOS 7.x, Ubuntu 16.04, Ubuntu 18.04
 
-This script is intended for Marketplace Partners to check their images against the following criteria:
+This script is intended for Marketplace partners to check their images against the following criteria:
 
 - Check for a supported distro and release
 - Check that all security updates are installed
@@ -26,11 +27,11 @@ This script is intended for Marketplace Partners to check their images against t
 - Check that a valid version of cloud-init is installed
 - Check for any populated log files or log archives
 
-*coming soon* Allow the script to be run against a disk image file on a Linux workstation by mounting and chrooting into the image
+*coming soon* - Allow the script to be run against a disk image file on a Linux workstation by mounting and chrooting into the image.
 
 The script img_check.sh can be used from within the image build system prior to creating a snapshot or exporting a disk image from Virtualbox, VMWare or a physical machine. The script is minimally invasive and designed to avoid changes to the disk. The one exception is that this script will update your apt or yum package database in order to identify if there are any uninstalled security updates.
 
-To truncate log files, bash_history, and authorized keys, you can use any file clearing method, including truncate against each result the script outputs, e.g.,
+To clear log files, bash_history, and authorized keys, you can use any file clearing method, including truncate against each result the script outputs, e.g.,
 
 `$ truncate --size 0 <path/to/file.log>`
 
