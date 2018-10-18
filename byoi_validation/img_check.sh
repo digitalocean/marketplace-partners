@@ -4,7 +4,7 @@
 # © 2018 DigitalOcean LLC.
 # This code is licensed under MIT license (see LICENSE.txt for details)
 #
-VERSION="v. 0.01"
+VERSION="v. 0.1"
 
 # Script should be run with SUDO
 if [ "$EUID" -ne 0 ]
