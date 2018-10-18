@@ -43,6 +43,6 @@ CentOS 6.x, CentOS 7.x, Ubuntu 16.04, Ubuntu 18.04 (may be expanded to support o
 
 This is a fork of the marketplace_validation script, and is intended for use by users of DigitalOcean Custom Images to use with their own images.
 
-The script img_check.sh can be run on the system used to create an image for BYOI such as from within VirtualBox or QEMU.  This script will update the apt or yum database on the system when it is run in order to check for security updates.
+The script img_check.sh can be run on the system used to create a Custom Image (for upload and use in the DigitalOcean platform) such as from within VirtualBox or QEMU. This script will update the apt or yum database on the system when it is run in order to check for security updates.
 
-*coming soon* - This version of the script will be intended for BYOI users who wish to check their image before upload.  The primary differences will be in reporting and what levels (pass,warn,fail) are applied to different checks as they apply in a BYOI environment.
+*coming soon* - This version of the script will be intended for Custom Image users who wish to check their image before upload. The primary differences will be in reporting and what levels (pass,warn,fail) are applied to different checks as they apply in a Custom Image environment.
