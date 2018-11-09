@@ -118,6 +118,10 @@ function checkRoot {
                             
                                 if [ "$( cat "${key}" | wc -c)" -gt 50 ]; then
                                     echo -en "\e[41m[FAIL]\e[0m User \e[1m${user}\e[0m has a populated authorized_keys file in \e[93m${key}\e[0m\n"
+                                    akey=$(cat ${key})
+                                    echo "File Contents:"
+                                    echo $akey
+                                    echo "--------------"
                                     ((FAIL++))
                                     STATUS=2
                                 fi
@@ -218,6 +222,10 @@ function checkUsers {
                             
                                 if [ "$( cat "${key}" | wc -c)" -gt 50 ]; then
                                     echo -en "\e[41m[FAIL]\e[0m User \e[1m${user}\e[0m has a populated authorized_keys file in \e[93m${key}\e[0m\n"
+                                    akey=$(cat ${key})
+                                    echo "File Contents:"
+                                    echo $akey
+                                    echo "--------------"
                                     ((FAIL++))
                                     STATUS=2
                                 fi
@@ -426,7 +434,6 @@ echo "--------------------------------------------------------------------------
 echo -en "\e[1m${PASS} Tests PASSED\e[0m\n"
 echo -en "\e[1m${WARN} WARNINGS\e[0m\n"
 echo -en "\e[1m${FAIL} Tests FAILED\e[0m\n"
-
 echo -en "---------------------------------------------------------------------------------------------------\n"
 
 if [[ $STATUS == 0 ]]; then
