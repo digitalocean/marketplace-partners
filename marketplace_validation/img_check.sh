@@ -55,6 +55,24 @@ fi
 function loadPasswords {
 SHADOW=$(cat /etc/shadow)
 }
+
+function checkAgent {
+  # Check for the presence of the do-agent in the filesystem
+  if [ -d /var/opt/digitalocean/do-agent ];then
+     echo -en "\e[41m[FAIL]\e[0m DigitalOcean Monitoring Agent detected.\n"
+            ((FAIL++))
+            STATUS=2
+      if [[ $OS == "CentOS Linux" ]]; then
+        echo "The agent can be removed with 'sudo yum remove do-agent' "
+      elif [[ $OS == "Ubuntu" ]]; then
+        echo "The agent can be removed with 'sudo apt-get purge do-agent' "
+      fi
+  else
+    echo -en "\e[32m[PASS]\e[0m DigitalOcean Monitoring agent was not found\n"
+    ((PASS++)) 
+  fi
+}
+
 function checkLogs {
     echo -en "\nChecking for log files in /var/log\n\n"
     # Check if there are log archives or log files that have not been recently cleared.
@@ -418,6 +436,8 @@ checkUsers
 
 echo -en "\n\nChecking the root account...\n"
 checkRoot
+
+checkAgent
 
 
 # Summary
