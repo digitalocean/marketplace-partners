@@ -321,6 +321,12 @@ function checkUpdates {
     if [[ $OS == "Ubuntu" ]]; then
         echo -en "\nUpdating apt package database to check for security updates, this may take a minute...\n\n"
         apt-get -y update > /dev/null
+        if [ -f /usr/lib/update-notifier/apt-check ]; then
+          update_count=$(/usr/lib/update-notifier/apt-check 2>&1 | cut -d ';' -f 2)  
+        else
+          echo "ERROR: apt-check binary was not found. Unable to ensure security updates have been installed.  Exiting.";
+          exit 1
+        fi
         update_count=$(/usr/lib/update-notifier/apt-check 2>&1 | cut -d ';' -f 2)
         if [[ $update_count -gt 0 ]]; then
             echo -en "\e[41m[FAIL]\e[0m There are ${update_count} security updates available for this image that have not been installed.\n"
