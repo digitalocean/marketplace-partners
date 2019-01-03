@@ -23,7 +23,7 @@ Fabric can alternatively be installed on any system with pip (the python package
 pip install fabric
 ```
 
-### `fabile.py`
+### fabile.py
 
 To set up your build environment you will want to create a `fabile.py` script.  This script will use the fabric library to 
 build your image.  An example fabric configuration can be found [here](samples/LAMP.zip).
