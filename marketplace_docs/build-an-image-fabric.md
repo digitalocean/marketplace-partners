@@ -9,7 +9,7 @@ a new image.
 
 On Ubuntu, Fabric can be installed through the official repositories with:
 
-`apt-get update`
+<pre prefix="$">apt-get update</pre>
 
 `apt-get install fabric`
 
