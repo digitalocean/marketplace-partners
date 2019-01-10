@@ -330,6 +330,11 @@ function checkUpdates {
         update_count=$(/usr/lib/update-notifier/apt-check 2>&1 | cut -d ';' -f 2)
         if [[ $update_count -gt 0 ]]; then
             echo -en "\e[41m[FAIL]\e[0m There are ${update_count} security updates available for this image that have not been installed.\n"
+            echo -en
+            echo -en "Here is a list of the security updates that are not installed:\n"
+            sleep 2
+            apt-get upgrade -s | grep -i security
+            echo -en
             ((FAIL++))
             STATUS=2
         else
