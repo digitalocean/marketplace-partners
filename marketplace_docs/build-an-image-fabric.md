@@ -1,11 +1,11 @@
-## Building Marketplace Images with Fabric
+# Building Marketplace Images with Fabric
 
-While it is possible to manually create a Marketplace image by setting up a host system and creating a snapshot, this process 
+While it's feasible to manually create a Marketplace image by setting up a host system and creating a snapshot, this process 
 is intended to ensure replicable and configurable builds.  Fabric is a python library designed to execute commands on a 
 remote system over SSH so it is ideal for the scripted creation of a build droplet, which can then be snapshotted to create 
 a new Marketplace ready image.
 
-### Installing Fabric
+## Installing Fabric
 
 On Ubuntu, Fabric can be installed through the official repositories with:
 
@@ -23,10 +23,10 @@ Fabric can alternatively be installed on any system with pip (the python package
 pip install fabric
 ```
 
-### fabile.py
+## fabile.py
 
 To set up your build environment you will want to create a `fabile.py` script.  This script will use the fabric library to 
-build your image.  An example fabric configuration can be found [here](samples/LAMP.zip).
+build your image.  An example fabric configuration can be found [here](samples/LAMP.zip). A template can be found [here](template/).
 
 The fabfile will usually be made up of several functions that are called in turn to run on your build droplet.  The functions 
 you will most commonly call will include:
@@ -38,7 +38,7 @@ you will most commonly call will include:
 You should ensure whenever possible that commands run via fabric do not require any user input.  Doing things like running 
 apt commands with a "-y" will allow this.
 
-### Running Commands on First Boot
+## Running Commands on First Boot
 
 It is likely that you will want some configuration steps to run on droplets created from your image on first boot to set 
 up unique items like database passwords or items requiring the droplet’s IP address.  Cloud-init is available on all DigitalOcean 
@@ -47,7 +47,7 @@ will automatically execute the first time a droplet created from your image is b
 a convention starting with a number such as 001_onboot.  If more than one file is present in this directory they'll all be 
 executed in alphabetical/numerical order with numbered files being run first.
 
-### Running Commands on First Login
+## Running Commands on First Login
 
 In some cases you may want a user to log in via SSH before certain commands are run, or you may wish to have the user run 
 an interactive script to configure your services.  This can be accomplished by adding a line to the root .bashrc file to 
@@ -91,7 +91,7 @@ run("echo ‘/opt/vendorname/myscript.sh’ >> /root/.bashrc")
 This will add your call to the end of the user’s `.bashrc` file which is executed on login.  With this configuration, the `myscript.sh`
 will be run when the root user first logs in and only on the first login since the script removes itself from the .bashrc file.
 
-### Common Variables & Functions
+## Common Variables & Functions
 
 If you built your fabfile following the LAMP example you will have a few functions in it:
 
@@ -116,7 +116,7 @@ a **build_image**.
 **shutdown:** This function simply sends a shutdown -h now command to the build system to power it down once the build is 
 complete so you can create a snapshot.  This function is called by **build_image** as the final step.
 
-### Building your image
+## Building your image
 
 To create your image, you can use the following steps:
 

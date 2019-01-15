@@ -1,18 +1,18 @@
-# How to build an image for One-click apps on DigitalOcean
+# Building Marketplace Images Manually
 
 In order to submit an image for an app listing in the DigitalOcean Marketplace, you must engineer it 
 in a compatible format, using a supported operating system and with a few necessary pre-requisities, 
 and finally pass the tests in the marketplace_validation _img check.sh_ script. 
 
-This document will help you navigate the simple pre-requisites and processes. The time required to
-engineer an image may vary depending on your software's needs, in summary it'll usually be 30 to 60 
+This page will help you navigate the simple pre-requisites and processes. The time required to
+engineer an image may vary depending on your software's needs, but in summary it'll usually be 30 to 60 
 minutes of hands-on work.
 
 ## Supported operating systems and pre-requisities
 
 ### Operating systems
 
-At the moment, we support a limited number of operating systems: 
+Currently we support a limited number of operating systems: 
 
 * Ubuntu 18.04
 * Ubuntu 16.04
@@ -66,10 +66,22 @@ One-click app on a new Droplet. For example, if you've built a script that prepa
 downloads the latest version of your software and installs it, and then starts interactive user configuration
 – then you can use the script to do these things as each user starts your app. 
 
+N.B. bear in mind the time taken by such steps after boot or login, and try to keep long times to a minimum: you could 
+include the necessary package versions on the local filesystem ready to install, for example.
+
 In order to use a scripted live install, you'll want to follow a simple best practice:
 
-    1. create a folder for your script under /var/lib
-    2. drop your shell script there 
-    3. call your shell script on boot with 
+    1. Create a folder for your script under /opt/yourvendorname
+    2. Add your shell script there
+    3. Call your shell script on login by adding it to the /root/.bashrc before snapshotting
+    4. Make sure you copy a clean .bashrc to /root/.bashrc as the last cleanup step in your script
 
-3. Install 
+    e.g., `cp -f /etc/skel/.bashrc /root/.bashrc`
+
+3. Run cleanup steps 
+
+<tbd document and add a sample script of the cleanup steps from the fabfile template>
+
+4. MOTD
+
+<tbd document and add a sample MOTD, removing things like "Welcome to the DigitalOcean appname One-click">
