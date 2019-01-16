@@ -136,3 +136,13 @@ Once started, fabric will run through all steps and set up your system, transfer
 defined.  If any command returns an error status the script will exit without completing.  If this happens, review the script 
 output and make appropriate adjustments.  Note: For your final image build, ensure that the script has only been run once 
 before creating your snapshot.
+
+4. img_check
+
+Upload and run the img_check.sh, capture the results, and then delete the script after running it.
+
+5. Snapshot
+
+Shutdown the Droplet with `shutdown now` command, and and then take a snapshot of the Droplet from your 
+Control Panel. This is the image you'll submit to DigitalOcean Marketplace, so you'll need to take note 
+of the account and the image name and date to give during submission.

@@ -66,7 +66,7 @@ One-click app on a new Droplet. For example, if you've built a script that prepa
 downloads the latest version of your software and installs it, and then starts interactive user configuration
 – then you can use the script to do these things as each user starts your app. 
 
-N.B. bear in mind the time taken by such steps after boot or login, and try to keep long times to a minimum: you could 
+N.B. bear in mind the time taken by such steps after boot or login, and try to keep this time to a minimum: you could 
 include the necessary package versions on the local filesystem ready to install, for example.
 
 In order to use a scripted live install, you'll want to follow a simple best practice:
@@ -78,10 +78,24 @@ In order to use a scripted live install, you'll want to follow a simple best pra
 
     e.g., `cp -f /etc/skel/.bashrc /root/.bashrc`
 
-3. Run cleanup steps 
+3. MOTD
+
+<tbd document and add a sample MOTD, removing things like "Welcome to the DigitalOcean appname One-click">
+
+4. Run cleanup steps 
 
 <tbd document and add a sample script of the cleanup steps from the fabfile template>
 
-4. MOTD
+4. img_check
 
-<tbd document and add a sample MOTD, removing things like "Welcome to the DigitalOcean appname One-click">
+Upload and run the img_check.sh, capture the results, and then delete the script after running it.
+
+5. Snapshot
+
+Shutdown the Droplet with `shutdown now` command, and and then take a snapshot of the Droplet from your 
+Control Panel. This is the image you'll submit to DigitalOcean Marketplace, so you'll need to take note 
+of the account and the image name and date to give during submission.
+
+### Custom Image
+
+Coming soon.
