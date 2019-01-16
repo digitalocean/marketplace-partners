@@ -1,101 +1,105 @@
 # Building Marketplace Images Manually
 
-In order to submit an image for an app listing in the DigitalOcean Marketplace, you must engineer it 
-in a compatible format, using a supported operating system and with a few necessary pre-requisities, 
-and finally pass the tests in the marketplace_validation _img check.sh_ script. 
+Marketplace images can be built manually and this is a recommended first step to ensure your configuration will work as expected.  While it is possible to submit a final image that was created with these methods we recommend the use of a scripted build process over a manual one to ensure it can be repeated, revised, and reviewed with minimal additional effort.
 
-This page will help you navigate the simple pre-requisites and processes. The time required to
-engineer an image may vary depending on your software's needs, but in summary it'll usually be 30 to 60 
-minutes of hands-on work.
+In order to submit an image to the DigitalOcean Marketplace your image must include some prerequisites and be built on an approved Linux distribution.
 
-## Supported operating systems and pre-requisities
+## Supported Operating Systems
 
-### Operating systems
+To ensure compatibility with Marketplace tools and processes we currently support a limited number of Linux distributions and releases.  These operating systems are all available as a base to build on in the DigitalOcean cloud.
 
-Currently we support a limited number of operating systems: 
+The following operating systems may be used as the base for your marketplace image. The options provide for either deb or rpm based packaging and are versions for which security patches and updates will be provided for a reasonable time period.
 
-* Ubuntu 18.04
-* Ubuntu 16.04
+* Ubuntu 18.04 (LTS)
+* Ubuntu 16.04 (LTS)
 * CentOS 7.x
 * CentOS 6.x
 
-### Pre-requisites
+### Prerequisites
+To ensure that your image will work properly on the DigitalOcean cloud you must ensure some software is included in your image.  These software packages are necessary for the initial configuration of new droplets and to ensure connectivity.  All of the items listed are provided by default in the default DigitalOcean base images. 
 
-* cloud-init 0.76 or higher _(0.79 or higher recommended)_
+* cloud-init 0.76 or higher (0.79 or higher recommended)
+* openssh-server (sftp enabled configuration recommended)
 
-## Building an image
+## Building your Image
+While DigitalOcean offers a "custom image" tool allowing you to import your own disk images this feature is currently limited and droplets created using imported images will not be able to use some features including automatic ipv6 assignment.  For this reason we recommend using a snapshot image of a build droplet to create your Marketplace image.
 
-There are two methods to engineer a suitable image format:
+### Creating your build droplet
+You may create your build droplet from the cloud control panel, using the API or by using doctl, the DigitalOcean command line tool.  When creating your build droplet please keep in mind the following:
 
-1. Snapshot - build on a supported DigitalOcean base image
-2. Custom Image - build on a supported upstream base, and upload a supported format (vmdk, qcow2, etc)
+#### Use the smallest possible droplet size for your software.
+Because shrinking disk images can result in data loss, DigitalOcean does not support this option.  Building your image using the smallest droplet size will ensure it can be used with any droplet plan.
 
-_n.b. While you can engineer a Custom Image and upload it to DigitalOcean for Marketplace apps,
-users of Droplets started from those images currently cannot use certain features (floating IPs, 
-IPv6). **We therefore recommend using the Snapshot method until further notice.**_
+#### Use only one of the supported distribution versions
+To ensure your image can be reviewed and added to the Marketplace in a timely manner and without major revisions, start with a droplet running one of the supported distributions and versions.
 
-### Snapshot
+#### Use an SSH Key
+We strongly recommend using an ssh key for authentication on your build server.  The key can easily be removed prior to creating your snapshot and ensures the default configuration will work best with the DigitalOcean cloud.
 
-You can prepare your software installed in a "ready-to-configure" state on a supported DigitalOcean base 
-image, and when finished with your changes and quality checks, shut it down in order to prepare a snapshot
-of the Droplet in it's current state. This prepares an image ready to be submitted and be replicated 
-to new Droplets started by users who find your image as a One-click app via DigitalOcean Marketplace.
+#### Do not use any other features for your build droplet
+It is recommended that you not enable other features when creating your build droplet. This includes monitoring, ipv6, private networking, or block storage volumes. By doing this you will retain more of you distribution's standard configuration and have less clean-up needed to prepare your droplet to create your image.
 
-Here's what you'll be doing in a nutshell:
+### Installing Software on your Build Droplet
+One of the first tasks you will likely undertake will be to install additional software that is required for your final image.  Whenever possible you should use software installed from the official package repositories or add third party repositories which provide regular updates.  Packages installed through other means may not provide a mechanism to ensure security updates are applied as needed.  For official distribution packages, we recommend maintaining the *mirrors.digitalocean.com* mirrors which are provided by default.  These repositories are direct mirrors of the distribution's package archive stored within DigitalOcean's infrastructure.  Continuing to use these repositories will ensure faster downloads of distribution packages for your users.
 
-* Start a fresh image base Droplet (5 mins)
-* Install your software (5 to 60 mins)
-* Run checks and clean up artifacts (10 mins)
-* Shutdown and snapshot the Droplet (5 mins)
+**NOTE:** Be sure to install any software updates available from the distribution's repositories prior to creating your snapshot image.  This helps ensure a secure distribution and can save your users time when they create a new droplet from your image.
 
-1. *Start a fresh image base Droplet.* Log into the control panel, and start a new Droplet in your 
-chosen data center _at the smallest 1GB Droplet level_. Ubuntu 18.04 is the default, but you can choose 
-any supported operating system. You can also start from an existing DigitalOcean One-click app, e.g., 
-Docker or LEMP, as these are all supported already.
+### Running commands on First Boot
+While you can usually pre-load much of what your image will need on your build system, some functions including setting passwords for services included in the image or using the assigned IP address for configuration should be run for each new droplet created from your image.  
 
-2. *Install your software*. Here's a few sample steps you might follow:
+Cloud-init can handle this for us.  The directory `/var/lib/cloud/scripts/per-once` is checked when a new droplet using your image is launched and will attempt to run any scripts located there.  Scripts in this directory are run in alpha-numerical order so using a number as the beginning of your filename is recommended *(ex. 01-myscript.sh)*.  Be sure that your script can be run from the command line and that it has execute permissions `chmod +x 01-myscript.sh`.
 
-  1. Once the Droplet has started up, copy the IP address and log into the root shell with either your 
-password or SSH keys (depending on the options you chose when starting).
-  2. Directly install the packages and dependencies for your software. For example, if you've built an 
-installer for your users to test drive your software quickly, you may be able to run it to install all 
-the necessary bits _providing configuration can be left for when the user boots the image on a new 
-Droplet_.
-  3. OR, install the scripts that will install your software live, in real-time, once the user starts your
-One-click app on a new Droplet. For example, if you've built a script that prepares the environment,
-downloads the latest version of your software and installs it, and then starts interactive user configuration
-– then you can use the script to do these things as each user starts your app. 
+### Running commands or interactive scripts on first-login
+Sometimes you may require information that can not be obtained automatically such as the domain name to use for a service.  You may also need to run interactive third party scripts like LetsEncrypt's certbot.  This is not quite as simple as first-boot scripts but can be accomplished with a little custom work.
 
-N.B. bear in mind the time taken by such steps after boot or login, and try to keep this time to a minimum: you could 
-include the necessary package versions on the local filesystem ready to install, for example.
+* Create a bash script to run your commands or prompt for information and place that script in `/opt/companyname/script_name.sh` and give the script execute permissions.
+* At the end of your script add the following command which will prevent it from being re-run on subsequent logins.  `cp -f /etc/skel/.bashrc /root/.bashrc`
+* Edit the file `/root/.bashrc` and add a line at the end to run your script by placing the full path to your script in the file.
 
-In order to use a scripted live install, you'll want to follow a simple best practice:
+When a user creates a droplet using your image the following will happen:
+* When the user first logs in, the .bashrc script is run and after doing it's other work it will automatically launch your script.
+* After the required work is completed by your script, the line we added to it will copy the default .bashrc file from the `skel` directory to the root user's directory so the call to run your script no longer exists.
 
-    1. Create a folder for your script under /opt/yourvendorname
-    2. Add your shell script there
-    3. Call your shell script on login by adding it to the /root/.bashrc before snapshotting
-    4. Make sure you copy a clean .bashrc to /root/.bashrc as the last cleanup step in your script
+Using this method ensures that your script is only run during the first boot but remains in the filesystem if the user needs to re-run or reference it later.
 
-    e.g., `cp -f /etc/skel/.bashrc /root/.bashrc`
+### Adding a MOTD (Message of the Day)
+The MOTD is text that is displayed when a user logs into a droplet created from your image.  We strongly recommend creating a short text document which introduces your image's features and points users to useful documentation.  You can add this document to your image so it will be displayed by placing it in `/etc/update-motd.d/` with a name beginning with `99` such as `99-image-readme` so it is included in the MOTD as the last displayed text prior to the login prompt.
 
-3. MOTD
+### Cleaning up your build droplet
 
-<tbd document and add a sample MOTD, removing things like "Welcome to the DigitalOcean appname One-click">
+To ensure that your build droplet results in a clean image you can run the following script on it before creating your snapshot if you are using an Ubuntu base or run similar commands for CentOS:
 
-4. Run cleanup steps 
+```
+#!/bin/bash
+rm -rf /tmp/* /var/tmp/*
+history -c
+cat /dev/null > /root/.bash_history
+unset HISTFILE
+apt-get -y autoremove
+apt-get -y autoclean
+find /var/log -mtime -1 -type f -exec truncate -s 0 {} \;
+rm -rf /var/log/*.gz /var/log/*.[0-9] /var/log/*-????????
+rm -rf /var/lib/cloud/instances/*
+rm -f /root/.ssh/authorized_keys /etc/ssh/*key*
+dd if=/dev/zero of=/zerofile; sync; rm /zerofile; sync
+cat /dev/null > /var/log/lastlog; cat /dev/null > /var/log/wtmp
+```
 
-<tbd document and add a sample script of the cleanup steps from the fabfile template>
+This script will do several things to clean up including:
 
-4. img_check
+* Delete your bash history so commands that were run during the build process are not stored in your image
+* Clean up the package manager's database
+* Truncate or remove log files that are not needed
+* Remove the cloud-init instance information.  This step will ensure that the image will look to the cloud-init service on first boot for things like networking and also that it will run your first-boot scripts.
+* Remove ssh-keys from the root user (if you used any other user account in your build droplet you should do this for them as well)
 
-Upload and run the img_check.sh, capture the results, and then delete the script after running it.
+**NOTE:** Once you remove your ssh-keys you may no longer be able to log into your droplet. Ensure you are fully ready to create your snapshot before taking this step.
 
-5. Snapshot
+### Check your Image
+Before creating your final snapshot, run the img_check.sh utility found in the `marketplace_validation` directory of this repository.  This script will check for any security or cleanup concerns that should be addressed prior to creating your final snapshot image.
 
-Shutdown the Droplet with `shutdown now` command, and and then take a snapshot of the Droplet from your 
-Control Panel. This is the image you'll submit to DigitalOcean Marketplace, so you'll need to take note 
-of the account and the image name and date to give during submission.
+### Creating your Snapshot Image
 
-### Custom Image
+The final step is to take a snapshot of your build droplet.  The DigitalOcean cloud supports "live snapshots" which can take an image of your droplet's disk while the droplet is powered on.  Do not use this feature when creating your image for Marketplace.  Instead, power down your droplet either from your ssh session with `shutdown -h now` or by using the cloud control panel.  Once your droplet is powered off, the Snapshot section under your droplet in the control panel will allow you to create your snapshot and give it a name.
 
-Coming soon.
+Once your image has been created you can submit it to the Marketplace team for review by providing the image name and/or id.
