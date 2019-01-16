@@ -9,13 +9,26 @@ Image validation, automation, and other tools for DigitalOcean Marketplace partn
 
 This repository includes bash scripts intended for use by Marketplace partners and Custom Image users to validate their images prior to submission, or use.
 
+##Build an Image Manually
+
+If you're just getting started, [this](marketplace_docs/build-an-image.md) is where to begin.
+
+## Build an Image with Fabric automation
+
+For repeatable image build processing, [this](marketplace_docs/build-an-image-fabric.md) is a good next step.
+
 ## marketplace_validation
+
+Provides a script `img_check.sh` that validates your build Droplet before shutting down to create a snapshot image for submission.
 
 ### Supported Distributions 
 
-CentOS 6.x, CentOS 7.x, Ubuntu 16.04, Ubuntu 18.04
+* Ubuntu 18.04 (LTS)
+* Ubuntu 16.04 (LTS)
+* CentOS 7.x
+* CentOS 6.x 
 
-This script is intended for Marketplace partners to check their images against the following criteria:
+This script checks build Droplet images against the following criteria:
 
 - Check for a supported distro and release
 - Check that all security updates are installed
@@ -39,7 +52,12 @@ To clear log files, bash_history, and authorized keys, you can use any file clea
 
 ### Supported Distributions 
 
-CentOS 6.x, CentOS 7.x, Ubuntu 16.04, Ubuntu 18.04 (may be expanded to support other popular distributions in future versions)
+* Ubuntu 18.04 (LTS)
+* Ubuntu 16.04 (LTS)
+* CentOS 7.x
+* CentOS 6.x 
+
+*(may be expanded to support other popular distributions in future versions)*
 
 This is a fork of the marketplace_validation script and is intended for use by users of DigitalOcean Custom Images to use with their own images.
 
