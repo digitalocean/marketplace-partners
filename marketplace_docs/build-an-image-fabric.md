@@ -1,6 +1,6 @@
 # Building Marketplace Images with Fabric
 
-While it's feasible to manually create a Marketplace image by setting up a host system and creating a snapshot, this process 
+While it's feasible to [manually create a Marketplace image](build-an-image.md) by setting up a host system and creating a snapshot, this process 
 is intended to ensure replicable and configurable builds.  Fabric is a python library designed to execute commands on a 
 remote system over SSH so it is ideal for the scripted creation of a build droplet, which can then be snapshotted to create 
 a new Marketplace ready image.
@@ -134,15 +134,15 @@ fab build_image -H 0.0.0.0
 
 Once started, fabric will run through all steps and set up your system, transferring files and running commands as you've 
 defined.  If any command returns an error status the script will exit without completing.  If this happens, review the script 
-output and make appropriate adjustments.  Note: For your final image build, ensure that the script has only been run once 
-before creating your snapshot.
+output and make appropriate adjustments.  
 
-4. img_check
+**Note:** For your final image build, ensure that the script has only been run once before creating your snapshot.
 
-Upload and run the img_check.sh, capture the results, and then delete the script after running it.
+### Check your Image
+Before creating your final snapshot, run the img_check.sh utility found in the `marketplace_validation` directory of this repository.  This script will check for any security or cleanup concerns that should be addressed prior to creating your final snapshot image.
 
-5. Snapshot
+### Creating your Snapshot Image
 
-Shutdown the Droplet with `shutdown now` command, and and then take a snapshot of the Droplet from your 
-Control Panel. This is the image you'll submit to DigitalOcean Marketplace, so you'll need to take note 
-of the account and the image name and date to give during submission.
+The final step is to take a snapshot of your build droplet.  The DigitalOcean cloud supports "live snapshots" which can take an image of your droplet's disk while the droplet is powered on.  Do not use this feature when creating your image for Marketplace.  Instead, power down your droplet either from your ssh session with `shutdown -h now` or by using the cloud control panel.  Once your droplet is powered off, the Snapshot section under your droplet in the control panel will allow you to create your snapshot and give it a name.
+
+Once your image has been created you can submit it to the Marketplace team for review by providing the image name and/or id.
