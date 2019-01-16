@@ -9,13 +9,13 @@ Image validation, automation, and other tools for DigitalOcean Marketplace partn
 
 This repository includes bash scripts intended for use by Marketplace partners and Custom Image users to validate their images prior to submission, or use.
 
-##Build an Image Manually
+## Build an Image Manually
 
-If you're just getting started, [this](marketplace_docs/build-an-image.md) is where to begin.
+If you're just getting started, [build-an-image.md](marketplace_docs/build-an-image.md) is where to begin.
 
 ## Build an Image with Fabric automation
 
-For repeatable image build processing, [this](marketplace_docs/build-an-image-fabric.md) is a good next step.
+For repeatable image build processing, [build-an-image-fabric.md](marketplace_docs/build-an-image-fabric.md) is a good next step.
 
 ## marketplace_validation
 
