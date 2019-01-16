@@ -1,4 +1,4 @@
-# Marketplace partner tools
+# Marketplace Partner Tools
 
 [![MIT license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Pull Requests Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat)](http://makeapullrequest.com)
@@ -13,7 +13,7 @@ This repository includes bash scripts intended for use by Marketplace partners a
 
 If you're just getting started, [build-an-image.md](marketplace_docs/build-an-image.md) is where to begin.
 
-## Build an Image with Fabric automation
+## Build an Image with Fabric Automation
 
 For repeatable image build processing, [build-an-image-fabric.md](marketplace_docs/build-an-image-fabric.md) is a good next step.
 
