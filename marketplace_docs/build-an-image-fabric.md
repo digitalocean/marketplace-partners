@@ -136,7 +136,7 @@ Once started, fabric will run through all steps and set up your system, transfer
 defined.  If any command returns an error status the script will exit without completing.  If this happens, review the script 
 output and make appropriate adjustments.  
 
-**Note: For your final image build, ensure that the script has only been run once before creating your snapshot.**
+**Note:** For your final image build, ensure that the script has only been run once before creating your snapshot.
 
 ### Check your Image
 Before creating your final snapshot, run the img_check.sh utility found in the `marketplace_validation` directory of this repository.  This script will check for any security or cleanup concerns that should be addressed prior to creating your final snapshot image.
