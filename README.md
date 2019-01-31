@@ -47,20 +47,3 @@ The script img_check.sh can be used from within the image build system prior to 
 To clear log files, bash_history, and authorized keys, you can use any file clearing method, including truncate against each result the script outputs, e.g.,
 
 `$ truncate --size 0 <path/to/file.log>`
-
-## byoi_validation
-
-### Supported Distributions 
-
-* Ubuntu 18.04 (LTS)
-* Ubuntu 16.04 (LTS)
-* CentOS 7.x
-* CentOS 6.x 
-
-*(may be expanded to support other popular distributions in future versions)*
-
-This is a fork of the marketplace_validation script and is intended for use by users of DigitalOcean Custom Images to use with their own images.
-
-The script img_check.sh can be run on the system used to create a Custom Image (for upload and use in the DigitalOcean platform) such as from within VirtualBox or QEMU. This script will update the apt or yum database on the system when it is run in order to check for security updates.
-
-*coming soon* - This version of the script will be intended for Custom Image users who wish to check their image before upload. The primary differences will be in reporting and what levels (pass, warn, fail) are applied to different checks as they apply in a Custom Image environment.
