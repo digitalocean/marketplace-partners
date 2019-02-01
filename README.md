@@ -11,7 +11,7 @@ This repository includes bash scripts intended for use by Marketplace partners a
 
 ## Build an Image Manually
 
-If you're just getting started, [build-an-image.md](marketplace_docs/build-an-image.md) is where to begin.
+If you're just getting started, [build-an-image.md](marketplace_docs/build-an-image.md) is where to begin. Some things here are required in your Fabric automation.
 
 ## Build an Image with Fabric Automation
 
