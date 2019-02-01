@@ -65,6 +65,8 @@ Using this method ensures that your script is only run during the first boot but
 ### Adding a MOTD (Message of the Day)
 The MOTD is text that is displayed when a user logs into a droplet created from your image.  We strongly recommend creating a short text document which introduces your image's features and points users to useful documentation.  You can add this document to your image so it will be displayed by placing it in `/etc/update-motd.d/` with a name beginning with `99` such as `99-image-readme` so it is included in the MOTD as the last displayed text prior to the login prompt.
 
+**NOTE:** we strongly recommend adding a MOTD in case a user must (or simply chooses to) login via SSH.
+
 ### Cleaning up your build droplet
 
 To ensure that your build droplet results in a clean image you can run the following script on it before creating your snapshot if you are using an Ubuntu base or run similar commands for CentOS:
