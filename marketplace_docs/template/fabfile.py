@@ -65,6 +65,9 @@ def install_pkgs():
     """
     Install apt packages listed in APT_PACKAGES
     """
+    #Postfix won't install without a prompt without setting some things
+    #run("debconf-set-selections <<< \"postfix postfix/main_mailer_type string 'No Configuration'\"")
+    #run("debconf-set-selections <<< \"postfix postfix/mailname string localhost.local\"")
     print "--------------------------------------------------"
     print "Installing apt packages in packages.txt"
     print "--------------------------------------------------"
@@ -84,9 +87,6 @@ def run_scripts():
     Scripts are run in alpha-numeric order.  We recommend naming your scripts
     with a name that starts with a two digit number 01-99 to ensure run order.
     """
-    #Postfix won't install without a prompt without setting some things
-    #run("debconf-set-selections <<< \"postfix postfix/main_mailer_type string 'No Configuration'\"")
-    #run("debconf-set-selections <<< \"postfix postfix/mailname string localhost.local\"")
     print "--------------------------------------------------"
     print "Running scripts in ./scripts"
     print "--------------------------------------------------"
