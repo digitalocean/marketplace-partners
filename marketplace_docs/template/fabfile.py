@@ -23,6 +23,7 @@ def clean_up():
     run("find /var/log -mtime -1 -type f -exec truncate -s 0 {} \;")
     run("rm -rf /var/log/*.gz /var/log/*.[0-9] /var/log/*-????????")
     run("rm -rf /var/lib/cloud/instances/*")
+    run("rm -rf /var/lib/cloud/instance")
     puts("Removing keys...")
     run("rm -f /root/.ssh/authorized_keys /etc/ssh/*key*")
     run("dd if=/dev/zero of=/zerofile; sync; rm /zerofile; sync")
