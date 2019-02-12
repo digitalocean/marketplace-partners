@@ -56,7 +56,7 @@ def install_files():
             rpath = cDir + "/" + fname
             lpath = cwd + "/files" + cDir + "/" + fname
             print('Moving File: %s' % lpath)
-            put(lpath,rpath)
+            put(lpath,rpath,mirror_local_mode=True)
 
 
     
@@ -68,6 +68,7 @@ def install_pkgs():
     #Postfix won't install without a prompt without setting some things
     #run("debconf-set-selections <<< \"postfix postfix/main_mailer_type string 'No Configuration'\"")
     #run("debconf-set-selections <<< \"postfix postfix/mailname string localhost.local\"")
+    run("DEBIAN_FRONTEND=noninteractive")
     print "--------------------------------------------------"
     print "Installing apt packages in packages.txt"
     print "--------------------------------------------------"
