@@ -42,7 +42,7 @@ apt commands with a "-y" will allow this.
 
 It is likely that you will want some configuration steps to run on droplets created from your image on first boot to set 
 up unique items like database passwords or items requiring the droplet’s IP address.  Cloud-init is available on all DigitalOcean 
-base images and makes it easy to do this.  The directory `/var/lib/cloud/scripts/per-once contains` scripts that cloud-init 
+base images and makes it easy to do this.  The directory `/var/lib/cloud/scripts/per-instance contains` scripts that cloud-init 
 will automatically execute the first time a droplet created from your image is booted.  These files should be named using 
 a convention starting with a number such as 001_onboot.  If more than one file is present in this directory they'll all be 
 executed in alphabetical/numerical order with numbered files being run first.
