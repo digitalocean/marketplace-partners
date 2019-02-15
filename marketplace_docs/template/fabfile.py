@@ -74,8 +74,8 @@ def install_pkgs():
     print "Installing apt packages in packages.txt"
     print "--------------------------------------------------"
     run("apt-get -qqy update")
-    run("apt-get -qqy upgrade")
-    run("apt-get -qqy install {}".format(APT_PACKAGES))
+    run("apt-get -qqy -o Dpkg::Options::=\"--force-confdef\" -o Dpkg::Options::=\"--force-confold\" upgrade")
+    run("apt-get -qqy -o Dpkg::Options::=\"--force-confdef\" -o Dpkg::Options::=\"--force-confold\" install {}".format(APT_PACKAGES))
 
     # example 3rd paty repo and install certbot
     #run("apt-get -qqy install software-properties-common")
