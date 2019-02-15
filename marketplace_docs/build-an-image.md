@@ -47,7 +47,7 @@ One of the first tasks you will likely undertake will be to install additional s
 ### Running commands on First Boot
 While you can usually pre-load much of what your image will need on your build system, some functions including setting passwords for services included in the image or using the assigned IP address for configuration should be run for each new droplet created from your image.  
 
-Cloud-init can handle this for us.  The directory `/var/lib/cloud/scripts/per-once` is checked when a new droplet using your image is launched and will attempt to run any scripts located there.  Scripts in this directory are run in alpha-numerical order so using a number as the beginning of your filename is recommended *(ex. 01-myscript.sh)*.  Be sure that your script can be run from the command line and that it has execute permissions `chmod +x 01-myscript.sh`.
+Cloud-init can handle this for us.  The directory `/var/lib/cloud/scripts/per-instance` is checked when a new droplet using your image is launched and will attempt to run any scripts located there.  Scripts in this directory are run in alpha-numerical order so using a number as the beginning of your filename is recommended *(ex. 01-myscript.sh)*.  Be sure that your script can be run from the command line and that it has execute permissions `chmod +x 01-myscript.sh`.
 
 ### Running commands or interactive scripts on first-login
 Sometimes you may require information that can not be obtained automatically such as the domain name to use for a service.  You may also need to run interactive third party scripts like LetsEncrypt's certbot.  This is not quite as simple as first-boot scripts but can be accomplished with a little custom work.
