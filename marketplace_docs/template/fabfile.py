@@ -29,11 +29,7 @@ def clean_up():
     run("dd if=/dev/zero of=/zerofile; sync; rm /zerofile; sync")
     run("cat /dev/null > /var/log/lastlog; cat /dev/null > /var/log/wtmp")
 
-def shut_down():
-    """
-    Shut down remote server on completion
-    """
-    run("shutdown -h now & exit 0")
+
 
 def install_files():
     """
@@ -115,7 +111,12 @@ def build_image():
     install_files()
     run_scripts()
     clean_up()
-    shut_down()
+    run("exit")
+    print "----------------------------------------------------------------"
+    print " Build Complete.  Shut down your build droplet from the control"
+    print " panel before creating your snapshot."
+    print "----------------------------------------------------------------"
+    
 
 @task
 def build_test():
