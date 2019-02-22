@@ -143,7 +143,14 @@ function checkRoot {
                                     ((FAIL++))
                                     STATUS=2
                                 fi
-                            
+                            elif  [ "${key}" != "${uhome}/.ssh/id_rsa" ]; then
+                                    echo -en "\e[41m[FAIL]\e[0m User \e[1m${user}\e[0m has a private key file in \e[93m${key}\e[0m\n"
+                                    akey=$(cat ${key})
+                                    echo "File Contents:"
+                                    echo $akey
+                                    echo "--------------"
+                                    ((FAIL++))
+                                    STATUS=2
                             elif  [ "${key}" != "${uhome}/.ssh/known_hosts" ]; then
                                 
                                  echo -en "\e[93m[WARN]\e[0m User \e[1m${user}\e[0m has a file in their .ssh directory at \e[93m${key}\e[0m\n"
@@ -247,6 +254,15 @@ function checkUsers {
                                     ((FAIL++))
                                     STATUS=2
                                 fi
+                              elif  [ "${key}" != "${uhome}/.ssh/id_rsa" ]; then
+                                echo -en "\e[41m[FAIL]\e[0m User \e[1m${user}\e[0m has a private key file in \e[93m${key}\e[0m\n"
+                                    akey=$(cat ${key})
+                                    echo "File Contents:"
+                                    echo $akey
+                                    echo "--------------"
+                                    ((FAIL++))
+                                    STATUS=2
+                           
                             elif  [ "${key}" != "${uhome}/.ssh/known_hosts" ]; then
                                 
                                  echo -en "\e[93m[WARN]\e[0m User \e[1m${user}\e[0m has a file in their .ssh directory named \e[93m${key}\e[0m\n"
