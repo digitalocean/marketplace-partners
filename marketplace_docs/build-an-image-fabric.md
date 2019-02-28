@@ -23,9 +23,13 @@ Fabric can alternatively be installed on any system with pip (the python package
 pip install fabric
 ```
 
-## fabile.py
+Note: the [sample configuration](samples/LAMP.zip) uses the Fabric v1 syntax. This won't work with Fabric v2. To install Fabric v1 run `pip install 'fabric<2.0'`.
 
-To set up your build environment you will want to create a `fabile.py` script.  This script will use the fabric library to 
+Note: Fabric v1 doesn't work with Python v3 and up. You can use [`Fabric3`](https://pypi.org/project/Fabric3/) to run Fabric v1 under Python v3+
+
+## fabfile.py
+
+To set up your build environment you will want to create a `fabfile.py` script.  This script will use the fabric library to 
 build your image.  An example fabric configuration can be found [here](samples/LAMP.zip). A template can be found [here](template/).
 
 The fabfile will usually be made up of several functions that are called in turn to run on your build droplet.  The functions 
