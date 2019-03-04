@@ -19,7 +19,7 @@ For repeatable image build processing, [build-an-image-fabric.md](marketplace_do
 
 ## marketplace_validation
 
-Provides a script `img_check.sh` that validates your build Droplet before shutting down to create a snapshot image for submission.
+Provides a script `img_check.sh` that validates your build Droplet before shutting down to [create a snapshot](https://www.digitalocean.com/docs/images/snapshots/how-to/snapshot-droplets/).
 
 ### Supported Distributions 
 
@@ -42,7 +42,7 @@ This script checks build Droplet images against the following criteria:
 
 *coming soon* - Allow the script to be run against a disk image file on a Linux workstation by mounting and chrooting into the image.
 
-The script img_check.sh can be used from within the image build system prior to creating a snapshot or exporting a disk image from Virtualbox, VMWare or a physical machine. The script is minimally invasive and designed to avoid changes to the disk. The one exception is that this script will update your apt or yum package database in order to identify if there are any uninstalled security updates.
+The script img_check.sh can be used from within the image build system prior to [creating a snapshot](https://www.digitalocean.com/docs/images/snapshots/how-to/snapshot-droplets/) or exporting a disk image from Virtualbox, VMWare or a physical machine. The script is minimally invasive and designed to avoid changes to the disk. The one exception is that this script will update your apt or yum package database in order to identify if there are any uninstalled security updates.
 
 To clear log files, bash_history, and authorized keys, you can use any file clearing method, including truncate against each result the script outputs, e.g.,
 
