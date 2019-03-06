@@ -96,13 +96,20 @@ function checkLogs {
     done
     for f in /var/log/*.log; do
       [[ -e $f ]] || break
-      if [ "$( cat "${f}" | wc -c)" -gt 50 ]; then
-          echo -en "\e[93m[WARN]\e[0m un-cleared log file, ${f} found\n"
-          ((WARN++))
-          if [[ $STATUS != 2 ]]; then
-        
-          STATUS=1
-      fi
+      if [[ "${f}" = '/var/log/lfd.log' && "$( cat "${f}" | egrep -v '/var/log/messages has been reset| Watching /var/log/messages' | wc -c)" -gt 50 ]]; then
+        echo -en "\e[93m[WARN]\e[0m un-cleared log file, ${f} found\n"
+        ((WARN++))
+        if [[ $STATUS != 2 ]]; then
+          
+            STATUS=1
+        fi
+      elif [[ "${f}" != '/var/log/lfd.log' && "$( cat "${f}" | wc -c)" -gt 50 ]]; then
+        echo -en "\e[93m[WARN]\e[0m un-cleared log file, ${f} found\n"
+        ((WARN++))
+        if [[ $STATUS != 2 ]]; then
+          
+            STATUS=1
+        fi
       fi
     done
 }
