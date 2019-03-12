@@ -107,3 +107,11 @@ Before creating your final snapshot, run the img_check.sh utility found in the `
 The final step is to take a snapshot of your build droplet.  The DigitalOcean cloud supports "live snapshots" which can take an image of your droplet's disk while the droplet is powered on.  Do not use this feature when creating your image for Marketplace.  Instead, power down your droplet either from your ssh session with `shutdown -h now` or by using the cloud control panel.  Once your droplet is powered off, the Snapshot section under your droplet in the control panel will allow you to create your snapshot and give it a name.
 
 Once your image has been created you can submit it to the Marketplace team for review by providing the image name and/or id.
+
+
+### Automating your build
+
+There are many tools available to automate the creation of your build droplet to get it ready to snapshot.  We've created some easy to use templates to help you get started with some automation options:
+
+- Fabric.py template
+- Packer template
