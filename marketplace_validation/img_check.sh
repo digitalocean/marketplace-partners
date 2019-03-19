@@ -5,6 +5,7 @@
 # This code is licensed under MIT license (see LICENSE.txt for details)
 #
 VERSION="v. 0.1"
+RUNDATE=$( date )
 
 # Script should be run with SUDO
 if [ "$EUID" -ne 0 ]
@@ -390,6 +391,7 @@ function checkCloudInit {
 
 clear
 echo "DigitalOcean Marketplace Image Validation Tool ${VERSION}"
+echo "Executed on: ${RUNDATE}"
 echo "Checking local system for Marketplace compatibility..."
 
 getDistro
