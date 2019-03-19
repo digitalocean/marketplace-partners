@@ -125,7 +125,7 @@ function checkRoot {
     do
       IFS=':' read -r -a u <<< "$usr"
       if [[ "${u[0]}" == "${user}" ]]; then
-        if [[ ${u[1]} == "!" ]] || [[ ${u[1]} == "*" ]]; then
+        if [[ ${u[1]} == "!" ]] || [[ ${u[1]} == "!!" ]] || [[ ${u[1]} == "*" ]]; then
             echo -en "\e[32m[PASS]\e[0m User ${user} has no password set.\n"
             ((PASS++))
         else
