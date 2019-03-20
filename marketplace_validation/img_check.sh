@@ -97,13 +97,20 @@ function checkLogs {
     done
     for f in /var/log/*.log; do
       [[ -e $f ]] || break
-      if [ "$( cat "${f}" | wc -c)" -gt 50 ]; then
-          echo -en "\e[93m[WARN]\e[0m un-cleared log file, ${f} found\n"
-          ((WARN++))
-          if [[ $STATUS != 2 ]]; then
-        
-          STATUS=1
-      fi
+      if [[ "${f}" = '/var/log/lfd.log' && "$( cat "${f}" | egrep -v '/var/log/messages has been reset| Watching /var/log/messages' | wc -c)" -gt 50 ]]; then
+        echo -en "\e[93m[WARN]\e[0m un-cleared log file, ${f} found\n"
+        ((WARN++))
+        if [[ $STATUS != 2 ]]; then
+          
+            STATUS=1
+        fi
+      elif [[ "${f}" != '/var/log/lfd.log' && "$( cat "${f}" | wc -c)" -gt 50 ]]; then
+        echo -en "\e[93m[WARN]\e[0m un-cleared log file, ${f} found\n"
+        ((WARN++))
+        if [[ $STATUS != 2 ]]; then
+          
+            STATUS=1
+        fi
       fi
     done
 }
@@ -118,7 +125,7 @@ function checkRoot {
     do
       IFS=':' read -r -a u <<< "$usr"
       if [[ "${u[0]}" == "${user}" ]]; then
-        if [[ ${u[1]} == "!" ]] || [[ ${u[1]} == "*" ]]; then
+        if [[ ${u[1]} == "!" ]] || [[ ${u[1]} == "!!" ]] || [[ ${u[1]} == "*" ]]; then
             echo -en "\e[32m[PASS]\e[0m User ${user} has no password set.\n"
             ((PASS++))
         else
@@ -222,7 +229,7 @@ function checkUsers {
         do
           IFS=':' read -r -a u <<< "$usr"
           if [[ "${u[0]}" == "${user}" ]]; then
-              if [[ ${u[1]} == "!" ]] || [[ ${u[1]} == "*" ]]; then
+              if [[ ${u[1]} == "!" ]] || [[ ${u[1]} == "!!" ]] || [[ ${u[1]} == "*" ]]; then
                   echo -en "\e[32m[PASS]\e[0m User ${user} has no password set.\n"
                   ((PASS++))
               else
@@ -318,10 +325,15 @@ function checkFirewall {
       fw="ufw"
       service ufw status >/dev/null 2>&1
     elif [[ $OS == "CentOS Linux" ]]; then
-      fw="firewalld"
-      systemctl status firewalld >/dev/null 2>&1
+      if [ -f /usr/lib/systemd/system/csf.service ]; then
+        fw="csf"
+        systemctl status $fw >/dev/null 2>&1
+      else
+        fw="firewalld"
+        systemctl status $fw >/dev/null 2>&1
+      fi
     fi
-    
+
     if [ $? = 0 ]; then
         FW_VER="\e[32m[PASS]\e[0m Firewall service (${fw}) is active\n"
         ((PASS++))
