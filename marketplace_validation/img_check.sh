@@ -10,7 +10,7 @@ RUNDATE=$( date )
 # Script should be run with SUDO
 if [ "$EUID" -ne 0 ]
   then echo "[Error] - This script must be run with sudo or as the root user."
-  exit
+  exit 1
 fi
 
 STATUS=0
@@ -383,7 +383,7 @@ function checkUpdates {
         fi
     else
         echo "Error encountered"
-        exit
+        exit 1
     fi
 
     return 1;    
@@ -455,7 +455,7 @@ elif [[ $ost == 1 ]]; then
     STATUS=2
 else
     echo "Exiting..."
-    exit
+    exit 1
 fi
 
 checkCloudInit
@@ -499,8 +499,11 @@ echo -en "----------------------------------------------------------------------
 
 if [[ $STATUS == 0 ]]; then
     echo -en "We did not detect any issues with this image. Please be sure to manually ensure that all software installed on the base system is functional, secure and properly configured (or facilities for configuration on first-boot have been created).\n\n"
+    exit 0
 elif [[ $STATUS == 1 ]]; then
     echo -en "Please review all [WARN] items above and ensure they are intended or resolved.  If you do not have a specific requirement, we recommend resolving these items before image submission\n\n"
+    exit 1
 else
     echo -en "Some critical tests failed.  These items must be resolved and this scan re-run before you submit your image to the marketplace.\n\n"
+    exit 1
 fi
