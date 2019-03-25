@@ -30,7 +30,7 @@ Note: Fabric v1 doesn't work with Python v3 and up. You can use [`Fabric3`](http
 ## fabfile.py
 
 To set up your build environment you will want to create a `fabfile.py` script.  This script will use the fabric library to 
-build your image.  An example fabric configuration can be found [here](samples/LAMP.zip). A template can be found [here](template/).
+build your image.  An example fabric configuration can be found [here](samples/LAMP.zip). Templates can be found [here](templates/).
 
 The fabfile will usually be made up of several functions that are called in turn to run on your build droplet.  The functions 
 you will most commonly call will include:
