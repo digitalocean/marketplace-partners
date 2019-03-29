@@ -23,6 +23,7 @@ Provides a script `img_check.sh` that validates your build Droplet before shutti
 
 ### Supported Distributions 
 
+* Debian 9.x (stretch)
 * Ubuntu 18.04 (LTS)
 * Ubuntu 16.04 (LTS)
 * CentOS 7.x

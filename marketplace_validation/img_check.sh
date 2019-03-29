@@ -18,6 +18,16 @@ PASS=0
 WARN=0
 FAIL=0
 
+# $1 == command to check for
+# returns: 0 == true, 1 == false
+cmdExists() {
+    if command -v "$1" > /dev/null 2>&1; then
+        return 0
+    else
+        return 1
+    fi
+}
+
 function getDistro {
     if [ -f /etc/os-release ]; then
     # freedesktop.org and systemd
@@ -332,6 +342,20 @@ function checkFirewall {
         fw="firewalld"
         systemctl status $fw >/dev/null 2>&1
       fi
+    elif [[ "$OS" =~ Debian.* ]]; then
+      # user could be using a number of different services for managing their firewall
+      # we will check some of the most common
+      if cmdExists 'ufw'; then
+        fw="ufw"
+        systemctl is-active --quiet $fw
+      elif cmdExists "firewall-cmd"; then
+        fw="firewalld"
+        systemctl is-active --quiet $fw
+      else
+        # user could be using vanilla iptables, check if kernel module is loaded
+        fw="iptables"
+        lsmod | grep -q '^ip_tables' 2>/dev/null
+      fi
     fi
 
     if [ $? = 0 ]; then
@@ -347,16 +371,15 @@ function checkFirewall {
     
 }
 function checkUpdates {
-    if [[ $OS == "Ubuntu" ]]; then
+    if [[ $OS == "Ubuntu" ]] || [[ "$OS" =~ Debian.* ]]; then
         echo -en "\nUpdating apt package database to check for security updates, this may take a minute...\n\n"
         apt-get -y update > /dev/null
         if [ -f /usr/lib/update-notifier/apt-check ]; then
           update_count=$(/usr/lib/update-notifier/apt-check 2>&1 | cut -d ';' -f 2)  
         else
-          echo "ERROR: apt-check binary was not found. Unable to ensure security updates have been installed.  Exiting.";
-          exit 1
+          update_count=$(apt-get upgrade -s | grep '^Inst.*security.*$' | wc -l)
         fi
-        update_count=$(/usr/lib/update-notifier/apt-check 2>&1 | cut -d ';' -f 2)
+
         if [[ $update_count -gt 0 ]]; then
             echo -en "\e[41m[FAIL]\e[0m There are ${update_count} security updates available for this image that have not been installed.\n"
             echo -en
@@ -424,6 +447,17 @@ if [[ $OS == "Ubuntu" ]]; then
         osv=0
     fi
     
+elif [[ "$OS" =~ Debian.* ]]; then
+    ost=1
+    case "$VER" in
+        9)
+            osv=1
+            ;;
+        *)
+            osv=2
+            ;;
+    esac
+
 elif [[ $OS == "CentOS Linux" ]]; then
         ost=1
      if [[ $VER == "7" ]]; then
