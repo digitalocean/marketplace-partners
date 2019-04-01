@@ -10,6 +10,7 @@ To ensure compatibility with Marketplace tools and processes we currently suppor
 
 The following operating systems may be used as the base for your marketplace image. The options provide for either deb or rpm based packaging and are versions for which security patches and updates will be provided for a reasonable time period.
 
+* Debian 9 (stretch)
 * Ubuntu 18.04 (LTS)
 * Ubuntu 16.04 (LTS)
 * CentOS 7.x
