@@ -4,7 +4,7 @@
 # © 2018 DigitalOcean LLC.
 # This code is licensed under MIT license (see LICENSE.txt for details)
 #
-VERSION="v. 0.1"
+VERSION="v. 1.1"
 RUNDATE=$( date )
 
 # Script should be run with SUDO
