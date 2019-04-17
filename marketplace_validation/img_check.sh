@@ -338,9 +338,13 @@ function checkFirewall {
       if [ -f /usr/lib/systemd/system/csf.service ]; then
         fw="csf"
         systemctl status $fw >/dev/null 2>&1
-      else
+      elif cmdExists "firewall-cmd"; then
         fw="firewalld"
         systemctl status $fw >/dev/null 2>&1
+      else
+        # user could be using vanilla iptables, check if kernel module is loaded
+        fw="iptables"
+        lsmod | grep -q '^ip_tables' 2>/dev/null
       fi
     elif [[ "$OS" =~ Debian.* ]]; then
       # user could be using a number of different services for managing their firewall
