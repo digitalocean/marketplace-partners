@@ -74,8 +74,8 @@ To ensure that your build droplet results in a clean image you can run the follo
 
 ```
 #!/bin/bash
-apt-get -y update
-apt-get -y upgrade
+apt -y update
+apt -y upgrade
 rm -rf /tmp/* /var/tmp/*
 history -c
 cat /dev/null > /root/.bash_history
