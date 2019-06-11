@@ -431,7 +431,7 @@ function checkMongoDB {
 
      if [[ -f "/usr/bin/mongod" ]]; then
        version=$(/usr/bin/mongod --version --quiet | grep "db version" | sed -e "s/^db\ version\ v//")
-       if [[ $version > "3.6.8" ]]; then
+       if [[ $version > "4.0.3" ]]; then
          echo -en "\e[41m[FAIL]\e[0m An SSPL version of MongoDB is present"
          ((FAIL++))
           STATUS=2
@@ -448,7 +448,7 @@ function checkMongoDB {
 
     if [[ -f "/usr/bin/mongod" ]]; then
        version=$(/usr/bin/mongod --version --quiet | grep "db version" | sed -e "s/^db\ version\ v//")
-       if [[ $version > "3.6.8" ]]; then
+       if [[ $version > "4.0.3" ]]; then
          echo -en "\e[41m[FAIL]\e[0m An SSPL version of MongoDB is present"
          ((FAIL++))
           STATUS=2
