@@ -423,6 +423,45 @@ function checkCloudInit {
     fi    
     return 1
 }
+function checkMongoDB {
+  # Check if MongoDB is installed
+  # If it is, verify the version is allowed (non-SSPL)
+  
+   if [[ $OS == "Ubuntu" ]] || [[ "$OS" =~ Debian.* ]]; then
+
+     if [[ -f "/usr/bin/mongod" ]]; then
+       version=$(/usr/bin/mongod --version --quiet | grep "db version" | sed -e "s/^db\ version\ v//")
+       if [[ $version > "3.6.8" ]]; then
+         echo -en "\e[41m[FAIL]\e[0m An SSPL version of MongoDB is present"
+       else
+         echo -en "\e[32m[PASS]\e[0m The version of MongoDB installed is not under the SSPL"
+       fi
+     else
+       echo "MongoDB is not installed"
+     fi
+     
+   elif [[ $OS == "CentOS Linux" ]]; then
+
+    if [[ -f "/usr/bin/mongod" ]]; then
+       version=$(/usr/bin/mongod --version --quiet | grep "db version" | sed -e "s/^db\ version\ v//")
+       if [[ $version > "3.6.8" ]]; then
+         echo -en "\e[41m[FAIL]\e[0m An SSPL version of MongoDB is present"
+       else
+         echo -en "\e[32m[PASS]\e[0m The version of MongoDB installed is not under the SSPL"
+       fi
+     else
+       echo "MongoDB is not installed"
+     fi
+    
+  else
+    echo "ERROR: Unable to identify distribution"
+    ((FAIL++))
+    STATUS 2
+    return 1
+  fi
+     
+  
+}
 
 clear
 echo "DigitalOcean Marketplace Image Validation Tool ${VERSION}"
@@ -513,6 +552,8 @@ echo -en "\n\nChecking the root account...\n"
 checkRoot
 
 checkAgent
+
+checkMongoDB
 
 
 # Summary
