@@ -333,40 +333,68 @@ function checkFirewall {
     
     if [[ $OS == "Ubuntu" ]]; then
       fw="ufw"
-      service ufw status >/dev/null 2>&1
+      ufwa=$(ufw status | sed -e "s/^Status:\ //")
+      if [[ $ufwa == "active" ]]; then
+        FW_VER="\e[32m[PASS]\e[0m Firewall service (${fw}) is active\n"
+        ((PASS++))
+      else
+        FW_VER="\e[93m[WARN]\e[0m No firewall is configured. Ensure ${fw} is installed and configured\n"
+        ((WARN++))
+      fi
     elif [[ $OS == "CentOS Linux" ]]; then
       if [ -f /usr/lib/systemd/system/csf.service ]; then
         fw="csf"
-        systemctl status $fw >/dev/null 2>&1
+        if [[ $(systemctl status $fw >/dev/null 2>&1) ]]; then
+          
+        FW_VER="\e[32m[PASS]\e[0m Firewall service (${fw}) is active\n"
+        ((PASS++))
+        else
+          FW_VER="\e[93m[WARN]\e[0m No firewall is configured. Ensure ${fw} is installed and configured\n"
+        ((WARN++))
+        fi
       else
         fw="firewalld"
-        systemctl status $fw >/dev/null 2>&1
+        if [[ $(systemctl status $fw >/dev/null 2>&1) ]]; then
+          FW_VER="\e[32m[PASS]\e[0m Firewall service (${fw}) is active\n"
+        ((PASS++))
+        else
+          FW_VER="\e[93m[WARN]\e[0m No firewall is configured. Ensure ${fw} is installed and configured\n"
+        ((WARN++))
+        fi
       fi
     elif [[ "$OS" =~ Debian.* ]]; then
       # user could be using a number of different services for managing their firewall
       # we will check some of the most common
       if cmdExists 'ufw'; then
         fw="ufw"
-        systemctl is-active --quiet $fw
+        ufwa=$(ufw status | sed -e "s/^Status:\ //")
+        if [[ $ufwa == "active" ]]; then
+        FW_VER="\e[32m[PASS]\e[0m Firewall service (${fw}) is active\n"
+        ((PASS++))
+      else
+        FW_VER="\e[93m[WARN]\e[0m No firewall is configured. Ensure ${fw} is installed and configured\n"
+        ((WARN++))
+      fi
       elif cmdExists "firewall-cmd"; then
         fw="firewalld"
-        systemctl is-active --quiet $fw
+        if [[ $(systemctl is-active --quiet $fw) ]]; then
+          FW_VER="\e[32m[PASS]\e[0m Firewall service (${fw}) is active\n"
+        ((PASS++))
+        else
+          FW_VER="\e[93m[WARN]\e[0m No firewall is configured. Ensure ${fw} is installed and configured\n"
+        ((WARN++))
+        fi
       else
         # user could be using vanilla iptables, check if kernel module is loaded
         fw="iptables"
-        lsmod | grep -q '^ip_tables' 2>/dev/null
-      fi
-    fi
-
-    if [ $? = 0 ]; then
-        FW_VER="\e[32m[PASS]\e[0m Firewall service (${fw}) is active\n"
+        if [[ $(lsmod | grep -q '^ip_tables' 2>/dev/null) ]]; then
+          FW_VER="\e[32m[PASS]\e[0m Firewall service (${fw}) is active\n"
         ((PASS++))
-    else
-         FW_VER="\e[93m[WARN]\e[0m No firewall is configured. Ensure ${fw} is installed and configured\n"
-          ((WARN++))
-        if [[ $STATUS != 2 ]]; then
-            STATUS=1
+        else
+          FW_VER="\e[93m[WARN]\e[0m No firewall is configured. Ensure ${fw} is installed and configured\n"
+        ((WARN++))
         fi
+      fi
     fi
     
 }
