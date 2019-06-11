@@ -440,7 +440,7 @@ function checkMongoDB {
          ((PASS++))
        fi
      else
-       echo "MongoDB is not installed"
+       echo -en "\e[32m[PASS]\e[0m MongoDB is not installed"
        ((PASS++))
      fi
      
@@ -457,7 +457,7 @@ function checkMongoDB {
          ((PASS++))
        fi
      else
-       echo "MongoDB is not installed"
+       echo -en "\e[32m[PASS]\e[0m MongoDB is not installed"
        ((PASS++))
      fi
     
