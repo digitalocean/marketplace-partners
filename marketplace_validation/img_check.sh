@@ -433,11 +433,15 @@ function checkMongoDB {
        version=$(/usr/bin/mongod --version --quiet | grep "db version" | sed -e "s/^db\ version\ v//")
        if [[ $version > "3.6.8" ]]; then
          echo -en "\e[41m[FAIL]\e[0m An SSPL version of MongoDB is present"
+         ((FAIL++))
+          STATUS=2
        else
          echo -en "\e[32m[PASS]\e[0m The version of MongoDB installed is not under the SSPL"
+         ((PASS++))
        fi
      else
        echo "MongoDB is not installed"
+       ((PASS++))
      fi
      
    elif [[ $OS == "CentOS Linux" ]]; then
@@ -446,11 +450,15 @@ function checkMongoDB {
        version=$(/usr/bin/mongod --version --quiet | grep "db version" | sed -e "s/^db\ version\ v//")
        if [[ $version > "3.6.8" ]]; then
          echo -en "\e[41m[FAIL]\e[0m An SSPL version of MongoDB is present"
+         ((FAIL++))
+          STATUS=2
        else
          echo -en "\e[32m[PASS]\e[0m The version of MongoDB installed is not under the SSPL"
+         ((PASS++))
        fi
      else
        echo "MongoDB is not installed"
+       ((PASS++))
      fi
     
   else
