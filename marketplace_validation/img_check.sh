@@ -354,7 +354,7 @@ function checkFirewall {
         fi
       else
         fw="firewalld"
-        if [[ $(systemctl status $fw >/dev/null 2>&1) ]]; then
+        if [[ $(systemctl is-active firewalld >/dev/null 2>&1 && echo 1 || echo 0) ]]; then
           FW_VER="\e[32m[PASS]\e[0m Firewall service (${fw}) is active\n"
         ((PASS++))
         else
