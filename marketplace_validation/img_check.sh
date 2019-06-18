@@ -348,6 +348,14 @@ function checkFirewall {
           
         FW_VER="\e[32m[PASS]\e[0m Firewall service (${fw}) is active\n"
         ((PASS++))
+        elif cmdExists "firewall-cmd"; then
+          if [[ $(systemctl is-active firewalld >/dev/null 2>&1 && echo 1 || echo 0) ]]; then
+           FW_VER="\e[32m[PASS]\e[0m Firewall service (${fw}) is active\n"
+          ((PASS++))
+          else
+            FW_VER="\e[93m[WARN]\e[0m No firewall is configured. Ensure ${fw} is installed and configured\n"
+          ((WARN++))
+          fi
         else
           FW_VER="\e[93m[WARN]\e[0m No firewall is configured. Ensure ${fw} is installed and configured\n"
         ((WARN++))
