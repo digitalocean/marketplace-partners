@@ -35,7 +35,7 @@ When your build works as expected, you can fully prepare the build Droplet with 
 fab build_image -H your_build_droplet_ip_address
 ```
 
-:warning: For your final image build, make sure you've only run the Fabric script once before creating a snapshot.
+> :warning: For your final image build, make sure you've only run the Fabric script once before creating a snapshot.
 
 ## Sample Fabric Configuration
 

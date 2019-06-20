@@ -105,7 +105,7 @@ This script does several things:
 
 - Removes SSH keys from the root user. If your build Droplet has other user accounts, you should remove SSH keys from them as well.
 
-  :warning: Note: If you have password access disabled and you remove SSH keys, you won't be able to log into the Droplet, so make sure you're ready to create your image before running this script.
+>  :warning: Note: If you have password access disabled and you remove SSH keys, you won't be able to log into the Droplet, so make sure you're ready to create your image before running this script.
 
 - Removes the cloud-init instance information so the image will run your first boot scripts and use the cloud-init service on first boot for things like networking.
 
@@ -134,7 +134,7 @@ If you're using a build Droplet, we recommend creating a snapshot as the most co
 
 1. **Power down the build Droplet**. You can do this by running `shutdown -h now` manually or by [using the API to power the Droplet down](https://developers.digitalocean.com/documentation/v2/#shutdown-a-droplet).
 
-   :warning: Note: The live snapshot feature lets you take an image of your Droplet's disk while the Droplet is still powered on, but you should always power down your Droplet when creating an image for Marketplace.
+>   :warning: Note: The live snapshot feature lets you take an image of your Droplet's disk while the Droplet is still powered on, but you should always power down your Droplet when creating an image for Marketplace.
 
 2. **Take the snapshot**. You can do this from the control panel in the Droplet's **Snapshots** tab or by [using the API to snapshot the Droplet](https://developers.digitalocean.com/documentation/v2/#snapshot-a-droplet).
 
