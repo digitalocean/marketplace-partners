@@ -1,50 +1,35 @@
-# DigitalOcean Marketplace Image Packer Example
+# Build Automation with Packer
 
-This repository ports the example provided in [digitalocean/marketplace-partners](https://github.com/digitalocean/marketplace-partners)
-from using Fabric.py to [HashiCorp's Packer](https://www.packer.io/). This
-utilizes Packer's [DigitalOcean Builder](https://www.packer.io/docs/builders/digitalocean.html)
-to provide further automation. By integrating with the DigitalOcean API, the
-initial Droplet creation, provisioning, and snapshoting can be done with a
-single command:
+[Packer](https://www.packer.io/intro/index.html) is a tool for creating images from a single source configuration. Using this Packer template reduces the entire process of creating, configuring, validating, and snapshotting a build Droplet to a single command:
 
-    packer build marketplace-image.json
+```
+packer build marketplace-image.json
+```
 
-A DigitalOcean API token should be set using the `DIGITALOCEAN_TOKEN`
-environment variable. This can be overridden at run time if necessary:
+This Packer template uses the same LAMP-based example as the [Fabric sample project](../fabric). Like the Fabric sample project, you can modify this template to use as a starting point for your image.
 
-    packer build -var 'token=asecrectandsecureapitoken' marketplace-image.json
+## Usage
 
-The APT packages to be installed are configured using the `apt_packages`
-variable. This can also be overridden at run time using a space separated list:
+To run the LAMP example that this template uses by default, you'll need to [install Packer](https://www.packer.io/intro/getting-started/install.html) and [create a DigitalOcean personal access token](https://www.digitalocean.com/docs/api/create-personal-access-token/) and set it to the `DIGITALOCEAN_TOKEN` environment variable. Running `packer build marketplace-image.json` without any other modifications will create a build Droplet configured with LAMP, clean and verify it, then power it down and snapshot it.
 
-    packer build -var 'apt_packages=apache2 php' marketplace-image.json
+> ⚠️ The image validation script in `scripts/99-img_check.sh` is copied from the [top-level `marketplace_validation` directory](../marketplace_validation) in this repository. The top-level location is the script's canonical source, so make sure you're using the latest version from there.
 
-By default, the name of the resulting snapshot will be `marketplace-snapshot-`
-with a UNIX timestamp appended. This can also be overridden at run time:
+To start adapting this template for your own image, you can customize some variables in `marketplace-image.json`:
 
-    packer build \
-        -var 'image_name=apache-snapshot' \
-        -var 'apt_packages=apache2 php' \
-        marketplace-image.json
+* `apt_packages` lists the APT packages to install on the build Droplet.
+* `image_name` defines the name of the resulting snapshot, which by default is `marketplace-snapshot-` with a UNIX timestamp appended.
 
-**Note:** The image validation script has been copied here from [digitalocean/marketplace-partners](https://github.com/digitalocean/marketplace-partners).
-That repository is its canonical source. Make sure you are using the latest
-version from that repository.
+You can also modify these variables at runtime by using [the `-var` flag](https://www.packer.io/docs/templates/user-variables.html#setting-variables).
 
-## Packer Details
+## Configuration Details
 
-Packer's [file provisioner](https://www.packer.io/docs/provisioners/file.html)
-is used here to upload complete directories to the Droplet. The contents of
-`files/var/` will be uploaded to `/var/`. Likewise, the contents of `files/etc/`
-will be uploaded to `/etc/`. One important thing to know about the file
-provisioner is that:
+By using [Packer's DigitalOcean Builder](https://www.packer.io/docs/builders/digitalocean.html) to integrate with the [DigitalOcean API](https://developers.digitalocean.com/), this template fully automates Marketplace image creation.
 
-> The destination directory must already exist. If you need to create
-> it, use a shell provisioner just prior to the file provisioner in order to
-> create the directory. If the destination directory does not exist, the file
-> provisioner may succeed, but it will have undefined results.
+This template uses Packer's [file provisioner](https://www.packer.io/docs/provisioners/file.html) to upload complete directories to the Droplet. The contents of `files/var/` will be uploaded to `/var/`. Likewise, the contents of `files/etc/` will be uploaded to `/etc/`. One important thing to note about the file provisioner, from Packer's docs:
 
-Packer's [shell provisioner](https://www.packer.io/docs/provisioners/shell.html)
-is also used in this template both to run scripts from the `/scripts` directory
-as well as to install the APT packages using an inline task. It's documentation
-will also be valuable reading if you need to extend this template.
+> The destination directory must already exist. If you need to create it, use a shell provisioner just prior to the file provisioner in order to create the directory. If the destination directory does not exist, the file provisioner may succeed, but it will have undefined results.
+
+This template also uses Packer's [shell provisioner](https://www.packer.io/docs/provisioners/shell.html) to run scripts from the `/scripts` directory and install APT packages using an inline task.
+
+Learn more about using Packer in [the official Packer documentation](https://www.packer.io/docs/index.html).
+
