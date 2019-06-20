@@ -144,6 +144,6 @@ You can submit your image to the Marketplace team for review by providing the sn
 
 Manually creating a Marketplace image is a good way to get started, and while you can submit a final image created this way, we recommend a scripted process to ensure replicable and configurable builds. There are many tools available to automate the creation and configuration of your build Droplet.
 
-We provide [a Fabric template and documentation](docs/fabric) as well as [a Packer template and documentation](docs/packer) to help you get started with build automation.
+We provide [a Fabric template and documentation](fabric) as well as [a Packer template and documentation](packer) to help you get started with build automation.
 
 [Fabric](http://www.fabfile.org/index.html) is a Python library designed to execute shell commands remotely over SSH. [Packer](https://www.packer.io/intro/index.html) is a tool for creating images from a single source configuration. Both are good options to script the creation of your build Droplet, which you can then snapshot to create a new Marketplace-ready image.

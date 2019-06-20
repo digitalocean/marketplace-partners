@@ -2,18 +2,18 @@
 
 [Fabric](http://www.fabfile.org/index.html) is a Python library designed to execute shell commands remotely over SSH. You can use it to script the creation of your build Droplet, which you can then snapshot to create a new Marketplace-ready image.
 
-> :warning: Make sure to read the [Getting Started guide](marketplace_docs/getting-started.md) for fundamental information on Marketplace image requirements.
+> :warning: Make sure to read the [Getting Started guide](getting-started.md) for fundamental information on Marketplace image requirements first.
 
 You can install Fabric using [pip](https://pip.pypa.io/en/stable/), the Python build system, or by using your distribution's official package repository. See the [Fabric installation documentation](http://www.fabfile.org/installing.html) for more detail.
 
 To set up your build environment, you need to create a `fabfile.py` script which uses the Fabric library to build your image. If you're familiar with Python, you can write this script yourself. If not, we provide a few resources to help you get started:
 
-* **A Fabric project template** that you can use to automatically configure and prepare a build Droplet without writing any Python. After you add your Bash scripts and files, the Fabric script we provide configures, cleans, and powers down the specified Droplet to leave it prepared for you to snapshot.
-* **A working sample Fabric configuration** that configures, cleans, and powers down an example Droplet (based on the [LAMP One-Click](https://marketplace.digitalocean.com/apps/lamp)). This project leaves you with a LAMP-based build Droplet that is ready for you to snapshot.
+* The `template` directory contains **a Fabric project template** that you can use to automatically configure and prepare a build Droplet without writing any Python. After you add your Bash scripts and files, the Fabric script we provide configures, cleans, and powers down the specified Droplet to leave it prepared for you to snapshot.
+* The `LAMP.zip` file contains **a working sample Fabric configuration** that configures, cleans, and powers down an example Droplet (based on the [LAMP One-Click](https://marketplace.digitalocean.com/apps/lamp)). This project leaves you with a LAMP-based build Droplet that is ready for you to snapshot.
 
 ## DigitalOcean's Fabric Project Template
 
-This Fabric project lets you automatically configure and prepare a build Droplet without writing any Python.
+The Fabric project template in the `template` directory lets you automatically configure and prepare a build Droplet without writing any Python.
 
 To use it, you need to add your files and Bash scripts to the appropriate directories and specify the packages you want to install. From there, you can run a single command to fully configure an existing Droplet so it's ready for you to snapshot.
 
@@ -39,9 +39,9 @@ fab build_image -H your_build_droplet_ip_address
 
 ## Sample Fabric Configuration
 
-This repository contains a [working sample Fabric configuration](marketplace_docs/samples/LAMP.zip) that configures, cleans, and powers down an example Droplet (based on the [LAMP One-Click](https://marketplace.digitalocean.com/apps/lamp)). Running this example project leaves you with a LAMP-based build Droplet that is ready for you to snapshot.
+The `LAMP.zip` file in this directory contains a [working sample Fabric configuration](LAMP.zip) that configures, cleans, and powers down an example Droplet (based on the [LAMP One-Click](https://marketplace.digitalocean.com/apps/lamp)). Running this example project leaves you with a LAMP-based build Droplet that is ready for you to snapshot.
 
->  :warning: The [sample configuration](samples/LAMP.zip) uses Fabric 1.x. Fabric 1.x syntax is incompatible with Fabric 2.x, so you'll need to install [Fabric 1.x](http://www.fabfile.org/installing-1.x.html) explicitly. Fabrix 1.x is also incompatible with Python 3+, so you'll need to use [`Fabric3`](https://pypi.org/project/Fabric3/) to run Fabric 1.x with Python 3+.
+>  :warning: The sample configuration uses Fabric 1.x. Fabric 1.x syntax is incompatible with Fabric 2.x, so you'll need to install [Fabric 1.x](http://www.fabfile.org/installing-1.x.html) explicitly. Fabrix 1.x is also incompatible with Python 3+, so you'll need to use [`Fabric3`](https://pypi.org/project/Fabric3/) to run Fabric 1.x with Python 3+.
 
 The fabfile in this sample configuration comes with some variables and functions that may be useful:
 
