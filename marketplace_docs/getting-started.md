@@ -1,24 +1,26 @@
-# Building Marketplace Images
+# Getting Started with Marketplace Images
 
 The overall process for creating a Marketplace image is as follows:
 
-1. **Create and configure a build Droplet manually first** to make sure your configuration works.
-2. **Clean up and validate the build Droplet with the provided scripts**, `cleanup.sh` and `img_check.sh`. The scripts will check for and fix potential security concerns and verify that the image will be compatible with Marketplace.
-3. **Take a [snapshot](https://www.digitalocean.com/docs/images/snapshots/) of the build Droplet** after you power it down, then test the resulting image. While there are several ways to create an image, we recommend snapshots as the most simple and consistent option.
-4. **Automate your build** for replicable and configurable processes with minimal additional effort. We provide some Fabric and Packer templates to get you started.
-5. **Submit your final image** to the Marketplace team for review.
+1. **Create and configure a build Droplet manually first** to make sure your configuration works. You can create a build Droplet with any method, like the [control panel](https://cloud.digitalocean.com/), the [API](https://developers.digitalocean.com/), or command-line tools like [`doctl`](https://github.com/digitalocean/doctl).
 
-You can create a build Droplet with any method, like the [control panel](https://cloud.digitalocean.com/), the [API](https://developers.digitalocean.com/), or command-line tools like [`doctl`](https://github.com/digitalocean/doctl). 
+2. **Clean up and validate the build Droplet with the provided scripts**, `cleanup.sh` and `img_check.sh`. The scripts will check for and fix potential security concerns and verify that the image will be compatible with Marketplace.
+
+3. **Take a [snapshot](https://www.digitalocean.com/docs/images/snapshots/) of the build Droplet** after you power it down, then test the resulting image. While there are several ways to create an image, we recommend snapshots as the most simple and consistent option.
+
+4. **Automate your build** for replicable and configurable processes with minimal additional effort. We provide some Fabric and Packer templates to get you started.
+
+5. **Submit your final image** to the Marketplace team for review.
 
 ## Image Requirements
 
-To submit an image to the DigitalOcean Marketplace, the image must be built on a supported Linux distribution and must include some required software packages.
+DigitalOcean Marketplace images must use a supported Linux distribution and must include some required software packages.
 
 ### Supported Operating Systems
 
-To maintain compatibility with Marketplace tools and processes, we currently support a limited number of Linux distributions and releases for Marketplace images. These options provide either `deb`- or `rpm`-based packaging and will have security patches and updates for a reasonable time period.
+To maintain compatibility with Marketplace tools and processes, we support a limited number of Linux distributions and releases for Marketplace images. These options provide either `deb`- or `rpm`-based packaging and will have security patches and updates for a reasonable time period.
 
-We support the following OSes:
+We currently support the following OSes:
 
 - Debian 9 (stretch)
 - Ubuntu 18.04 (LTS)
@@ -28,12 +30,12 @@ We support the following OSes:
 
 All supported operating systems are available as base images to build on in the DigitalOcean cloud.
 
-### Software Prerequisites
+### Required Software Packages
 
 The following software packages are necessary for the initial configuration of new Droplets and to ensure connectivity:
 
 - `cloud-init` 0.76 or higher (0.79 or higher recommended)
-- `openssh-server` (SFTP enabled configuration recommended)
+- `openssh-server` (SFTP-enabled configuration recommended)
 
  All of these packages are provided by default in the default DigitalOcean base images.
 
@@ -140,8 +142,8 @@ You can submit your image to the Marketplace team for review by providing the sn
 
 ## Automating your Build
 
-Manually creating a Marketplace image is a good way to get started, and while you can submit a final image created this way, we recommend a scripted build process to ensure replicable and configurable builds. There are many tools available to automate your build Droplet configuration.
-
-[Fabric](http://www.fabfile.org/index.html) is a Python library designed to execute shell commands remotely over SSH. [Packer](https://www.packer.io/intro/index.html) is a tool for creating images from a single source configuration. Both are good options to script the creation of your build Droplet, which you can then snapshot to create a new Marketplace-ready image.
+Manually creating a Marketplace image is a good way to get started, and while you can submit a final image created this way, we recommend a scripted process to ensure replicable and configurable builds. There are many tools available to automate the creation and configuration of your build Droplet.
 
 We provide [a Fabric template and documentation](marketplace_docs/templates/Fabric) as well as [a Packer template and documentation](marketplace_docs/templates/Packer) to help you get started with build automation.
+
+[Fabric](http://www.fabfile.org/index.html) is a Python library designed to execute shell commands remotely over SSH. [Packer](https://www.packer.io/intro/index.html) is a tool for creating images from a single source configuration. Both are good options to script the creation of your build Droplet, which you can then snapshot to create a new Marketplace-ready image.

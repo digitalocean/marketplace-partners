@@ -1,29 +1,34 @@
 # DigitalOcean Marketplace Partner Tools
 
-[![MIT license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Pull Requests Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat)](http://makeapullrequest.com)
+[![MIT license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE) [![Pull Requests Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat)](http://makeapullrequest.com)
 
-Image validation, automation, and other tools for [DigitalOcean Marketplace](https://marketplace.digitalocean.com/) partners.
+This repository contains resources for [DigitalOcean Marketplace](https://marketplace.digitalocean.com/) partners, like documentation on image requirements and creation, tools for image cleanup and validation, and templates for build automation.
 
-![A screenshot of the terminal output for the Marketplace Image Validation Tool](example-output.png)
+![A screenshot of the terminal output for the Marketplace image validation script](marketplace-partners/example-output.png)
 
 ## Getting Started
 
-This is our recommended process for building a Marketplace image:
+The overall process for creating a Marketplace image is as follows:
 
-1. **Create and configure a build Droplet manually first** to make sure your configuration works.
+1. **Create and configure a build Droplet manually first** to make sure your configuration works. You can create a build Droplet with any method, like the [control panel](https://cloud.digitalocean.com/), the [API](https://developers.digitalocean.com/), or command-line tools like [`doctl`](https://github.com/digitalocean/doctl).
+
 2. **Clean up and validate the build Droplet with the provided scripts**, `cleanup.sh` and `img_check.sh`. The scripts will check for and fix potential security concerns and verify that the image will be compatible with Marketplace.
+
 3. **Take a [snapshot](https://www.digitalocean.com/docs/images/snapshots/) of the build Droplet** after you power it down, then test the resulting image. While there are several ways to create an image, we recommend snapshots as the most simple and consistent option.
-4. **Automate your build** to ensure replicable and configurable builds. We provide some Fabric and Packer templates to get you started.
+
+4. **Automate your build** for replicable and configurable processes with minimal additional effort. We provide some Fabric and Packer templates to get you started.
+
 5. **Submit your final image** to the Marketplace team for review.
 
-We have [detailed documentation on building images](marketplace_docs/getting-started.md) that includes more specific image recommendations, tips on how to run commands on first boot and first login, and details on exactly what our helper scripts do. We also have a [Fabric template and docs](marketplace_docs/templates/Fabric/README.md) and a [Packer template and docs](marketplace_docs/templates/Packer/README.md) that you can use as starting points to automate your build system.
+Our [Getting Started documentation](marketplace_docs/getting-started.md) that includes our image requirements, configuration recommendations, how to run commands on first boot and first login, and details on exactly what our helper scripts do.
+
+We also have a [Fabric template and docs](marketplace_docs/templates/Fabric/README.md) and a [Packer template and docs](marketplace_docs/templates/Packer/README.md) that you can use as starting points to automate your build system.
 
 ## Supported Operating Systems
 
-To ensure compatibility with Marketplace tools and processes, we only support a limited number of Linux distributions and releases for Marketplace images. These options provide either `deb`- or `rpm`-based packaging and will have security patches and updates for a reasonable time period.
+To maintain compatibility with Marketplace tools and processes, we support a limited number of Linux distributions and releases for Marketplace images. These options provide either `deb`- or `rpm`-based packaging and will have security patches and updates for a reasonable time period.
 
-We currently support the following operating systems:
+We currently support the following OSes:
 
 - Debian 9 (stretch)
 - Ubuntu 18.04 (LTS)
@@ -38,6 +43,6 @@ All supported operating systems are available as base images to build on in the 
 The following software packages are necessary for the initial configuration of new Droplets and to ensure connectivity:
 
 - `cloud-init` 0.76 or higher (0.79 or higher recommended)
-- `openssh-server` (SFTP enabled configuration recommended)
+- `openssh-server` (SFTP-enabled configuration recommended)
 
-All of these packages are provided by default in the default DigitalOcean base images.
+ All of these packages are provided by default in the default DigitalOcean base images.
