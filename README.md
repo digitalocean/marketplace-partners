@@ -4,7 +4,7 @@
 
 This repository contains resources for [DigitalOcean Marketplace](https://marketplace.digitalocean.com/) partners, like documentation on image requirements and creation, tools for image cleanup and validation, and templates for build automation.
 
-![A screenshot of the terminal output for the Marketplace image validation script](marketplace-partners/example-output.png)
+![A screenshot of the terminal output for the Marketplace image validation script](example-output.png)
 
 ## Getting Started
 
@@ -20,9 +20,9 @@ The overall process for creating a Marketplace image is as follows:
 
 5. **Submit your final image** to the Marketplace team for review.
 
-Our [Getting Started documentation](marketplace_docs/getting-started.md) that includes our image requirements, configuration recommendations, how to run commands on first boot and first login, and details on exactly what our helper scripts do.
+Our [Getting Started documentation](getting-started.md) that includes our image requirements, configuration recommendations, how to run commands on first boot and first login, and details on exactly what our helper scripts do.
 
-We also have a [Fabric template and docs](marketplace_docs/templates/Fabric/README.md) and a [Packer template and docs](marketplace_docs/templates/Packer/README.md) that you can use as starting points to automate your build system.
+We also have a [Fabric template and docs](docs/fabric) and a [Packer template and docs](docs/Packer) that you can use as starting points to automate your build system.
 
 ## Supported Operating Systems
 
