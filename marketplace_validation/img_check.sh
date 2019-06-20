@@ -344,7 +344,7 @@ function checkFirewall {
     elif [[ $OS == "CentOS Linux" ]]; then
       if [ -f /usr/lib/systemd/system/csf.service ]; then
         fw="csf"
-        if [[ $(systemctl status $fw >/dev/null 2>&1) ]]; then
+        if [[ $(systemctl status $fw >/dev/null 2>&1; echo $?) -eq '0' ]]; then
           
         FW_VER="\e[32m[PASS]\e[0m Firewall service (${fw}) is active\n"
         ((PASS++))
