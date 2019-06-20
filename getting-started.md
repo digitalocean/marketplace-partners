@@ -93,7 +93,7 @@ When the user first logs in, the system runs `.bashrc`, which will automatically
 
 ## Cleaning Up the Build Droplet
 
-You can make sure you get a clean image from your build Droplet by running [`cleanup.sh`](marketplace_validation/cleanup.sh) after setup.
+You can make sure you get a clean image from your build Droplet by running [`cleanup.sh`](scripts/cleanup.sh) after setup.
 
 This script does several things:
 
@@ -113,7 +113,7 @@ This script does several things:
 
 ## Verifying the Build Droplet
 
-Once you've finished configuring your build Droplet, verify it by running [`img_check.sh`](marketplace_validation/img_check.sh) to make sure it's is compatible with Marketplace. This script looks for security and cleanup concerns that you should address before creating your final image.
+Once you've finished configuring your build Droplet, verify it by running [`img_check.sh`](scripts/img_check.sh) to make sure it's is compatible with Marketplace. This script looks for security and cleanup concerns that you should address before creating your final image.
 
 More specifically, `img_check.sh` images against the following criteria:
 
@@ -130,7 +130,7 @@ More specifically, `img_check.sh` images against the following criteria:
 
 When your build Droplet is configured and verified, the final step is to create the image. There are several ways to create images, like exporting a disk image from [VirtualBox](https://www.virtualbox.org/), [VMware](https://www.vmware.com/), or a physical machine.
 
-If you're using a build Droplet, we recommend [creating a snapshot](https://www.digitalocean.com/docs/images/snapshots/how-to/snapshot-droplets/) as the most consistent and simple method of creating an image. The [snapshot creation documentation](https://www.digitalocean.com/docs/images/snapshots/how-to/snapshot-droplets/) has a detailed walkthrough of the process, but in brief:
+If you're using a build Droplet, we recommend creating a snapshot as the most consistent and simple method of creating an image. The [snapshot creation documentation](https://www.digitalocean.com/docs/images/snapshots/how-to/snapshot-droplets/) has a detailed walkthrough of the process, but in brief:
 
 1. **Power down the build Droplet**. You can do this by running `shutdown -h now` manually or by [using the API to power the Droplet down](https://developers.digitalocean.com/documentation/v2/#shutdown-a-droplet).
 
@@ -144,6 +144,6 @@ You can submit your image to the Marketplace team for review by providing the sn
 
 Manually creating a Marketplace image is a good way to get started, and while you can submit a final image created this way, we recommend a scripted process to ensure replicable and configurable builds. There are many tools available to automate the creation and configuration of your build Droplet.
 
-We provide [a Fabric template and documentation](marketplace_docs/templates/Fabric) as well as [a Packer template and documentation](marketplace_docs/templates/Packer) to help you get started with build automation.
+We provide [a Fabric template and documentation](docs/fabric) as well as [a Packer template and documentation](docs/packer) to help you get started with build automation.
 
 [Fabric](http://www.fabfile.org/index.html) is a Python library designed to execute shell commands remotely over SSH. [Packer](https://www.packer.io/intro/index.html) is a tool for creating images from a single source configuration. Both are good options to script the creation of your build Droplet, which you can then snapshot to create a new Marketplace-ready image.

@@ -22,7 +22,7 @@ The overall process for creating a Marketplace image is as follows:
 
 Our [Getting Started documentation](getting-started.md) that includes our image requirements, configuration recommendations, how to run commands on first boot and first login, and details on exactly what our helper scripts do.
 
-We also have a [Fabric template and docs](docs/fabric) and a [Packer template and docs](docs/Packer) that you can use as starting points to automate your build system.
+We also have a [Fabric template and docs](fabric) and a [Packer template and docs](packer) that you can use as starting points to automate your build system.
 
 ## Supported Operating Systems
 
