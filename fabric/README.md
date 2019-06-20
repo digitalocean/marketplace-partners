@@ -2,7 +2,7 @@
 
 [Fabric](http://www.fabfile.org/index.html) is a Python library designed to execute shell commands remotely over SSH. You can use it to script the creation of your build Droplet, which you can then snapshot to create a new Marketplace-ready image.
 
-> :warning: Make sure to read the [Getting Started guide](getting-started.md) for fundamental information on Marketplace image requirements first.
+> :warning: Make sure to read the [Getting Started guide](../getting-started.md) for fundamental information on Marketplace image requirements first.
 
 You can install Fabric using [pip](https://pip.pypa.io/en/stable/), the Python build system, or by using your distribution's official package repository. See the [Fabric installation documentation](http://www.fabfile.org/installing.html) for more detail.
 

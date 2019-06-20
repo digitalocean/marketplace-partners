@@ -117,7 +117,7 @@ Once you've finished configuring your build Droplet, verify it by running [`img_
 
 More specifically, `img_check.sh` images against the following criteria:
 
-- Uses a [supported distro and release](#supported-distributions)
+- Uses a [supported distribution and release](#supported-operating-systems)
 - All security updates are installed
 - Packages are updated
 - A firewall is installed and configured
