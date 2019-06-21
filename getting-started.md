@@ -67,10 +67,6 @@ When the user first logs in, the system runs `.bashrc`, which will automatically
 
 ### Recommendations
 
-* **Use [snapshots](https://www.digitalocean.com/docs/images/snapshots/) to create the image**.
-
-  There are several ways to create an image from your build Droplet, but snapshots are the most consistent and simple option for Marketplace. For example, Droplets created using [custom images](https://www.digitalocean.com/docs/images/custom-images/) will not be able to use some features including automatic IPv6 assignment.
-
 * **Use the smallest suitable disk size**.
 
   We don't support decreasing the size of a Droplet's disk because it poses data integrity issues. Building your image using the smallest disk size appropriate for your use case lets your users choose from the widest variety of Droplet plans.
