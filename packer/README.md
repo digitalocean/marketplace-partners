@@ -12,7 +12,7 @@ This Packer template uses the same LAMP-based example as the [Fabric sample proj
 
 To run the LAMP example that this template uses by default, you'll need to [install Packer](https://www.packer.io/intro/getting-started/install.html) and [create a DigitalOcean personal access token](https://www.digitalocean.com/docs/api/create-personal-access-token/) and set it to the `DIGITALOCEAN_TOKEN` environment variable. Running `packer build marketplace-image.json` without any other modifications will create a build Droplet configured with LAMP, clean and verify it, then power it down and snapshot it.
 
-> ⚠️ The image validation script in `scripts/99-img_check.sh` is copied from the [top-level `marketplace_validation` directory](../marketplace_validation) in this repository. The top-level location is the script's canonical source, so make sure you're using the latest version from there.
+> ⚠️ The image validation script in `scripts/99-img_check.sh` is copied from the [top-level `scripts` directory](../scripts) in this repository. The top-level location is the script's canonical source, so make sure you're using the latest version from there.
 
 To start adapting this template for your own image, you can customize some variables in `marketplace-image.json`:
 

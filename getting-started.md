@@ -93,7 +93,7 @@ When the user first logs in, the system runs `.bashrc`, which will automatically
 
 ## Cleaning Up the Build Droplet
 
-You can make sure you get a clean image from your build Droplet by running [`cleanup.sh`](marketplace_validation/cleanup.sh) after setup.
+You can make sure you get a clean image from your build Droplet by running [`cleanup.sh`](scripts/cleanup.sh) after setup.
 
 This script does several things:
 
@@ -108,7 +108,7 @@ This script does several things:
 
 ## Verifying the Build Droplet
 
-Once you've finished configuring your build Droplet, verify it by running [`img_check.sh`](marketplace_validation/img_check.sh) to make sure it's is compatible with Marketplace. This script looks for security and cleanup concerns that you should address before creating your final image.
+Once you've finished configuring your build Droplet, verify it by running [`img_check.sh`](scripts/img_check.sh) to make sure it's is compatible with Marketplace. This script looks for security and cleanup concerns that you should address before creating your final image.
 
 More specifically, `img_check.sh` images against the following criteria:
 
