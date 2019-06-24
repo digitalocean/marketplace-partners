@@ -1,50 +1,48 @@
-# Marketplace Partner Tools
+# DigitalOcean Marketplace Partner Tools
 
-[![MIT license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Pull Requests Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat)](http://makeapullrequest.com)
+[![MIT license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE) [![Pull Requests Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat)](http://makeapullrequest.com)
 
-Image validation, automation, and other tools for DigitalOcean Marketplace partners and Custom Image users.
+This repository contains resources for [DigitalOcean Marketplace](https://marketplace.digitalocean.com/) partners, like documentation on image requirements and creation, tools for image cleanup and validation, and templates for build automation.
 
-![Screenshot](screenshot.png)
+![A screenshot of the terminal output for the Marketplace image validation script](example-output.png)
 
-This repository includes bash scripts intended for use by Marketplace partners and Custom Image users to validate their images prior to submission, or use.
+## Getting Started
 
-## Build an Image Manually
+The overall process for creating a Marketplace image is as follows:
 
-If you're just getting started, [build-an-image.md](marketplace_docs/build-an-image.md) is where to begin. Some things here are required in your Fabric automation.
+1. **Create and configure a build Droplet manually first** to make sure your configuration works. You can create a build Droplet with any method, like the [control panel](https://cloud.digitalocean.com/), the [API](https://developers.digitalocean.com/), or command-line tools like [`doctl`](https://github.com/digitalocean/doctl).
 
-## Build an Image with Fabric Automation
+2. **Clean up and validate the build Droplet with the provided scripts**, `cleanup.sh` and `img_check.sh`. The scripts will check for and fix potential security concerns and verify that the image will be compatible with Marketplace.
 
-For repeatable image build processing, [build-an-image-fabric.md](marketplace_docs/build-an-image-fabric.md) is a good next step.
+3. **Take a [snapshot](https://www.digitalocean.com/docs/images/snapshots/) of the build Droplet** after you power it down, then test the resulting image. While there are several ways to create an image, we recommend snapshots as the most simple and consistent option.
 
-## marketplace_validation
+4. **Automate your build** for replicable and configurable processes with minimal additional effort. We provide some Fabric and Packer templates to get you started.
 
-Provides a script `img_check.sh` that validates your build Droplet before shutting down to [create a snapshot](https://www.digitalocean.com/docs/images/snapshots/how-to/snapshot-droplets/).
+5. **Submit your final image** to the Marketplace team for review.
 
-### Supported Distributions 
+Our [Getting Started documentation](getting-started.md) that includes our image requirements, configuration recommendations, how to run commands on first boot and first login, and details on exactly what our helper scripts do.
 
-* Debian 9.x (stretch)
-* Ubuntu 18.04 (LTS)
-* Ubuntu 16.04 (LTS)
-* CentOS 7.x
-* CentOS 6.x 
+We also have a [Fabric template and docs](fabric) and a [Packer template and docs](packer) that you can use as starting points to automate your build system.
 
-This script checks build Droplet images against the following criteria:
+## Supported Operating Systems
 
-- Check for a supported distro and release
-- Check that all security updates are installed
-- Check for a populated bash_history file
-- Check for ssh_keys in the image
-- Check for pre-set passwords
-- Check that packages are updated
-- Check that a firewall is installed/configured
-- Check that a valid version of cloud-init is installed
-- Check for any populated log files or log archives
+To maintain compatibility with Marketplace tools and processes, we support a limited number of Linux distributions and releases for Marketplace images. These options provide either `deb`- or `rpm`-based packaging and will have security patches and updates for a reasonable time period.
 
-*coming soon* - Allow the script to be run against a disk image file on a Linux workstation by mounting and chrooting into the image.
+We currently support the following OSes:
 
-The script img_check.sh can be used from within the image build system prior to [creating a snapshot](https://www.digitalocean.com/docs/images/snapshots/how-to/snapshot-droplets/) or exporting a disk image from Virtualbox, VMWare or a physical machine. The script is minimally invasive and designed to avoid changes to the disk. The one exception is that this script will update your apt or yum package database in order to identify if there are any uninstalled security updates.
+- Debian 9 (stretch)
+- Ubuntu 18.04 (LTS)
+- Ubuntu 16.04 (LTS)
+- CentOS 7.x
+- CentOS 6.x
 
-To clear log files, bash_history, and authorized keys, you can use any file clearing method, including truncate against each result the script outputs, e.g.,
+All supported operating systems are available as base images to build on in the DigitalOcean cloud.
 
-`$ truncate --size 0 <path/to/file.log>`
+## Software Prerequisites
+
+The following software packages are necessary for the initial configuration of new Droplets and to ensure connectivity:
+
+- `cloud-init` 0.76 or higher (0.79 or higher recommended)
+- `openssh-server` (SFTP-enabled configuration recommended)
+
+ All of these packages are provided by default in the default DigitalOcean base images.
