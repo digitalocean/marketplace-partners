@@ -4,7 +4,7 @@
 # © 2018 DigitalOcean LLC.
 # This code is licensed under MIT license (see LICENSE.txt for details)
 #
-VERSION="v. 1.1"
+VERSION="v. 1.2"
 RUNDATE=$( date )
 
 # Script should be run with SUDO
@@ -410,18 +410,15 @@ function checkUpdates {
     if [[ $OS == "Ubuntu" ]] || [[ "$OS" =~ Debian.* ]]; then
         echo -en "\nUpdating apt package database to check for security updates, this may take a minute...\n\n"
         apt-get -y update > /dev/null
-        if [ -f /usr/lib/update-notifier/apt-check ]; then
-          update_count=$(/usr/lib/update-notifier/apt-check 2>&1 | cut -d ';' -f 2)  
-        else
-          update_count=$(apt-get upgrade -s | grep '^Inst.*security.*$' | wc -l)
-        fi
+  
+        update_count=$(apt-get --just-print upgrade | grep rity | wc -l)  
 
         if [[ $update_count -gt 0 ]]; then
             echo -en "\e[41m[FAIL]\e[0m There are ${update_count} security updates available for this image that have not been installed.\n"
             echo -en
             echo -en "Here is a list of the security updates that are not installed:\n"
             sleep 2
-            apt-get upgrade -s | grep -i security
+            apt-get --just-print upgrade | grep -i security | awk '{print $2}' | awk '!seen[$0]++'
             echo -en
             ((FAIL++))
             STATUS=2
