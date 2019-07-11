@@ -1,3 +1,5 @@
 You can make sure you get a clean image from your build Droplet by running cleanup.sh after you have finished installing and configuring your application on it. [Click here for instructions on how and when to use cleanup.sh.](https://github.com/digitalocean/marketplace-partners/blob/master/getting-started.md#cleaning-up-the-build-droplet)
 
 Use img_check.sh to make sure that your build Droplet is compatible with Marketplace. This script looks for security and cleanup concerns that you should address before creating your final image. [Click here to see instructions about img_check.sh.](https://github.com/digitalocean/marketplace-partners/blob/master/getting-started.md#verifying-the-build-droplet)
+
+![A screenshot of the terminal output for the Marketplace image validation script](example-output.png)

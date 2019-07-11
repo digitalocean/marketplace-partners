@@ -4,8 +4,6 @@
 
 This repository contains resources for [DigitalOcean Marketplace](https://marketplace.digitalocean.com/) partners, like documentation on image requirements and creation, tools for image cleanup and validation, and templates for build automation.
 
-![A screenshot of the terminal output for the Marketplace image validation script](example-output.png)
-
 ## Getting Started
 
 The overall process for creating a Marketplace image is as follows:
