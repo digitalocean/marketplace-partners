@@ -31,10 +31,10 @@ To maintain compatibility with Marketplace tools and processes, we support a lim
 We currently support the following OSes:
 
 - Debian 9 (stretch)
+- Debian 10 (buster)
 - Ubuntu 18.04 (LTS)
 - Ubuntu 16.04 (LTS)
 - CentOS 7.x
-- CentOS 6.x
 
 All supported operating systems are available as base images to build on in the DigitalOcean cloud.
 
