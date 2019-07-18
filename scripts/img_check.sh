@@ -411,8 +411,13 @@ function checkUpdates {
         echo -en "\nUpdating apt package database to check for security updates, this may take a minute...\n\n"
         apt-get -y update > /dev/null
   
-        update_count=$(apt-get --just-print upgrade | grep -i "security" | wc -l)  
-
+        uc=$(apt-get --just-print upgrade | grep -i "security" | wc -l)
+        if [[ $uc -gt 0 ]]; then
+          update_count=$(( ${uc} / 2 ))
+        else
+          update_count=0
+        fi
+          
         if [[ $update_count -gt 0 ]]; then
             echo -en "\e[41m[FAIL]\e[0m There are ${update_count} security updates available for this image that have not been installed.\n"
             echo -en
