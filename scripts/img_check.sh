@@ -333,7 +333,7 @@ function checkFirewall {
     
     if [[ $OS == "Ubuntu" ]]; then
       fw="ufw"
-      ufwa=$(ufw status | sed -e "s/^Status:\ //")
+      ufwa="$(ufw status | awk '{print $2}' | head -n1)"
       if [[ $ufwa == "active" ]]; then
         FW_VER="\e[32m[PASS]\e[0m Firewall service (${fw}) is active\n"
         ((PASS++))
@@ -375,7 +375,7 @@ function checkFirewall {
       # we will check some of the most common
       if cmdExists 'ufw'; then
         fw="ufw"
-        ufwa=$(ufw status | sed -e "s/^Status:\ //")
+        ufwa="$(ufw status | awk '{print $2}' | head -n1)"
         if [[ $ufwa == "active" ]]; then
         FW_VER="\e[32m[PASS]\e[0m Firewall service (${fw}) is active\n"
         ((PASS++))
