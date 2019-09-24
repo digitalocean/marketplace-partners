@@ -24,21 +24,38 @@ To use it, you need to add your files and Bash scripts to the appropriate direct
 
 * **Packages**. In `packages.txt`, include a space-separated list of packages that should be installed via `apt-get` on your build Droplet. Include all package names on a single line.
 
+* **Configuration**. The `fabric.yaml` is used to change the default fabric configuration. `user` specifies the user account that the fabfile should use when logging into the Droplet via SSH. In most cases, it should remain **root**.
+
 Once you've added your files and created your package list, create a Droplet to use as the build Droplet.
 
-You can perform a test run of the build by specifying the Droplet's IP with the `build_test` task. This will install your files and packages and run your scripts but will not clean up the system or power down the Droplet. You can use this task for testing during development.
+You can perform a test run of the build by specifying the Droplet's IP with the `testbuild` task. This will install your files and packages and run your scripts but will not clean up the system or power down the Droplet. You can use this task for testing during development.
 
-```
-fab build_test -H your_build_droplet_ip_address
-```
+    fab testbuild -H <your_build_droplet_ip_address>
 
-When your build works as expected, you can fully prepare the build Droplet with the `build_image` task. This performs all steps: uploading files, running scripts, installing packages, cleaning the system, and powering down the Droplet to prepare it for you to snapshot.
+When your build works as expected, you can fully prepare the build Droplet with the `build` task. This performs all steps: uploading files, running scripts, installing packages, cleaning the system, and powering down the Droplet to prepare it for you to snapshot.
 
-```
-fab build_image -H your_build_droplet_ip_address
-```
+    fab build -H <your_build_droplet_ip_address>
 
 > :warning: For your final image build, make sure you've only run the Fabric script once before creating a snapshot.
+
+### Quick Setup
+
+    python3 -m venv venv
+    venv/bin/pip install -U pip
+    venv/bin/pip install fabric
+    venv/bin/fab testbuild -H <your_build_droplet_ip_address>
+
+### Common Issues
+
+#### Unsupported key file
+
+Error:
+
+    paramiko.ssh_exception.SSHException: not a valid RSA private key file
+
+[Fix](https://freelancing.studio/paramiko-and-rsa-key/):
+
+    puttygen id_rsa -O private-openssh -o new.key
 
 ## Sample Fabric Configuration
 
