@@ -85,24 +85,29 @@ function checkAgent {
 }
 
 function checkLogs {
+    cp_ignore="/var/log/cpanel-install.log"
     echo -en "\nChecking for log files in /var/log\n\n"
     # Check if there are log archives or log files that have not been recently cleared.
     for f in /var/log/*-????????; do
       [[ -e $f ]] || break
-      echo -en "\e[93m[WARN]\e[0m Log archive ${f} found\n"
-      ((WARN++))
-      if [[ $STATUS != 2 ]]; then
-        
-          STATUS=1
+      if (( $f != $cp_ignore)); then
+        echo -en "\e[93m[WARN]\e[0m Log archive ${f} found\n"
+        ((WARN++))
+        if [[ $STATUS != 2 ]]; then
+          
+            STATUS=1
+        fi
       fi
     done
     for f in  /var/log/*.[0-9];do
       [[ -e $f ]] || break
-      echo -en "\e[93m[WARN]\e[0m Log archive ${f} found\n"
-      ((WARN++))
-      if [[ $STATUS != 2 ]]; then
-        
-          STATUS=1
+       if (( $f != $cp_ignore)); then
+        echo -en "\e[93m[WARN]\e[0m Log archive ${f} found\n"
+        ((WARN++))
+        if [[ $STATUS != 2 ]]; then
+          
+            STATUS=1
+        fi
       fi
     done
     for f in /var/log/*.log; do
