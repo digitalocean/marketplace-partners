@@ -93,7 +93,7 @@ def run_scripts(cxn):
     cwd = os.getcwd()
     directory = cwd + '/scripts'
 
-    for f in os.listdir(directory):
+    for f in sorted(os.listdir(directory)):
         lfile = cwd + '/scripts/' + f
         rfile = '/tmp/' + f
         print("Processing script in %s" % lfile)
