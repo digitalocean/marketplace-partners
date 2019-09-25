@@ -90,7 +90,7 @@ function checkLogs {
     # Check if there are log archives or log files that have not been recently cleared.
     for f in /var/log/*-????????; do
       [[ -e $f ]] || break
-      if (( $f != $cp_ignore)); then
+      if [ $f != $cp_ignore ]; then
         echo -en "\e[93m[WARN]\e[0m Log archive ${f} found\n"
         ((WARN++))
         if [[ $STATUS != 2 ]]; then
@@ -101,25 +101,19 @@ function checkLogs {
     done
     for f in  /var/log/*.[0-9];do
       [[ -e $f ]] || break
-       if (( $f != $cp_ignore)); then
+       
         echo -en "\e[93m[WARN]\e[0m Log archive ${f} found\n"
         ((WARN++))
         if [[ $STATUS != 2 ]]; then
           
             STATUS=1
         fi
-      fi
+      
     done
     for f in /var/log/*.log; do
       [[ -e $f ]] || break
       if [[ "${f}" = '/var/log/lfd.log' && "$( cat "${f}" | egrep -v '/var/log/messages has been reset| Watching /var/log/messages' | wc -c)" -gt 50 ]]; then
-        echo -en "\e[93m[WARN]\e[0m un-cleared log file, ${f} found\n"
-        ((WARN++))
-        if [[ $STATUS != 2 ]]; then
-          
-            STATUS=1
-        fi
-      elif [[ "${f}" != '/var/log/lfd.log' && "$( cat "${f}" | wc -c)" -gt 50 ]]; then
+        if [ $f != $cp_ignore ]; then
         echo -en "\e[93m[WARN]\e[0m un-cleared log file, ${f} found\n"
         ((WARN++))
         if [[ $STATUS != 2 ]]; then
@@ -127,6 +121,16 @@ function checkLogs {
             STATUS=1
         fi
       fi
+      elif [[ "${f}" != '/var/log/lfd.log' && "$( cat "${f}" | wc -c)" -gt 50 ]]; then
+      if [ $f != $cp_ignore ]; then
+        echo -en "\e[93m[WARN]\e[0m un-cleared log file, ${f} found\n"
+        ((WARN++))
+        if [[ $STATUS != 2 ]]; then
+          
+            STATUS=1
+        fi
+      fi
+    fi
     done
 }
 function checkTMP {
