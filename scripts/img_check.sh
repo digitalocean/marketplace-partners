@@ -342,8 +342,7 @@ function checkFirewall {
     
     if [[ $OS == "Ubuntu" ]]; then
       fw="ufw"
-      ufwa=$(ufw status | sed -e "s/^Status:\ //")
-      if [[ $ufwa == "active" ]]; then
+      if ufw status | grep -e "^Status: active" > /dev/null;
         FW_VER="\e[32m[PASS]\e[0m Firewall service (${fw}) is active\n"
         ((PASS++))
       else
