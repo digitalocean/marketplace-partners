@@ -351,27 +351,19 @@ function checkFirewall {
         ((WARN++))
       fi
     elif [[ $OS == "CentOS Linux" ]]; then
-      if [ -f /usr/lib/systemd/system/csf.service ]; then
+      if [ -f /etc/csf/csf.conf ]; then
         fw="csf"
-        if [[ $(systemctl status $fw >/dev/null 2>&1) ]]; then
-          
-        FW_VER="\e[32m[PASS]\e[0m Firewall service (${fw}) is active\n"
-        ((PASS++))
-        elif cmdExists "firewall-cmd"; then
-          if [[ $(systemctl is-active firewalld >/dev/null 2>&1 && echo 1 || echo 0) ]]; then
-           FW_VER="\e[32m[PASS]\e[0m Firewall service (${fw}) is active\n"
+        csfa=$(csf -l |head -1 |sed "s/ .*//")
+        if [[ $csfa == "iptables" ]]; then
+          FW_VER="\e[32m[PASS]\e[0m Firewall service (${fw}) is active\n"
           ((PASS++))
-          else
-            FW_VER="\e[93m[WARN]\e[0m No firewall is configured. Ensure ${fw} is installed and configured\n"
-          ((WARN++))
-          fi
         else
           FW_VER="\e[93m[WARN]\e[0m No firewall is configured. Ensure ${fw} is installed and configured\n"
         ((WARN++))
         fi
       else
         fw="firewalld"
-        if [[ $(systemctl is-active firewalld >/dev/null 2>&1 && echo 1 || echo 0) ]]; then
+        if [[ $(systemctl status firewalld >/dev/null 2>&1; echo $?) -eq '0' ]]; then
           FW_VER="\e[32m[PASS]\e[0m Firewall service (${fw}) is active\n"
         ((PASS++))
         else
