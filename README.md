@@ -45,4 +45,6 @@ The following software packages are necessary for the initial configuration of n
  
  ## Caveats
  
-Avoid building architecture specific components into your 1-Click App, as your App may be run by DigitalOcean customers across a variety of operating systems and underlying hypervisors. 
+Avoid building architecture specific components into your 1-Click App, as your App may be run by DigitalOcean customers across a variety of operating systems and underlying hypervisors. You should use generic machine architecture to ensure consistent use across all infrastructure. 
+
+For example, avoid building ruby gems with native extensions as the underlying machine architecture may use flags that don't exist across all hypervisors.
