@@ -42,3 +42,7 @@ The following software packages are necessary for the initial configuration of n
 - `openssh-server` (SFTP-enabled configuration recommended)
 
  All of these packages are provided by default in the default DigitalOcean base images.
+ 
+ ## Caveats
+ 
+Avoid building architecture specific components into your 1-Click App, as your App may be run by DigitalOcean customers across a variety of operating systems and underlying hypervisors. 
