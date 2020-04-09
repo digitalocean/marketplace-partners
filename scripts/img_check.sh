@@ -94,21 +94,17 @@ function checkLogs {
         echo -en "\e[93m[WARN]\e[0m Log archive ${f} found\n"
         ((WARN++))
         if [[ $STATUS != 2 ]]; then
-          
             STATUS=1
         fi
       fi
     done
     for f in  /var/log/*.[0-9];do
       [[ -e $f ]] || break
-       
         echo -en "\e[93m[WARN]\e[0m Log archive ${f} found\n"
         ((WARN++))
         if [[ $STATUS != 2 ]]; then
-          
             STATUS=1
         fi
-      
     done
     for f in /var/log/*.log; do
       [[ -e $f ]] || break
@@ -117,7 +113,6 @@ function checkLogs {
         echo -en "\e[93m[WARN]\e[0m un-cleared log file, ${f} found\n"
         ((WARN++))
         if [[ $STATUS != 2 ]]; then
-          
             STATUS=1
         fi
       fi
@@ -126,7 +121,6 @@ function checkLogs {
         echo -en "\e[93m[WARN]\e[0m un-cleared log file, ${f} found\n"
         ((WARN++))
         if [[ $STATUS != 2 ]]; then
-          
             STATUS=1
         fi
       fi
@@ -160,7 +154,7 @@ function checkRoot {
                     for key in ${uhome}/.ssh/*
                         do
                              if  [ "${key}" == "${uhome}/.ssh/authorized_keys" ]; then
-                            
+
                                 if [ "$( cat "${key}" | wc -c)" -gt 50 ]; then
                                     echo -en "\e[41m[FAIL]\e[0m User \e[1m${user}\e[0m has a populated authorized_keys file in \e[93m${key}\e[0m\n"
                                     akey=$(cat ${key})
@@ -179,11 +173,11 @@ function checkRoot {
                                     ((FAIL++))
                                     STATUS=2
                             elif  [ "${key}" != "${uhome}/.ssh/known_hosts" ]; then
-                                
+
                                  echo -en "\e[93m[WARN]\e[0m User \e[1m${user}\e[0m has a file in their .ssh directory at \e[93m${key}\e[0m\n"
                                     ((WARN++))
                                     if [[ $STATUS != 2 ]]; then
-                                      
+
                                         STATUS=1
                                     fi
                             else
@@ -191,7 +185,6 @@ function checkRoot {
                                     echo -en "\e[93m[WARN]\e[0m User \e[1m${user}\e[0m has a populated known_hosts file in \e[93m${key}\e[0m\n"
                                     ((WARN++))
                                     if [[ $STATUS != 2 ]]; then
-                                      
                                         STATUS=1
                                     fi
                                 fi
@@ -199,26 +192,23 @@ function checkRoot {
                         done
                 else
                     echo -en "\e[32m[ OK ]\e[0m User \e[1m${user}\e[0m has no SSH keys present\n"
-                    
                 fi
             else
                 echo -en "\e[32m[ OK ]\e[0m User \e[1m${user}\e[0m does not have an .ssh directory\n"
             fi
              if [ -f /root/.bash_history ];then
-        
+
                       BH_S=$( cat /root/.bash_history | wc -c)
-                  
+
                       if [[ $BH_S -lt 200 ]]; then
                           echo -en "\e[32m[PASS]\e[0m ${user}'s Bash History appears to have been cleared\n"
                           ((PASS++))
                       else
                           echo -en "\e[41m[FAIL]\e[0m ${user}'s Bash History should be cleared to prevent sensitive information from leaking\n"
                           ((FAIL++))
-                            
                               STATUS=2
-                          
                       fi
-                      
+
                       return 1;
                   else
                       echo -en "\e[32m[PASS]\e[0m The Root User's Bash History is not present\n"
@@ -226,7 +216,6 @@ function checkRoot {
                   fi
         else
             echo -en "\e[32m[ OK ]\e[0m User \e[1m${user}\e[0m does not have a directory in /home\n"
-            
         fi
         echo -en "\n\n"
     return 1
@@ -236,7 +225,6 @@ function checkUsers {
     # Check each user-created account
     for user in $(awk -F: '$3 >= 1000 && $1 != "nobody" {print $1}' /etc/passwd;)
     do
-      
       # Skip some other non-user system accounts
       if [[ $user == "centos" ]]; then
         :
@@ -258,10 +246,6 @@ function checkUsers {
               fi
           fi
         done
-      
-      
-      
-       
         #echo "User Found: ${user}"
         uhome="/home/${user}"
         if [ -d "${uhome}/" ]; then
@@ -269,9 +253,7 @@ function checkUsers {
                 if  ls "${uhome}/.ssh/*"> /dev/null 2>&1; then
                     for key in ${uhome}/.ssh/*
                         do
-                         
                             if  [ "${key}" == "${uhome}/.ssh/authorized_keys" ]; then
-                            
                                 if [ "$( cat "${key}" | wc -c)" -gt 50 ]; then
                                     echo -en "\e[41m[FAIL]\e[0m User \e[1m${user}\e[0m has a populated authorized_keys file in \e[93m${key}\e[0m\n"
                                     akey=$(cat ${key})

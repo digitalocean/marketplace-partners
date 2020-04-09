@@ -44,7 +44,7 @@ The following software packages are necessary for the initial configuration of n
 - `openssh-server` (SFTP-enabled configuration recommended)
 
  All of these packages are provided by default in the default DigitalOcean base images.
- 
+
  ## Contributing
- 
- We'd love to have your contribution to this project! [You can find more details here](https://github.com/digitalocean/product-docs/blob/master/.github/CONTRIBUTING.md).
+
+ We'd love to have your contribution to this project! [You can find more details here](https://github.com/digitalocean/marketplace-partners/blob/master/.github/CONTRIBUTING.md).
