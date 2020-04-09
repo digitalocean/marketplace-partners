@@ -42,9 +42,16 @@ The following software packages are necessary for the initial configuration of n
 - `openssh-server` (SFTP-enabled configuration recommended)
 
  All of these packages are provided by default in the default DigitalOcean base images.
+
+
+ ## Contributing
+
+ We'd love to have your contribution to this project! [You can find more details here](https://github.com/digitalocean/marketplace-partners/blob/master/.github/CONTRIBUTING.md).
+
  
  ## Caveats
  
 Avoid building architecture specific components into your 1-Click App, as your App may be run by DigitalOcean customers across a variety of operating systems and underlying hypervisors. You should use generic machine architecture to ensure consistent use across all infrastructure. 
 
 For example, avoid building ruby gems with native extensions as the underlying machine architecture may use flags that don't exist across all hypervisors.
+
