@@ -12,15 +12,13 @@ The overall process for creating a Marketplace image is as follows:
 
 2. **Clean up and validate the build Droplet with the provided scripts**, `cleanup.sh` and `img_check.sh`. The scripts will check for and fix potential security concerns and verify that the image will be compatible with Marketplace.
 
-3. **Take a [snapshot](https://www.digitalocean.com/docs/images/snapshots/) of the build Droplet** after you power it down, then test the resulting image. While there are several ways to create an image, we recommend snapshots as the most simple and consistent option.
+3. **Take a [snapshot](https://www.digitalocean.com/docs/images/snapshots/) of the build Droplet** after you power it down, then test the resulting image. While there are several ways to create an image, we recommend snapshots as the most simple and consistent option. 
 
-4. **Automate your build** for replicable and configurable processes with minimal additional effort. We provide some Fabric and Packer templates to get you started.
-
-5. **Submit your final image** to the Marketplace team for review.
+4. **Submit your final image** to the Marketplace team for review.
 
 Our [Getting Started documentation](getting-started.md) that includes our image requirements, configuration recommendations, how to run commands on first boot and first login, and details on exactly what our helper scripts do.
 
-We also have a [Fabric template and docs](fabric) and a [Packer template and docs](packer) that you can use as starting points to automate your build system.
+We also have in this repo a [Fabric template and docs](fabric) and a [Packer template and docs](packer) that you can use to automate your build system with minimal additional effort.
 
 ## Supported Operating Systems
 
@@ -45,6 +43,15 @@ The following software packages are necessary for the initial configuration of n
 
  All of these packages are provided by default in the default DigitalOcean base images.
 
+
  ## Contributing
 
  We'd love to have your contribution to this project! [You can find more details here](https://github.com/digitalocean/marketplace-partners/blob/master/.github/CONTRIBUTING.md).
+
+ 
+ ## Caveats
+ 
+Avoid building architecture specific components into your 1-Click App, as your App may be run by DigitalOcean customers across a variety of operating systems and underlying hypervisors. You should use generic machine architecture to ensure consistent use across all infrastructure. 
+
+For example, avoid building ruby gems with native extensions as the underlying machine architecture may use flags that don't exist across all hypervisors.
+
