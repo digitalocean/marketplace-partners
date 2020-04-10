@@ -80,7 +80,7 @@ function checkAgent {
       fi
   else
     echo -en "\e[32m[PASS]\e[0m DigitalOcean Monitoring agent was not found\n"
-    ((PASS++)) 
+    ((PASS++))
   fi
 }
 
@@ -164,20 +164,26 @@ function checkRoot {
                                     ((FAIL++))
                                     STATUS=2
                                 fi
-                            elif  [ "${key}" != "${uhome}/.ssh/id_rsa" ]; then
-                                    echo -en "\e[41m[FAIL]\e[0m User \e[1m${user}\e[0m has a private key file in \e[93m${key}\e[0m\n"
-                                    akey=$(cat ${key})
-                                    echo "File Contents:"
-                                    echo $akey
-                                    echo "--------------"
-                                    ((FAIL++))
-                                    STATUS=2
+                            elif  [ "${key}" == "${uhome}/.ssh/id_rsa" ]; then
+                                if [ "$( cat "${key}" | wc -c)" -gt 0 ]; then
+                                  echo -en "\e[41m[FAIL]\e[0m User \e[1m${user}\e[0m has a private key file in \e[93m${key}\e[0m\n"
+                                      akey=$(cat ${key})
+                                      echo "File Contents:"
+                                      echo $akey
+                                      echo "--------------"
+                                      ((FAIL++))
+                                      STATUS=2
+                                else
+                                  echo -en "\e[93m[WARN]\e[0m User \e[1m${user}\e[0m has empty private key file in \e[93m${key}\e[0m\n"
+                                  ((WARN++))
+                                  if [[ $STATUS != 2 ]]; then
+                                    STATUS=1
+                                  fi
+                                fi
                             elif  [ "${key}" != "${uhome}/.ssh/known_hosts" ]; then
-
                                  echo -en "\e[93m[WARN]\e[0m User \e[1m${user}\e[0m has a file in their .ssh directory at \e[93m${key}\e[0m\n"
                                     ((WARN++))
                                     if [[ $STATUS != 2 ]]; then
-
                                         STATUS=1
                                     fi
                             else
@@ -263,23 +269,30 @@ function checkUsers {
                                     ((FAIL++))
                                     STATUS=2
                                 fi
-                              elif  [ "${key}" != "${uhome}/.ssh/id_rsa" ]; then
-                                echo -en "\e[41m[FAIL]\e[0m User \e[1m${user}\e[0m has a private key file in \e[93m${key}\e[0m\n"
-                                    akey=$(cat ${key})
-                                    echo "File Contents:"
-                                    echo $akey
-                                    echo "--------------"
-                                    ((FAIL++))
-                                    STATUS=2
-                           
+                              elif  [ "${key}" == "${uhome}/.ssh/id_rsa" ]; then
+                                if [ "$( cat "${key}" | wc -c)" -gt 0 ]; then
+                                  echo -en "\e[41m[FAIL]\e[0m User \e[1m${user}\e[0m has a private key file in \e[93m${key}\e[0m\n"
+                                      akey=$(cat ${key})
+                                      echo "File Contents:"
+                                      echo $akey
+                                      echo "--------------"
+                                      ((FAIL++))
+                                      STATUS=2
+                                else
+                                  echo -en "\e[93m[WARN]\e[0m User \e[1m${user}\e[0m has empty private key file in \e[93m${key}\e[0m\n"
+                                  ((WARN++))
+                                  if [[ $STATUS != 2 ]]; then
+                                    STATUS=1
+                                  fi
+                                fi
                             elif  [ "${key}" != "${uhome}/.ssh/known_hosts" ]; then
-                                
+
                                  echo -en "\e[93m[WARN]\e[0m User \e[1m${user}\e[0m has a file in their .ssh directory named \e[93m${key}\e[0m\n"
                                  ((WARN++))
                                  if [[ $STATUS != 2 ]]; then
                                         STATUS=1
                                     fi
-                            
+
                             else
                                 if [ "$( cat "${key}" | wc -c)" -gt 50 ]; then
                                     echo -en "\e[93m[WARN]\e[0m User \e[1m${user}\e[0m has a known_hosts file in \e[93m${key}\e[0m\n"
@@ -289,8 +302,8 @@ function checkUsers {
                                     fi
                                 fi
                             fi
-                            
-                           
+
+
                         done
                 else
                     echo -en "\e[32m[ OK ]\e[0m User \e[1m${user}\e[0m has no SSH keys present\n"
@@ -301,11 +314,11 @@ function checkUsers {
         else
             echo -en "\e[32m[ OK ]\e[0m User \e[1m${user}\e[0m does not have a directory in /home\n"
         fi
-        
+
          # Check for an uncleared .bash_history for this user
               if [ -f "${uhome}/.bash_history" ]; then
                             BH_S=$( cat "${uhome}/.bash_history" | wc -c )
-    
+
                             if [[ $BH_S -lt 200 ]]; then
                                 echo -en "\e[32m[PASS]\e[0m ${user}'s Bash History appears to have been cleared\n"
                                 ((PASS++))
@@ -313,7 +326,7 @@ function checkUsers {
                                 echo -en "\e[41m[FAIL]\e[0m ${user}'s Bash History should be cleared to prevent sensitive information from leaking\n"
                                 ((FAIL++))
                                     STATUS=2
-                                
+
                             fi
                            echo -en "\n\n"
                          fi
@@ -321,7 +334,7 @@ function checkUsers {
     done
 }
 function checkFirewall {
-    
+
     if [[ $OS == "Ubuntu" ]]; then
       fw="ufw"
       ufwa=$(ufw status |head -1| sed -e "s/^Status:\ //")
@@ -336,7 +349,7 @@ function checkFirewall {
       if [ -f /usr/lib/systemd/system/csf.service ]; then
         fw="csf"
         if [[ $(systemctl status $fw >/dev/null 2>&1) ]]; then
-          
+
         FW_VER="\e[32m[PASS]\e[0m Firewall service (${fw}) is active\n"
         ((PASS++))
         elif cmdExists "firewall-cmd"; then
@@ -395,20 +408,20 @@ function checkFirewall {
         fi
       fi
     fi
-    
+
 }
 function checkUpdates {
     if [[ $OS == "Ubuntu" ]] || [[ "$OS" =~ Debian.* ]]; then
         echo -en "\nUpdating apt package database to check for security updates, this may take a minute...\n\n"
         apt-get -y update > /dev/null
-  
+
         uc=$(apt-get --just-print upgrade | grep -i "security" | wc -l)
         if [[ $uc -gt 0 ]]; then
           update_count=$(( ${uc} / 2 ))
         else
           update_count=0
         fi
-          
+
         if [[ $update_count -gt 0 ]]; then
             echo -en "\e[41m[FAIL]\e[0m There are ${update_count} security updates available for this image that have not been installed.\n"
             echo -en
@@ -423,7 +436,7 @@ function checkUpdates {
         fi
     elif [[ $OS == "CentOS Linux" ]]; then
         echo -en "\nChecking for available updates with yum, this may take a minute...\n\n"
-        
+
         update_count=$(yum list updates -q | grep -vc "Updated Packages")
          if [[ $update_count -gt 0 ]]; then
             echo -en "\e[41m[FAIL]\e[0m There are ${update_count} updates available for this image that have not been installed.\n"
@@ -438,10 +451,10 @@ function checkUpdates {
         exit 1
     fi
 
-    return 1;    
+    return 1;
 }
 function checkCloudInit {
-    
+
     if hash cloud-init 2>/dev/null; then
         CI="\e[32m[PASS]\e[0m Cloud-init is installed.\n"
         ((PASS++))
@@ -449,18 +462,18 @@ function checkCloudInit {
         CI="\e[41m[FAIL]\e[0m No valid verison of cloud-init was found.\n"
         ((FAIL++))
         STATUS=2
-    fi    
+    fi
     return 1
 }
 function checkMongoDB {
   # Check if MongoDB is installed
   # If it is, verify the version is allowed (non-SSPL)
-  
+
    if [[ $OS == "Ubuntu" ]] || [[ "$OS" =~ Debian.* ]]; then
 
      if [[ -f "/usr/bin/mongod" ]]; then
        version=$(/usr/bin/mongod --version --quiet | grep "db version" | sed -e "s/^db\ version\ v//")
-      
+
       if version_gt $version 4.0.0; then
         if version_gt $version 4.0.3; then
           echo -en "\e[41m[FAIL]\e[0m An SSPL version of MongoDB is present, ${version}"
@@ -480,19 +493,19 @@ function checkMongoDB {
           ((PASS++))
         fi
       fi
-     
-     
+
+
      else
        echo -en "\e[32m[PASS]\e[0m MongoDB is not installed"
        ((PASS++))
      fi
-     
+
    elif [[ $OS == "CentOS Linux" ]]; then
 
     if [[ -f "/usr/bin/mongod" ]]; then
        version=$(/usr/bin/mongod --version --quiet | grep "db version" | sed -e "s/^db\ version\ v//")
-       
-         
+
+
        if version_gt $version 4.0.0; then
         if version_gt $version 4.0.3; then
           echo -en "\e[41m[FAIL]\e[0m An SSPL version of MongoDB is present"
@@ -512,22 +525,22 @@ function checkMongoDB {
           ((PASS++))
         fi
       fi
-     
-     
-     
+
+
+
      else
        echo -en "\e[32m[PASS]\e[0m MongoDB is not installed"
        ((PASS++))
      fi
-    
+
   else
     echo "ERROR: Unable to identify distribution"
     ((FAIL++))
     STATUS 2
     return 1
   fi
-     
-  
+
+
 }
 
 function version_gt() { test "$(printf '%s\n' "$@" | sort -V | head -n 1)" != "$1"; }
@@ -555,7 +568,7 @@ if [[ $OS == "Ubuntu" ]]; then
     else
         osv=0
     fi
-    
+
 elif [[ "$OS" =~ Debian.* ]]; then
     ost=1
     case "$VER" in
