@@ -14,11 +14,16 @@ The overall process for creating a Marketplace image is as follows:
 
 3. **Take a [snapshot](https://www.digitalocean.com/docs/images/snapshots/) of the build Droplet** after you power it down, then test the resulting image. While there are several ways to create an image, we recommend snapshots as the most simple and consistent option. 
 
-4. **Submit your final image** to the Marketplace team for review.
+4. **Submit your final image** to the Marketplace team for review. 
+- Submissions for Droplet based 1-Click Apps can be made through [our Vendor Portal](https://marketplace.digitalocean.com/vendorportal). If you've signed expressed interest in joining the Marketplace through [the form on this page](https://marketplace.digitalocean.com/vendors) but you've not received a login for the Vendor Portal, please reach out to one-clicks-team@digitalocean.com and we'll help you out.
 
-Our [Getting Started documentation](getting-started.md) that includes our image requirements, configuration recommendations, how to run commands on first boot and first login, and details on exactly what our helper scripts do.
+- Kubernetes 1-Click Apps can be submitted via our [Marketplace Kubernetes Github repo](https://github.com/digitalocean/marketplace-kubernetes). 
 
-We also have in this repo a [Fabric template and docs](fabric) and a [Packer template and docs](packer) that you can use to automate your build system with minimal additional effort.
+This repo also contains: 
+
+- Our [Getting Started documentation](getting-started.md) that includes our image requirements, configuration recommendations, how to run commands on first boot and first login, and details on exactly what our helper scripts do.
+
+- A [Fabric template and docs](fabric) and a [Packer template and docs](packer) that you can use to automate your build system with minimal additional effort.
 
 ## Supported Operating Systems
 
