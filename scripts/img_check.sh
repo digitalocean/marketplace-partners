@@ -110,18 +110,12 @@ function checkLogs {
       [[ -e $f ]] || break
       if [[ "${f}" = '/var/log/lfd.log' && "$( cat "${f}" | egrep -v '/var/log/messages has been reset| Watching /var/log/messages' | wc -c)" -gt 50 ]]; then
         if [ $f != $cp_ignore ]; then
-          echo -en "\e[93m[WARN]\e[0m un-cleared log file, ${f} found\n"
-          ((WARN++))
-          if [[ $STATUS != 2 ]]; then
-              STATUS=1
-          fi
+        echo -en "\e[93m[WARN]\e[0m un-cleared log file, ${f} found\n"
+        ((WARN++))
+        if [[ $STATUS != 2 ]]; then
+            STATUS=1
         fi
-      elif [[ "${f}" == '/var/log/cloud-init-output.log' ]]; then
-        if cat '/var/log/cloud-init-output.log' | grep -q SHA256; then
-          echo -en "\e[41m[FAIL]\e[0m log containing SHA256 value found in log file ${f}\n"
-          ((FAIL++))
-          STATUS=1
-        fi
+      fi
       elif [[ "${f}" != '/var/log/lfd.log' && "$( cat "${f}" | wc -c)" -gt 50 ]]; then
       if [ $f != $cp_ignore ]; then
         echo -en "\e[93m[WARN]\e[0m un-cleared log file, ${f} found\n"
