@@ -561,6 +561,8 @@ osv=0
 
 if [[ $OS == "Ubuntu" ]]; then
         ost=1
+    if [[ $VER == "20.04" ]]; then
+        osv=1
     if [[ $VER == "18.04" ]]; then
         osv=1
     elif [[ $VER == "16.04" ]]; then
