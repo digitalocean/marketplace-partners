@@ -4,7 +4,7 @@
 # © 2018 DigitalOcean LLC.
 # This code is licensed under MIT license (see LICENSE.txt for details)
 #
-VERSION="v. 1.2"
+VERSION="v. 1.3"
 RUNDATE=$( date )
 
 # Script should be run with SUDO
@@ -561,7 +561,9 @@ osv=0
 
 if [[ $OS == "Ubuntu" ]]; then
         ost=1
-    if [[ $VER == "18.04" ]]; then
+    if [[ $VER == "20.04" ]]; then
+        osv=1
+    elif [[ $VER == "18.04" ]]; then
         osv=1
     elif [[ $VER == "16.04" ]]; then
         osv=1
