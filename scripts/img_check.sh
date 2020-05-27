@@ -4,7 +4,7 @@
 # © 2018 DigitalOcean LLC.
 # This code is licensed under MIT license (see LICENSE.txt for details)
 #
-VERSION="v. 1.4"
+VERSION="v. 1.5"
 RUNDATE=$( date )
 
 # Script should be run with SUDO
@@ -595,7 +595,9 @@ elif [[ "$OS" =~ Debian.* ]]; then
 
 elif [[ $OS == "CentOS Linux" ]]; then
         ost=1
-     if [[ $VER == "7" ]]; then
+    if [[ $VER == "8" ]]; then
+        osv=1
+    elif [[ $VER == "7" ]]; then
         osv=1
     elif [[ $VER == "6" ]]; then
         osv=1
