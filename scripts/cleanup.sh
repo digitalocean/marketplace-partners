@@ -1,5 +1,13 @@
 #!/bin/bash
 
+# Ensure /tmp exists and has the proper permissions before
+# checking for security updates
+# https://github.com/digitalocean/marketplace-partners/issues/94
+if [[ ! -d /tmp ]]; then
+  mkdir /tmp
+fi
+chmod 1777 /tmp
+
 apt-get -y update
 apt-get -y upgrade
 rm -rf /tmp/* /var/tmp/*
