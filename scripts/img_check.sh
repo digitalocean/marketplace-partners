@@ -4,7 +4,7 @@
 # © 2018 DigitalOcean LLC.
 # This code is licensed under MIT license (see LICENSE.txt for details)
 #
-VERSION="v. 1.3"
+VERSION="v. 1.4"
 RUNDATE=$( date )
 
 # Script should be run with SUDO
@@ -412,6 +412,14 @@ function checkFirewall {
 }
 function checkUpdates {
     if [[ $OS == "Ubuntu" ]] || [[ "$OS" =~ Debian.* ]]; then
+        # Ensure /tmp exists and has the proper permissions before
+        # checking for security updates
+        # https://github.com/digitalocean/marketplace-partners/issues/94
+        if [[ ! -d /tmp ]]; then
+          mkdir /tmp
+        fi
+        chmod 1777 /tmp
+
         echo -en "\nUpdating apt package database to check for security updates, this may take a minute...\n\n"
         apt-get -y update > /dev/null
 
