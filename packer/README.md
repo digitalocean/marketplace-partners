@@ -33,3 +33,6 @@ This template also uses Packer's [shell provisioner](https://www.packer.io/docs/
 
 Learn more about using Packer in [the official Packer documentation](https://www.packer.io/docs/index.html).
 
+## Other Examples
+
+We also use Packer to build some of the Marketplace 1-Click Apps that DigitalOcean maintains. You can see the source code for these scripts [in this repo.](https://github.com/digitalocean/droplet-1-clicks)
