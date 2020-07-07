@@ -246,7 +246,7 @@ function checkUsers {
                   echo -en "\e[32m[PASS]\e[0m User ${user} has no password set.\n"
                   ((PASS++))
               else
-                  echo -en "\e[41m[FAIL]\e[0m User ${user} has a password set on their account.\n"
+                  echo -en "\e[41m[FAIL]\e[0m User ${user} has a password set on their account. Only system users are allowed on the image.\n"
                   ((FAIL++))
                   STATUS=2
               fi
