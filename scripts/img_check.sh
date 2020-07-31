@@ -443,11 +443,11 @@ function checkUpdates {
             echo -en "\e[32m[PASS]\e[0m There are no pending security updates for this image.\n\n"
         fi
     elif [[ $OS == "CentOS Linux" ]]; then
-        echo -en "\nChecking for available updates with yum, this may take a minute...\n\n"
+        echo -en "\nChecking for available security updates, this may take a minute...\n\n"
 
-        update_count=$(yum list updates -q | grep -vc "Updated Packages")
+        update_count=$(yum check-update --security --quiet | wc -l)
          if [[ $update_count -gt 0 ]]; then
-            echo -en "\e[41m[FAIL]\e[0m There are ${update_count} updates available for this image that have not been installed.\n"
+            echo -en "\e[41m[FAIL]\e[0m There are ${update_count} security updates available for this image that have not been installed.\n"
             ((FAIL++))
             STATUS=2
         else
