@@ -4,9 +4,13 @@
 
 This repository contains resources for [DigitalOcean Marketplace](https://marketplace.digitalocean.com/) partners, like documentation on image requirements and creation, tools for image cleanup and validation, and templates for build automation.
 
-## Getting Started
+## Getting Started creating your Kubernetes based 1-Click App
 
-The overall process for creating a Marketplace image is as follows:
+Please visit [our Kubernetes Marketplace repo](https://github.com/digitalocean/marketplace-kubernetes/blob/master/CONTRIBUTING.md) for instructions on how to create and submit your Kubernetes based 1-Click App.
+
+## Getting Started creating your Droplet based 1-Click App
+
+The overall process for creating an image that you can submit as a Droplet based 1-Click App is as follows:
 
 1. **Create and configure a build Droplet manually first** to make sure your configuration works. You can create a build Droplet with any method, like the [control panel](https://cloud.digitalocean.com/), the [API](https://developers.digitalocean.com/), or command-line tools like [`doctl`](https://github.com/digitalocean/doctl).
 
