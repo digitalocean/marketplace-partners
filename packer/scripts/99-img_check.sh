@@ -419,6 +419,15 @@ elif [[ $OS == "CentOS Linux" ]]; then
     else
         osv=2
     fi
+
+elif [[ $OS == "Debian GNU/Linux" ]]; then
+    ost=1
+    if [[ $VER == "10" ]]; then
+	osv=1
+    elif [[ $VER == "9" ]]; then
+	osv=1
+    else osv=2
+    fi
 else
     ost=0
 fi
