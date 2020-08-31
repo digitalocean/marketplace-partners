@@ -1,6 +1,6 @@
 # Build Automation with Packer
 
-[Packer](https://www.packer.io/intro/index.html) is a tool for creating images from a single source configuration. Using this Packer template reduces the entire process of creating, configuring, validating, and snapshotting a build Droplet to a single command:
+[Packer](https://www.packer.io/intro) is a tool for creating images from a single source configuration. Using this Packer template reduces the entire process of creating, configuring, validating, and snapshotting a build Droplet to a single command:
 
 ```
 packer build marketplace-image.json
@@ -31,7 +31,7 @@ This template uses Packer's [file provisioner](https://www.packer.io/docs/provis
 
 This template also uses Packer's [shell provisioner](https://www.packer.io/docs/provisioners/shell.html) to run scripts from the `/scripts` directory and install APT packages using an inline task.
 
-Learn more about using Packer in [the official Packer documentation](https://www.packer.io/docs/index.html).
+Learn more about using Packer in [the official Packer documentation](https://www.packer.io/docs/).
 
 ## Other Examples
 
