@@ -675,7 +675,7 @@ if [[ $STATUS == 0 ]]; then
     exit 0
 elif [[ $STATUS == 1 ]]; then
     echo -en "Please review all [WARN] items above and ensure they are intended or resolved.  If you do not have a specific requirement, we recommend resolving these items before image submission\n\n"
-    exit 1
+    exit 0
 else
     echo -en "Some critical tests failed.  These items must be resolved and this scan re-run before you submit your image to the DigitalOcean Marketplace.\n\n"
     exit 1
