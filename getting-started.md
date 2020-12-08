@@ -73,7 +73,7 @@ When the user first logs in, the system runs `.bashrc`, which will automatically
 
 * **Do not enable unnecessary DigitalOcean features on your build Droplet**.
 
-  By not enabling features like monitoring, IPv6, or private networking when you create your build Droplet, you retain more of your distribution's standard configuration, meaning you'll need to do less cleanup before you create the final image.
+  By not enabling features like monitoring, IPv6, or private networking when you create your build Droplet, you retain more of your distribution's standard configuration, meaning you'll need to do less cleanup before you create the final image.    
 
 * **Install software updates from the distribution's repositories** before creating your final image.
 
@@ -83,6 +83,12 @@ When the user first logs in, the system runs `.bashrc`, which will automatically
 
   For official distribution packages, we recommend maintaining the `mirrors.digitalocean.com` mirrors, which are direct mirrors of the distribution's package archive. These mirrors are provided by default and provide faster downloads because the mirrors are stored within our infrastructure.
   
+* **If you need to provide a password to your user, consider configuring it so that it is randomly generated at boot time** and explain to users via your Getting Started instructions how to access the password. Here's an example of how you can generate a high quality, 12 character password on a Linux Droplet, and store it in a file on the Droplet.
+
+```sh
+gpg --gen-random --armor 2 12 > /root/.secrets.txt
+```
+
 * **Add a message of the day (MOTD)**, which is text displayed when a user logs into their Droplet. We recommend writing an MOTD which introduces your image's features and points users to its documentation.
   
   You can add an MOTD to your image by creating a text file in `/etc/update-motd.d`. Naming the file beginning with `99`, like `99-image-readme`, will display the MOTD as the last text the user sees before the login prompt.
