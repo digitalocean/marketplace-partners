@@ -379,7 +379,7 @@ function checkFirewall {
       # we will check some of the most common
       if cmdExists 'ufw'; then
         fw="ufw"
-        ufwa=$(ufw status | sed -e "s/^Status:\ //")
+        ufwa=$(ufw status |head -1| sed -e "s/^Status:\ //")
         if [[ $ufwa == "active" ]]; then
         FW_VER="\e[32m[PASS]\e[0m Firewall service (${fw}) is active\n"
         ((PASS++))
