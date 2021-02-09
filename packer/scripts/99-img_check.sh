@@ -359,9 +359,13 @@ function checkUpdates {
     elif [[ $OS == "CentOS Linux" ]]; then
         echo -en "\nChecking for available updates with yum, this may take a minute...\n\n"
         
-        update_count=$(yum list updates -q | grep -vc "Updated Packages")
+        update_count=$(yum list updates --security -q | grep -vc "Updated Packages")
          if [[ $update_count -gt 0 ]]; then
             echo -en "\e[41m[FAIL]\e[0m There are ${update_count} updates available for this image that have not been installed.\n"
+            echo -en "Here is a list of the security updates that are not installed:\n"
+            sleep 2
+            yum list updates --security -q
+            echo -en
             ((FAIL++))
             STATUS=2
         else
