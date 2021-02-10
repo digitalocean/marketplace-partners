@@ -364,7 +364,7 @@ function checkUpdates {
             echo -en "\e[41m[FAIL]\e[0m There are ${update_count} updates available for this image that have not been installed.\n"
             echo -en "Here is a list of the security updates that are not installed:\n"
             sleep 2
-            yum list updates --security -q
+            yum list updates --security
             echo -en
             ((FAIL++))
             STATUS=2
