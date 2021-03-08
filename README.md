@@ -55,7 +55,7 @@ Please see the [RStudio Server 1-Click Scripts](https://github.com/pachamaltese/
 
 A successful run would look like this output:
 
-```bash
+```
 pacha@pop-os:~/github/marketplace-partners$ packer build marketplace-image.json
 digitalocean output will be in this color.
 
