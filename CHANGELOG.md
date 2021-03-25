@@ -1,5 +1,15 @@
 ## CHANGELOG
 
+### Remove fabric and add support for Ubuntu 20.04
+
+> Branches Affected: master  
+> Tags Affected:   
+> Date: Fri, 8 Mar 2021 09:50:00 +0000
+> Author: Mauricio Vargas (@pachamaltese)  
+
+- add support to image test script for Ubuntu 20.04
+- removes fabric because of problems with Python 3
+- updated documentation
 
 
 ### Add Support for Debian 9
@@ -800,5 +810,3 @@ Will be confusing for users and we don't plan to push anyone to BYOI in the near
 
 
 ---
-
-
