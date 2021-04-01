@@ -18,9 +18,9 @@ if [ -n "$(command -v yum)" ]; then
   yum update -y
   yum clean all
 elif [ -n "$(command -v apt-get)" ]; then
-	export DEBIAN_FRONTEND=noninteractive
+  export DEBIAN_FRONTEND=noninteractive
   apt-get -y update
-	apt-get -o Dpkg::Options::="--force-confold" upgrade -q -y --force-yes
+  apt-get -o Dpkg::Options::="--force-confold" upgrade -q -y --force-yes
   apt-get -y autoremove
   apt-get -y autoclean
 fi
