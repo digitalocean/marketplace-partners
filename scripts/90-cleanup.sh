@@ -18,8 +18,9 @@ if [ -n "$(command -v yum)" ]; then
   yum update -y
   yum clean all
 elif [ -n "$(command -v apt-get)" ]; then
+  export DEBIAN_FRONTEND=noninteractive
   apt-get -y update
-  apt-get -y upgrade
+  apt-get -o Dpkg::Options::="--force-confold" upgrade -q -y --force-yes
   apt-get -y autoremove
   apt-get -y autoclean
 fi
@@ -45,12 +46,4 @@ The secure erase will complete successfully when you see:${NC}
     dd: writing to '/zerofile': No space left on device\n
 Beginning secure erase now\n"
 
-dd if=/dev/zero of=/zerofile &
-  PID=$!
-  while [ -d /proc/$PID ]
-    do
-      printf "."
-      sleep 5
-    done
-sync; rm /zerofile; sync
-cat /dev/null > /var/log/lastlog; cat /dev/null > /var/log/wtmp
+dd if=/dev/zero of=/zerofile bs=4096 || rm /zerofile
