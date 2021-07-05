@@ -15,7 +15,7 @@ Kubernetes 1-Click Apps can be submitted via our [Marketplace Kubernetes Github 
 
 The overall process for creating an image that you can submit as a Droplet based 1-Click App is as follows:
 
-1. Create and configure a build Droplet manually first to make sure your configuration works. You can create a build Droplet with any method, like the [control panel](https://cloud.digitalocean.com/), the [API](https://developers.digitalocean.com/), or command-line tools like [`doctl`](https://github.com/digitalocean/doctl).
+1. Create and configure a build Droplet manually first to make sure your configuration works. You can create a build Droplet with any method, like the [control panel](https://cloud.digitalocean.com/), the [API](https://developers.digitalocean.com/), or command-line tools like [`doctl`](https://github.com/digitalocean/doctl). **We strongly encourage you to use a $5 Droplet as your build Droplet.** Using a $5 Droplet as your build Droplet will ensure that all Droplet types will be available for usage with your 1-Click App.
 
 2. Clean up and validate the build Droplet with the provided scripts, `cleanup.sh` and `img_check.sh`. The scripts will check for and fix potential security concerns and verify that the image will be compatible with Marketplace.
 
