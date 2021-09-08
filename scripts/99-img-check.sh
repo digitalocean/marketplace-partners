@@ -18,6 +18,7 @@ PASS=0
 WARN=0
 FAIL=0
 
+
 # $1 == command to check for
 # returns: 0 == true, 1 == false
 cmdExists() {
