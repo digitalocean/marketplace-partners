@@ -23,6 +23,32 @@ The overall process for creating an image that you can submit as a Droplet based
 
 4. Submit your final image to the Marketplace team for review. This can be made through [our Vendor Portal](https://marketplace.digitalocean.com/vendorportal). If you've signed expressed interest in joining the Marketplace through [the form on this page](https://marketplace.digitalocean.com/vendors) but you've not received a login for the Vendor Portal, please reach out to one-clicks-team@digitalocean.com and we'll help you out.
 
+5. **(Optional)** Integrate a DigitalOcean Managed Database into your 1-Click App
+
+    As a Vendor, you can offer a DigitalOcean Managed Database (DBaaS) to any DigitalOcean customer at the time they spin up your Droplet based 1-Click App. You can customize your app image to integrate with the managed database directly, or let your customers complete the configuration themselves after the 1-Click App boots up. This benefits your customers in terms of database scalability and ease of management, and reduces the burden of database support for you as a vendor.
+
+    To enable this option, use the checkboxes that are shown in the Vendor Portal related to enablement of managed databases. If you’ve checked at least 1 box, when a user attempts to create your 1-Click App, they’ll receive a prompt like this one:
+
+    ![dbaas_1_click_offer](/images/dbaas_1_click_offer.png)
+
+    When a user selects the Managed Database option, DigitalOcean handles the creation of the database cluster as well as the user's Droplet. The Droplet will have a `DATABASE_URL` environment variable configured including a database connection string, such as:
+
+    `postgresql://doadmin:<password>@dbaas-db-11111-do-user-1111111-1.b.db.ondigitalocean.com:25060/defaultdb?sslmode=require`
+
+    The user’s managed database configuration and credentials will be stored in `/root/.digitalocean_dbaas_credentials` in the following format.
+
+    ```
+    db_protocol=
+    db_username=
+    db_password=
+    db_host=
+    db_port=
+    db_database=
+    ```
+
+    To disable this feature for any new users of your 1-Click App, simply visit the Vendor Portal to edit your 1-Click App, removing the checkboxes next to all database engines. Once you save the edits, customers will no longer be given the option to add a managed database. Note that existing customers who have already deployed a managed database in conjunction with your 1-Click App will not be affected by that removal, and their managed databases will continue to operate.
+
+
 ## Build Automation with Packer
 
 [Packer](https://www.packer.io/intro) is a tool for creating images from a single source configuration. Using this Packer template reduces the entire process of creating, configuring, validating, and snapshotting a build Droplet to a single command:
