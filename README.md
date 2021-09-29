@@ -23,7 +23,9 @@ The overall process for creating an image that you can submit as a Droplet based
 
 4. Submit your final image to the Marketplace team for review. This can be made through [our Vendor Portal](https://marketplace.digitalocean.com/vendorportal). If you've signed expressed interest in joining the Marketplace through [the form on this page](https://marketplace.digitalocean.com/vendors) but you've not received a login for the Vendor Portal, please reach out to one-clicks-team@digitalocean.com and we'll help you out.
 
-5. **(Optional)** Integrate a DigitalOcean Managed Database into your 1-Click App
+<a name="dbaas-integration"></a>
+
+5. **(Optional)** Integrate a DigitalOcean Managed Database into your 1-Click App</h4>
 
     As a Vendor, you can offer a DigitalOcean Managed Database (DBaaS) to any DigitalOcean customer at the time they spin up your Droplet based 1-Click App. You can customize your app image to integrate with the managed database directly, or let your customers complete the configuration themselves after the 1-Click App boots up. This benefits your customers in terms of database scalability and ease of management, and reduces the burden of database support for you as a vendor.
 
@@ -47,7 +49,6 @@ The overall process for creating an image that you can submit as a Droplet based
     ```
 
     To disable this feature for any new users of your 1-Click App, simply visit the Vendor Portal to edit your 1-Click App, removing the checkboxes next to all database engines. Once you save the edits, customers will no longer be given the option to add a managed database. Note that existing customers who have already deployed a managed database in conjunction with your 1-Click App will not be affected by that removal, and their managed databases will continue to operate.
-
 
 ## Build Automation with Packer
 
