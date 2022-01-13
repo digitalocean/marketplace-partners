@@ -78,7 +78,7 @@ To start adapting this template for your own image, you can customize some varia
 
 You can also modify these variables at runtime by using [the `-var` flag](https://www.packer.io/docs/templates/user-variables.html#setting-variables).
 
-Please see the [RStudio Server 1-Click Scripts](https://github.com/pachamaltese/rstudio-server-droplet) to see an example of Packer usage.
+Please see the [RStudio Server 1-Click Scripts](https://github.com/pachadotdev/rstudio-server-droplet) to see an example of Packer usage.
 
 A successful run would look like this output:
 
