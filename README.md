@@ -1,6 +1,6 @@
 # Osmosis Droplet Image Creation
 
-This section will explain all the steps needed to create a new Osmosis image through packer to be distributed to DigitalOcean and uploaded to the Marketplace.
+This document will explain all the steps needed to create an Osmosis golden image through packer for distribtuion on the DigitalOcean Marketplace.
 
 First, you must create a personal access token on DigitalOcean. This is done by selecting "API" under "Manage" in the left-most navigation menu. Next, select "Generate New Token", add any token name, expiration, give read and write scopes, then select "Generate Token". You will then be presented with your token. Ensure you keep this token safe as it can not be shown again. At this point, export your token as an environment variable will the following (replaced with your token)
 
