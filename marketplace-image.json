@@ -40,6 +40,7 @@
       "inline": [
         "apt-get update",
         "apt-get -y upgrade",
+        "sudo apt-get dist-upgrade -y",
         "apt install git build-essential ufw curl jq snapd --yes"
       ]
     },
