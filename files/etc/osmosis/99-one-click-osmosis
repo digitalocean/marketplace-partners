@@ -1,0 +1,19 @@
+#!/bin/sh
+export TERM=xterm-256color
+echo "$(tput setaf 2) ██████╗ ███████╗███╗   ███╗ ██████╗ ███████╗██╗███████╗
+██╔═══██╗██╔════╝████╗ ████║██╔═══██╗██╔════╝██║██╔════╝
+██║   ██║███████╗██╔████╔██║██║   ██║███████╗██║███████╗
+██║   ██║╚════██║██║╚██╔╝██║██║   ██║╚════██║██║╚════██║
+╚██████╔╝███████║██║ ╚═╝ ██║╚██████╔╝███████║██║███████║
+ ╚═════╝ ╚══════╝╚═╝     ╚═╝ ╚═════╝ ╚══════╝╚═╝╚══════╝
+$(tput sgr0)
+To customize your droplet further, please run the following command:
+curl -sL https://get.osmosis.zone/install > i.py && python3 i.py
+
+For documentation visit: http://docs.osmosis.zone/
+For web app: https://app.osmosis.zone/
+
+To delete startup message: rm -rf $(readlink -f ${0})
+
+********************************************************************************
+"

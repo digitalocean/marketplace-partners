@@ -1,9 +1,36 @@
-# DigitalOcean Marketplace Partner Tools
+# Osmosis Specific Directions
 
-[![Apache license](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
-[![Pull Requests Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat)](http://makeapullrequest.com)
+This section will explain all the steps needed to create a new Osmosis image through packer to be distributed to DigitalOcean and uploaded to the Marketplace.
 
-This repository contains resources for [DigitalOcean Marketplace](https://marketplace.digitalocean.com/) partners, like documentation on image requirements and creation, tools for image cleanup and validation, and templates for build automation.
+First, you must create a personal access token on DigitalOcean. This is done by selecting "API" under "Manage" in the left-most navigation window. Next, select "Generate New Token", add any token name, expiration, give read and write scopes, then select "Generate Token". You will then be presented with your token. Ensure you keep this token safe as it can not be shown again. At this point, export your token as an environment variable will the following (replaced with your token)
+
+```
+export DIGITALOCEAN_TOKEN=dop_v1_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+```
+
+Next, clone this repo and move inside of it:
+
+```
+cd $HOME
+git clone https://github.com/czarcas7ic/osmosis-packer.git
+cd $HOME/osmosis-packer
+```
+
+If do not already have packer installed, do so with the following:
+
+Mac
+```
+brew install packer
+```
+
+Ubuntu
+```
+curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
+sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+sudo apt-get update && sudo apt-get install packer
+```
+
+There should be only one variable that needs to get changed for each release and that is the "application_version" under "variables" in the marketplace-image.json. For example, if this value says "v7.2.0", it will pull and build the "v7.2.0" tag from the osmosis repo. If in the future an external dependency changes (lets say we move from go 1.17 to 1.18), this can be modified in the "01-osmosis.sh" file under the "scripts" folder.
 
 ## Getting Started creating your Kubernetes based 1-Click App
 
