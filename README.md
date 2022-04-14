@@ -16,7 +16,7 @@ git clone https://github.com/czarcas7ic/osmosis-packer.git
 cd $HOME/osmosis-packer
 ```
 
-If do not already have packer installed, do so with the following:
+If you do not already have packer installed, do so with the following:
 
 Mac
 ```
