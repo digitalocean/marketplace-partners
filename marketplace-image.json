@@ -38,10 +38,11 @@
         "LC_CTYPE=en_US.UTF-8"
       ],
       "inline": [
+        "apt-get clean",
         "apt-get update",
         "apt-get -y upgrade",
         "sudo apt-get dist-upgrade -y",
-        "apt install git build-essential ufw curl jq snapd --yes"
+        "apt install git build-essential curl jq snapd --yes"
       ]
     },
     {
@@ -70,7 +71,6 @@
         "LC_CTYPE=en_US.UTF-8"
       ],
       "scripts": [
-        "scripts/02-ufw.sh",
         "scripts/90-cleanup.sh",
         "scripts/99-img-check.sh"
       ]

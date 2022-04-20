@@ -33,7 +33,6 @@ find /var/log -mtime -1 -type f -exec truncate -s 0 {} \;
 rm -rf /var/log/*.gz /var/log/*.[0-9] /var/log/*-????????
 rm -rf /var/lib/cloud/instances/*
 rm -f /root/.ssh/authorized_keys /etc/ssh/*key*
-cat /dev/null > /var/log/ufw.log
 cat /dev/null > /var/log/kern.log
 cat /dev/null > /var/log/auth.log
 touch /etc/ssh/revoked_keys

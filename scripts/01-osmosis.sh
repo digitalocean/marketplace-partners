@@ -4,7 +4,8 @@
 # © 2021 DigitalOcean LLC.
 # This code is licensed under Apache 2.0 license (see LICENSE.md for details)
 
-wget -q -O - https://git.io/vQhTU | bash -s -- --version 1.17.2
+wget -q -O - https://git.io/vQhTU | bash -s -- --remove
+wget -q -O - https://git.io/vQhTU | bash -s -- --version 1.18
 git clone https://github.com/osmosis-labs/osmosis
 cd osmosis
 git checkout $application_version
