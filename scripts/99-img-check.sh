@@ -492,14 +492,8 @@ osv=0
 
 if [[ $OS == "Ubuntu" ]]; then
         ost=1
-    if [[ $VER == "20.04" ]]; then
+    if [[ $VER == "22.04" ]] || [[ $VER == "20.04" ]] || [[ $VER == "18.04" ]] || [[ $VER == "16.04" ]]; then
         osv=1
-    elif [[ $VER == "18.04" ]]; then
-        osv=1
-    elif [[ $VER == "16.04" ]]; then
-        osv=1
-    else
-        osv=0
     fi
 
 elif [[ "$OS" =~ Debian.* ]]; then
