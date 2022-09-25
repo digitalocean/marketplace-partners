@@ -399,7 +399,7 @@ function checkFirewall {
       else
         # user could be using vanilla iptables, check if kernel module is loaded
         fw="iptables"
-        if [[ $(lsmod | grep -q '^ip_tables' 2>/dev/null) ]]; then
+        if lsmod | grep -q '^ip_tables' 2>/dev/null; then
           FW_VER="\e[32m[PASS]\e[0m Firewall service (${fw}) is active\n"
         ((PASS++))
         else
