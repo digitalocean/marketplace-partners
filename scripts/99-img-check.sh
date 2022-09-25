@@ -31,6 +31,7 @@ cmdExists() {
 function getDistro {
     if [ -f /etc/os-release ]; then
     # freedesktop.org and systemd
+    # shellcheck disable=SC1091
     . /etc/os-release
     OS=$NAME
     VER=$VERSION_ID
@@ -40,6 +41,7 @@ elif type lsb_release >/dev/null 2>&1; then
     VER=$(lsb_release -sr)
 elif [ -f /etc/lsb-release ]; then
     # For some versions of Debian/Ubuntu without lsb_release command
+    # shellcheck disable=SC1091
     . /etc/lsb-release
     OS=$DISTRIB_ID
     VER=$DISTRIB_RELEASE
@@ -52,8 +54,8 @@ elif [ -f /etc/SuSe-release ]; then
     :
 elif [ -f /etc/redhat-release ]; then
     # Older Red Hat, CentOS, etc.
-    VER=$( cat /etc/redhat-release | cut -d" " -f3 | cut -d "." -f1)
-    d=$( cat /etc/redhat-release | cut -d" " -f1 | cut -d "." -f1)
+    VER=$(cut -d" " -f3 < /etc/redhat-release | cut -d "." -f1)
+    d=$(cut -d" " -f1 < /etc/redhat-release | cut -d "." -f1)
     if [[ $d == "CentOS" ]]; then
       OS="CentOS Linux"
     fi
@@ -90,7 +92,7 @@ function checkLogs {
     # Check if there are log archives or log files that have not been recently cleared.
     for f in /var/log/*-????????; do
       [[ -e $f ]] || break
-      if [ $f != $cp_ignore ]; then
+      if [ "${f}" != "${cp_ignore}" ]; then
         echo -en "\e[93m[WARN]\e[0m Log archive ${f} found\n"
         ((WARN++))
         if [[ $STATUS != 2 ]]; then
@@ -108,16 +110,16 @@ function checkLogs {
     done
     for f in /var/log/*.log; do
       [[ -e $f ]] || break
-      if [[ "${f}" = '/var/log/lfd.log' && "$( cat "${f}" | egrep -v '/var/log/messages has been reset| Watching /var/log/messages' | wc -c)" -gt 50 ]]; then
-        if [ $f != $cp_ignore ]; then
+      if [[ "${f}" = '/var/log/lfd.log' && "$(grep -E -v '/var/log/messages has been reset| Watching /var/log/messages' "${f}" | wc -c)" -gt 50 ]]; then
+      if [ "${f}" != "${cp_ignore}" ]; then
         echo -en "\e[93m[WARN]\e[0m un-cleared log file, ${f} found\n"
         ((WARN++))
         if [[ $STATUS != 2 ]]; then
             STATUS=1
         fi
       fi
-      elif [[ "${f}" != '/var/log/lfd.log' && "$( cat "${f}" | wc -c)" -gt 50 ]]; then
-      if [ $f != $cp_ignore ]; then
+      elif [[ "${f}" != '/var/log/lfd.log' && "$(wc -c < "${f}")" -gt 50 ]]; then
+      if [ "${f}" != "${cp_ignore}" ]; then
         echo -en "\e[93m[WARN]\e[0m un-cleared log file, ${f} found\n"
         ((WARN++))
         if [[ $STATUS != 2 ]]; then
@@ -151,25 +153,25 @@ function checkRoot {
     if [ -d ${uhome}/ ]; then
             if [ -d ${uhome}/.ssh/ ]; then
                 if  ls ${uhome}/.ssh/*> /dev/null 2>&1; then
-                    for key in ${uhome}/.ssh/*
+                    for key in "${uhome}"/.ssh/*
                         do
                              if  [ "${key}" == "${uhome}/.ssh/authorized_keys" ]; then
 
-                                if [ "$( cat "${key}" | wc -c)" -gt 50 ]; then
+                                if [ "$(wc -c < "${key}")" -gt 50 ]; then
                                     echo -en "\e[41m[FAIL]\e[0m User \e[1m${user}\e[0m has a populated authorized_keys file in \e[93m${key}\e[0m\n"
-                                    akey=$(cat ${key})
+                                    akey=$(cat "${key}")
                                     echo "File Contents:"
-                                    echo $akey
+                                    echo "$akey"
                                     echo "--------------"
                                     ((FAIL++))
                                     STATUS=2
                                 fi
                             elif  [ "${key}" == "${uhome}/.ssh/id_rsa" ]; then
-                                if [ "$( cat "${key}" | wc -c)" -gt 0 ]; then
+                                if [ "$(wc -c < "${key}")" -gt 0 ]; then
                                   echo -en "\e[41m[FAIL]\e[0m User \e[1m${user}\e[0m has a private key file in \e[93m${key}\e[0m\n"
-                                      akey=$(cat ${key})
+                                      akey=$(cat "${key}")
                                       echo "File Contents:"
-                                      echo $akey
+                                      echo "$akey"
                                       echo "--------------"
                                       ((FAIL++))
                                       STATUS=2
@@ -187,7 +189,7 @@ function checkRoot {
                                         STATUS=1
                                     fi
                             else
-                                if [ "$( cat "${key}" | wc -c)" -gt 50 ]; then
+                                if [ "$(wc -c < "${key}")" -gt 50 ]; then
                                     echo -en "\e[93m[WARN]\e[0m User \e[1m${user}\e[0m has a populated known_hosts file in \e[93m${key}\e[0m\n"
                                     ((WARN++))
                                     if [[ $STATUS != 2 ]]; then
@@ -204,7 +206,7 @@ function checkRoot {
             fi
              if [ -f /root/.bash_history ];then
 
-                      BH_S=$( cat /root/.bash_history | wc -c)
+                      BH_S=$(wc -c < /root/.bash_history)
 
                       if [[ $BH_S -lt 200 ]]; then
                           echo -en "\e[32m[PASS]\e[0m ${user}'s Bash History appears to have been cleared\n"
@@ -229,7 +231,7 @@ function checkRoot {
 
 function checkUsers {
     # Check each user-created account
-    for user in $(awk -F: '$3 >= 1000 && $1 != "nobody" {print $1}' /etc/passwd;)
+    awk -F: '$3 >= 1000 && $1 != "nobody" {print $1}' < /etc/passwd | while IFS= read -r user;
     do
       # Skip some other non-user system accounts
       if [[ $user == "centos" ]]; then
@@ -244,9 +246,11 @@ function checkUsers {
           if [[ "${u[0]}" == "${user}" ]]; then
               if [[ ${u[1]} == "!" ]] || [[ ${u[1]} == "!!" ]] || [[ ${u[1]} == "*" ]]; then
                   echo -en "\e[32m[PASS]\e[0m User ${user} has no password set.\n"
+                  # shellcheck disable=SC2030
                   ((PASS++))
               else
                   echo -en "\e[41m[FAIL]\e[0m User ${user} has a password set on their account. Only system users are allowed on the image.\n"
+                  # shellcheck disable=SC2030
                   ((FAIL++))
                   STATUS=2
               fi
@@ -257,29 +261,30 @@ function checkUsers {
         if [ -d "${uhome}/" ]; then
             if [ -d "${uhome}/.ssh/" ]; then
                 if  ls "${uhome}/.ssh/*"> /dev/null 2>&1; then
-                    for key in ${uhome}/.ssh/*
+                    for key in "${uhome}"/.ssh/*
                         do
                             if  [ "${key}" == "${uhome}/.ssh/authorized_keys" ]; then
-                                if [ "$( cat "${key}" | wc -c)" -gt 50 ]; then
+                                if [ "$(wc -c < "${key}")" -gt 50 ]; then
                                     echo -en "\e[41m[FAIL]\e[0m User \e[1m${user}\e[0m has a populated authorized_keys file in \e[93m${key}\e[0m\n"
-                                    akey=$(cat ${key})
+                                    akey=$(cat "${key}")
                                     echo "File Contents:"
-                                    echo $akey
+                                    echo "$akey"
                                     echo "--------------"
                                     ((FAIL++))
                                     STATUS=2
                                 fi
                               elif  [ "${key}" == "${uhome}/.ssh/id_rsa" ]; then
-                                if [ "$( cat "${key}" | wc -c)" -gt 0 ]; then
+                                if [ "$(wc -c < "${key}")" -gt 0 ]; then
                                   echo -en "\e[41m[FAIL]\e[0m User \e[1m${user}\e[0m has a private key file in \e[93m${key}\e[0m\n"
-                                      akey=$(cat ${key})
+                                      akey=$(cat "${key}")
                                       echo "File Contents:"
-                                      echo $akey
+                                      echo "$akey"
                                       echo "--------------"
                                       ((FAIL++))
                                       STATUS=2
                                 else
                                   echo -en "\e[93m[WARN]\e[0m User \e[1m${user}\e[0m has empty private key file in \e[93m${key}\e[0m\n"
+                                  # shellcheck disable=SC2030
                                   ((WARN++))
                                   if [[ $STATUS != 2 ]]; then
                                     STATUS=1
@@ -294,7 +299,7 @@ function checkUsers {
                                     fi
 
                             else
-                                if [ "$( cat "${key}" | wc -c)" -gt 50 ]; then
+                                if [ "$(wc -c < "${key}")" -gt 50 ]; then
                                     echo -en "\e[93m[WARN]\e[0m User \e[1m${user}\e[0m has a known_hosts file in \e[93m${key}\e[0m\n"
                                     ((WARN++))
                                     if [[ $STATUS != 2 ]]; then
@@ -317,7 +322,7 @@ function checkUsers {
 
          # Check for an uncleared .bash_history for this user
               if [ -f "${uhome}/.bash_history" ]; then
-                            BH_S=$( cat "${uhome}/.bash_history" | wc -c )
+                            BH_S=$(wc -c < "${uhome}/.bash_history")
 
                             if [[ $BH_S -lt 200 ]]; then
                                 echo -en "\e[32m[PASS]\e[0m ${user}'s Bash History appears to have been cleared\n"
@@ -340,9 +345,11 @@ function checkFirewall {
       ufwa=$(ufw status |head -1| sed -e "s/^Status:\ //")
       if [[ $ufwa == "active" ]]; then
         FW_VER="\e[32m[PASS]\e[0m Firewall service (${fw}) is active\n"
+        # shellcheck disable=SC2031
         ((PASS++))
       else
         FW_VER="\e[93m[WARN]\e[0m No firewall is configured. Ensure ${fw} is installed and configured\n"
+        # shellcheck disable=SC2031
         ((WARN++))
       fi
     elif [[ $OS == "CentOS Linux" ]] || [[ $OS == "CentOS Stream" ]] || [[ $OS == "Rocky Linux" ]]; then
@@ -399,7 +406,7 @@ function checkFirewall {
       else
         # user could be using vanilla iptables, check if kernel module is loaded
         fw="iptables"
-        if [[ $(lsmod | grep -q '^ip_tables' 2>/dev/null) ]]; then
+        if lsmod | grep -q '^ip_tables' 2>/dev/null; then
           FW_VER="\e[32m[PASS]\e[0m Firewall service (${fw}) is active\n"
         ((PASS++))
         else
@@ -423,9 +430,9 @@ function checkUpdates {
         echo -en "\nUpdating apt package database to check for security updates, this may take a minute...\n\n"
         apt-get -y update > /dev/null
 
-        uc=$(apt-get --just-print upgrade | grep -i "security" | wc -l)
+        uc=$(apt-get --just-print upgrade | grep -i "security" -c)
         if [[ $uc -gt 0 ]]; then
-          update_count=$(( ${uc} / 2 ))
+          update_count=$(( uc / 2 ))
         else
           update_count=0
         fi
@@ -437,10 +444,12 @@ function checkUpdates {
             sleep 2
             apt-get --just-print upgrade | grep -i security | awk '{print $2}' | awk '!seen[$0]++'
             echo -en
+            # shellcheck disable=SC2031
             ((FAIL++))
             STATUS=2
         else
             echo -en "\e[32m[PASS]\e[0m There are no pending security updates for this image.\n\n"
+            ((PASS++))
         fi
     elif [[ $OS == "CentOS Linux" ]] || [[ $OS == "CentOS Stream" ]] || [[ $OS == "Rocky Linux" ]]; then
         echo -en "\nChecking for available security updates, this may take a minute...\n\n"
@@ -530,7 +539,7 @@ elif [[ $OS == "CentOS Stream" ]]; then
     fi
 elif [[ $OS == "Rocky Linux" ]]; then
         ost=1
-    if [[ $VER =~ "8." ]]; then
+    if [[ $VER =~ 8\. ]]; then
         osv=1
     else
         osv=2
