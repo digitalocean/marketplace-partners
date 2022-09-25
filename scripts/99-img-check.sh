@@ -69,7 +69,7 @@ SHADOW=$(cat /etc/shadow)
 
 function checkAgent {
   # Check for the presence of the do-agent in the filesystem
-  if [ -d /var/opt/digitalocean/do-agent ];then
+  if [ -e /opt/digitalocean/do-agent ];then
      echo -en "\e[41m[FAIL]\e[0m DigitalOcean Monitoring Agent detected.\n"
             ((FAIL++))
             STATUS=2
