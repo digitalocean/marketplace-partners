@@ -93,7 +93,8 @@ function checkLogs {
     for f in /var/log/*-????????; do
       [[ -e $f ]] || break
       if [ "${f}" != "${cp_ignore}" ]; then
-        echo -en "\e[93m[WARN]\e[0m Log archive ${f} found\n"
+        echo -en "\e[93m[WARN]\e[0m Log archive ${f} found; Contents:\n"
+        cat "${f}"
         ((WARN++))
         if [[ $STATUS != 2 ]]; then
             STATUS=1
@@ -102,7 +103,8 @@ function checkLogs {
     done
     for f in  /var/log/*.[0-9];do
       [[ -e $f ]] || break
-        echo -en "\e[93m[WARN]\e[0m Log archive ${f} found\n"
+        echo -en "\e[93m[WARN]\e[0m Log archive ${f} found; Contents:\n"
+        cat "${f}"
         ((WARN++))
         if [[ $STATUS != 2 ]]; then
             STATUS=1
@@ -112,7 +114,8 @@ function checkLogs {
       [[ -e $f ]] || break
       if [[ "${f}" = '/var/log/lfd.log' && "$(grep -E -v '/var/log/messages has been reset| Watching /var/log/messages' "${f}" | wc -c)" -gt 50 ]]; then
       if [ "${f}" != "${cp_ignore}" ]; then
-        echo -en "\e[93m[WARN]\e[0m un-cleared log file, ${f} found\n"
+        echo -en "\e[93m[WARN]\e[0m un-cleared log file, ${f} found; Contents:\n"
+        cat "${f}"
         ((WARN++))
         if [[ $STATUS != 2 ]]; then
             STATUS=1
@@ -120,7 +123,8 @@ function checkLogs {
       fi
       elif [[ "${f}" != '/var/log/lfd.log' && "$(wc -c < "${f}")" -gt 50 ]]; then
       if [ "${f}" != "${cp_ignore}" ]; then
-        echo -en "\e[93m[WARN]\e[0m un-cleared log file, ${f} found\n"
+        echo -en "\e[93m[WARN]\e[0m un-cleared log file, ${f} found; Contents:\n"
+        cat "${f}"
         ((WARN++))
         if [[ $STATUS != 2 ]]; then
             STATUS=1
