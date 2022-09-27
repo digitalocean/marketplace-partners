@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # DigitalOcean Marketplace Image Validation Tool
-# © 2021 DigitalOcean LLC.
+# © 2021-2022 DigitalOcean LLC.
 # This code is licensed under Apache 2.0 license (see LICENSE.md for details)
 
 VERSION="v. 1.7"
