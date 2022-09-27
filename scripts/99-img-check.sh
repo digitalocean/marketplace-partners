@@ -70,15 +70,16 @@ SHADOW=$(cat /etc/shadow)
 }
 
 function checkAgent {
-  # Check for the presence of the do-agent in the filesystem
-  if [ -e /opt/digitalocean/do-agent ];then
-     echo -en "\e[41m[FAIL]\e[0m DigitalOcean Monitoring Agent detected.\n"
+  # Check for the presence of the DO directory in the filesystem
+  if [ -d /opt/digitalocean ];then
+     echo -en "\e[41m[FAIL]\e[0m DigitalOcean directory detected.\n"
             ((FAIL++))
             STATUS=2
       if [[ $OS == "CentOS Linux" ]] || [[ $OS == "CentOS Stream" ]] || [[ $OS == "Rocky Linux" ]]; then
-        echo "The agent can be removed with 'sudo yum remove do-agent' "
-      elif [[ $OS == "Ubuntu" ]]; then
-        echo "The agent can be removed with 'sudo apt-get purge do-agent' "
+        echo "To uninstall the agent: 'sudo yum remove droplet-agent'"
+        echo "To remove the DO directory: 'find /opt/digitalocean/ -type d -empty -delete'"
+      elif [[ $OS == "Ubuntu" ]] || [[ $OS == "Debian" ]]; then
+        echo "To uninstall the agent and remove the DO directory: 'sudo apt-get purge droplet-agent'"
       fi
   else
     echo -en "\e[32m[PASS]\e[0m DigitalOcean Monitoring agent was not found\n"
