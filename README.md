@@ -21,7 +21,7 @@ The overall process for creating an image that you can submit as a Droplet based
 
 3. Use Packer to create a fresh [snapshot](https://www.digitalocean.com/docs/images/snapshots/) of the image that you want to create. While there are several ways to create an image, we recommend using Packer as the most simple and consistent option.
 
-4. Submit your final image to the Marketplace team for review. This can be made through [our Vendor Portal](https://marketplace.digitalocean.com/vendorportal). If you've signed expressed interest in joining the Marketplace through [the form on this page](https://marketplace.digitalocean.com/vendors) but you've not received a login for the Vendor Portal, please reach out to one-clicks-team@digitalocean.com and we'll help you out.
+4. Submit your final image to the Marketplace team for review. This can be made through [our Vendor Portal](https://cloud.digitalocean.com/vendorportal). If you've signed expressed interest in joining the Marketplace through [the form on this page](https://marketplace.digitalocean.com/vendors) but you've not received a login for the Vendor Portal, please reach out to one-clicks-team@digitalocean.com and we'll help you out.
 
 <a name="dbaas-integration"></a>
 
@@ -76,7 +76,7 @@ To start adapting this template for your own image, you can customize some varia
 * `apt_packages` lists the APT packages to install on the build Droplet.
 * `image_name` defines the name of the resulting snapshot, which by default is `marketplace-snapshot-` with a UNIX timestamp appended.
 
-You can also modify these variables at runtime by using [the `-var` flag](https://www.packer.io/docs/templates/user-variables.html#setting-variables).
+You can also modify these variables at runtime by using [the `-var` flag](https://www.packer.io/docs/templates/legacy_json_templates/user-variables).
 
 Please see the [RStudio Server 1-Click Scripts](https://github.com/pachadotdev/rstudio-server-droplet) to see an example of Packer usage.
 
