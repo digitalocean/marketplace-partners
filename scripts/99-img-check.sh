@@ -4,7 +4,7 @@
 # © 2021-2022 DigitalOcean LLC.
 # This code is licensed under Apache 2.0 license (see LICENSE.md for details)
 
-VERSION="v. 1.8"
+VERSION="v. 1.8.1"
 RUNDATE=$( date )
 
 # Script should be run with SUDO
