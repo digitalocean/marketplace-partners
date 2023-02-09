@@ -456,7 +456,7 @@ function checkUpdates {
             echo -en "\e[32m[PASS]\e[0m There are no pending security updates for this image.\n\n"
             ((PASS++))
         fi
-    elif [[ $OS == "CentOS Linux" ]] || [[ $OS == "CentOS Stream" ]] || [[ $OS == "Rocky Linux" ]]; then
+    elif [[ $OS == "CentOS Linux" ]] || [[ $OS == "CentOS Stream" ]] || [[ $OS == "Rocky Linux" ]] || [[ $OS == "AlmaLinux" ]]; then
         echo -en "\nChecking for available security updates, this may take a minute...\n\n"
 
         update_count=$(yum check-update --security --quiet | wc -l)
@@ -548,6 +548,13 @@ elif [[ $OS == "CentOS Stream" ]]; then
 elif [[ $OS == "Rocky Linux" ]]; then
         ost=1
     if [[ $VER =~ 8\. ]]; then
+        osv=1
+    else
+        osv=2
+    fi
+elif [[ $OS == "AlmaLinux" ]]; then
+        ost=1
+    if [[ "$VERSION" =~ 8.* ]] || [[ "$OS" =~ 9.* ]]; then
         osv=1
     else
         osv=2
