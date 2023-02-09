@@ -554,7 +554,7 @@ elif [[ $OS == "Rocky Linux" ]]; then
     fi
 elif [[ $OS == "AlmaLinux" ]]; then
         ost=1
-    if [[ "$VERSION" =~ 8.* ]] || [[ "$OS" =~ 9.* ]]; then
+    if [[ "$VERSION" =~ 8.* ]] || [[ "$VERSION" =~ 9.* ]]; then
         osv=1
     else
         osv=2
