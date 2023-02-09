@@ -189,6 +189,8 @@ We currently support the following OSes:
 - Ubuntu 18.04 (LTS)
 - Ubuntu 16.04 (LTS)
 - CentOS 7.x
+- AlmaLinux 8.x
+- AlmaLinux 9.x
 
 All supported operating systems are available as base images to build on in the DigitalOcean cloud.
 
