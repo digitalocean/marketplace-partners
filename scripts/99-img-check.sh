@@ -75,7 +75,7 @@ function checkAgent {
      echo -en "\e[41m[FAIL]\e[0m DigitalOcean directory detected.\n"
             ((FAIL++))
             STATUS=2
-      if [[ $OS == "CentOS Linux" ]] || [[ $OS == "CentOS Stream" ]] || [[ $OS == "Rocky Linux" ]]; then
+      if [[ $OS == "CentOS Linux" ]] || [[ $OS == "CentOS Stream" ]] || [[ $OS == "Rocky Linux" ]] || [[ $OS == "AlmaLinux" ]]; then
         echo "To uninstall the agent: 'sudo yum remove droplet-agent'"
         echo "To remove the DO directory: 'find /opt/digitalocean/ -type d -empty -delete'"
       elif [[ $OS == "Ubuntu" ]] || [[ $OS == "Debian" ]]; then
@@ -357,7 +357,7 @@ function checkFirewall {
         # shellcheck disable=SC2031
         ((WARN++))
       fi
-    elif [[ $OS == "CentOS Linux" ]] || [[ $OS == "CentOS Stream" ]] || [[ $OS == "Rocky Linux" ]]; then
+    elif [[ $OS == "CentOS Linux" ]] || [[ $OS == "CentOS Stream" ]] || [[ $OS == "Rocky Linux" ]] || [[ $OS == "AlmaLinux" ]]; then
       if [ -f /usr/lib/systemd/system/csf.service ]; then
         fw="csf"
         if [[ $(systemctl status $fw >/dev/null 2>&1) ]]; then
