@@ -136,7 +136,15 @@ function checkLogs {
 }
 function checkTMP {
   # Check the /tmp directory to ensure it is empty.  Warn on any files found.
-  return 1
+  if [[ -n "$(ls -A /tmp)" ]]; then
+    echo -en "\e[93m[WARN]\e[0m /tmp directory is not empty; Contents\n"
+    ls -A /tmp
+    ((WARN++))
+    return 1
+  fi
+
+  echo -en "\e[32m[PASS]\e[0m /tmp directory is empty\n"
+  return 0
 }
 function checkRoot {
     user="root"
@@ -603,6 +611,9 @@ checkUsers
 
 echo -en "\n\nChecking the root account...\n"
 checkRoot
+
+echo -en "\n\nChecking the /tmp directory...\n"
+checkTMP
 
 checkAgent
 
