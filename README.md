@@ -189,6 +189,9 @@ We currently support the following OSes:
 - Ubuntu 18.04 (LTS)
 - Ubuntu 16.04 (LTS)
 - CentOS 7.x
+- CentOS 8.x
+- CentOS Stream 8
+- CentOS Stream 9
 - AlmaLinux 8.x
 - AlmaLinux 9.x
 
