@@ -3,7 +3,7 @@
     "do_token": "{{env `DIGITALOCEAN_TOKEN`}}",
     "image_name": "osmosis-20-04-{{user `application_version`}}-{{timestamp}}",
     "application_name": "osmosis",
-    "application_version": "v7.2.0"
+    "application_version": "v15.0.0"
   },
   "sensitive-variables": ["do_token"],
   "builders": [
