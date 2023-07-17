@@ -194,6 +194,8 @@ We currently support the following OSes:
 - CentOS Stream 9
 - AlmaLinux 8.x
 - AlmaLinux 9.x
+- Rocky Linux 8.x
+- Rocky Linux 9.x
 
 All supported operating systems are available as base images to build on in the DigitalOcean cloud.
 
