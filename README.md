@@ -176,6 +176,181 @@ Learn more about using Packer in [the official Packer documentation](https://www
 
 We also use Packer to build some of the Marketplace 1-Click Apps that DigitalOcean maintains. You can see the source code for these scripts [in this repo.](https://github.com/digitalocean/droplet-1-clicks)
 
+## Update your App Image via API
+
+The Vendor API makes it possible to update existing droplet 1-click apps programmatically. You can use this to ensure your listing features the most recently released version by tying it into your existing CI/CD pipeline to push an update to DigitalOcean.
+
+Not all listing information can be updated via the API. For any changes outside the parameters of this request, you will still need to visit the Vendor Portal.
+
+To update your app via the API, send a PATCH request to https://api.digitalocean.com/api/v1/vendor-portal/apps/<app_id>/versions/<version>
+
+App ID can be obtained from your app’s listing in Vendor Portal, via the URL. An invalid app ID will return a 404 Not Found error. 
+
+Apps in ‘pending’ or ‘in review’ state cannot be updated. Attempting to update an app in one of these states will return a 400 Bad Request error.
+
+An authorization header with a bearer token is required to make the request. See [API documentation](https://docs.digitalocean.com/reference/api/api-reference/#section/Authentication) for more information on how to obtain this token.
+
+### Request
+
+**Authorizations**: bearer_auth (write)    
+**Request Body schema**: application/json     
+
+#### Parameters:
+**imageId**    
+_required_    
+_integer_    
+ID of the image to use for your app. The image must be a snapshot already uploaded to your DigitalOcean account, under the team you use to access the vendor portal. In addition to Packer, snapshots can be created via the API through [droplet actions](https://docs.digitalocean.com/reference/api/api-reference/#tag/Droplet-Actions). For additional information about manipulating snapshots via the API, view the [API documentation](https://docs.digitalocean.com/reference/api/api-reference/#tag/Snapshots) for snapshots.
+
+**reasonForUpdate**    
+_string_    
+A brief description of the changes made which necessitate this update.     
+
+**version**    
+_string_    
+The version to mark this update as.
+
+**osVersion**    
+_string_    
+The version of the operating system your app runs on. A null value will not overwrite an existing value, but a blank string will.
+
+**softwareIncluded**    
+_Array of Software (see below)_    
+Software types and versions included with your app. A null value will not overwrite an existing value, but an empty array will.
+
+
+**Software**:
+
+**name**    
+_string_    
+Name of this software. A null value will not overwrite an existing value, but a blank string will.
+
+**version**    
+_string_    
+Version of this software in use by your app. A null value will not overwrite an existing value, but a blank string will.
+
+**releaseNotes**    
+_string_    
+Any release notes to include alongside this software in your app’s listing. A null value will not overwrite an existing value, but a blank string will.
+
+**website**    
+_string_    
+The website for this software, for further information. A null value will not overwrite an existing value, but a blank string will.
+
+**licenseType**    
+_string_    
+The type of license this software uses. A null value will not overwrite an existing value, but a blank string will.
+
+**licenseLink**    
+_string_    
+A link to details of the license, if applicable. A null value will not overwrite an existing value, but a blank string will. 
+
+
+#### Example request:
+```
+curl -X PATCH \
+ -H "Content-Type: application/json" \
+ -H "Authorization: Bearer $DIGITALOCEAN_API_TOKEN" \
+ -d '{
+    "reasonForUpdate": "example", 
+    "version": "3", 
+    "imageId": 413639,
+    "softwareIncluded": [
+        {
+            "name": "Ubuntu Linux",
+            "version": "22.04"
+        }
+        ]
+    }' \
+    https://api.internal.digitalocean.com/api/v1/vendor-portal/apps/$APP_ID/versions/$VERSION_ID
+```
+
+### Responses
+
+**200 - success**
+
+Returns app data in response.
+
+_Example response body:_
+```
+{
+    "appId": "60089fc6d333037bffa70d9b",
+    "name": "Example App ",
+    "version": 4,
+    "type": "droplet",
+      ...
+    "status":
+        {
+        "value":"pending",
+        "lastUpdated":1692302119556,
+        "modifiedBy":"administrator",
+        "reason":"example"
+        },
+    "emergencyContacts": 
+        [
+          ...
+        ],
+    "customData":
+        {
+        "version": "3",
+        "osVersion": "Ubuntu 20.04",
+        "description": "app desc",
+        "summary": "app summary",
+        "imageLabel": "sample-20-04",
+        "imageId": 417346,
+        "imageName": "Sample on Ubuntu 20.04",
+        "imageDescription": "Sample 3 on Ubuntu 20.04",
+        "reasonForUpdate": "Sample",
+           ...
+        }
+}
+```
+
+
+**400 - Bad Request**
+- Image ID was missing from request, or
+- App in request was not a droplet 1-click, or 
+- Attempted an update on an app in pending or in-review status
+
+
+**403 - Unauthorized**
+ - Authentication token was invalid, or
+ - App or image does not belong to requestor’s team
+
+
+**404 - Not Found**
+ - App ID was not found or is invalid
+
+
+### Automating with Packer
+
+If you are using Packer, you can add a set of post-processor actions to automatically submit your new image to update your app, via the [manifest](https://developer.hashicorp.com/packer/docs/post-processors/manifest) and [shell-local](https://developer.hashicorp.com/packer/docs/post-processors/shell-local) post-processors, such as:
+
+```
+post-processors {     
+    post-processor "manifest" {       
+        output = "manifest.json"      
+        strip_path = true     
+    }     
+
+    post-processor "shell-local" {        
+        inline = [ "sh mp-submit.sh" ]     
+    }   
+}
+```
+
+where mp-submit.sh is
+
+```
+#!/bin/bash
+
+IMG_ID=$(jq '.builds[-1].artifact_id | split(":")[1] | tonumber' manifest.json)
+
+curl -X PATCH -H "Content-Type: application/json" -H "Authorization: Bearer ${DIGITALOCEAN_API_TOKEN}" -d "{\"reasonForUpdate\": \"new version\", \"version\": \"${APP_VERSION}\", \"imageId\": ${IMG_ID}}" https://api.digitalocean.com/api/v1/vendor-portal/apps/${APP_ID}/versions/${APP_VERSION}
+```
+
+You will need to set env variables DIGITALOCEAN_API_TOKEN, APP_VERSION, and APP_ID in your terminal to use this script. It uses jq to parse the manifest Packer creates for the snapshot ID, then uses cURL to submit it to the API endpoint.
+
+
 ## Supported Operating Systems
 
 To maintain compatibility with Marketplace tools and processes, we support a limited number of Linux distributions and releases for Marketplace images. These options provide either `deb`- or `rpm`-based packaging and will have security patches and updates for a reasonable time period.
