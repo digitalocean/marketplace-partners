@@ -261,7 +261,7 @@ curl -X PATCH \
         }
         ]
     }' \
-    https://api.internal.digitalocean.com/api/v1/vendor-portal/apps/$APP_ID/versions/$VERSION_ID
+    https://api.digitalocean.com/api/v1/vendor-portal/apps/$APP_ID/versions/$VERSION_ID
 ```
 
 ### Responses
