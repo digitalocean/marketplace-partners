@@ -190,6 +190,8 @@ Apps in ‘pending’ or ‘in review’ state cannot be updated. Attempting to 
 
 An authorization header with a bearer token is required to make the request. See [API documentation](https://docs.digitalocean.com/reference/api/api-reference/#section/Authentication) for more information on how to obtain this token.
 
+*Note* https://api.digitalocean.com/api/v1/vendor-portal/apps/<app_id>/versions/<version> is deprecated. Please do not use it.
+
 ### Request
 
 **Authorizations**: bearer_auth (write)    
