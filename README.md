@@ -182,13 +182,15 @@ The Vendor API makes it possible to update existing droplet 1-click apps program
 
 Not all listing information can be updated via the API. For any changes outside the parameters of this request, you will still need to visit the Vendor Portal.
 
-To update your app via the API, send a PATCH request to https://api.digitalocean.com/api/v1/vendor-portal/apps/<app_id>/versions/<version>
+To update your app via the API, send a PATCH request to https://api.digitalocean.com/api/v1/vendor-portal/apps/<app_id>
 
 App ID can be obtained from your app’s listing in Vendor Portal, via the URL. An invalid app ID will return a 404 Not Found error. 
 
 Apps in ‘pending’ or ‘in review’ state cannot be updated. Attempting to update an app in one of these states will return a 400 Bad Request error.
 
 An authorization header with a bearer token is required to make the request. See [API documentation](https://docs.digitalocean.com/reference/api/api-reference/#section/Authentication) for more information on how to obtain this token.
+
+*Note* https://api.digitalocean.com/api/v1/vendor-portal/apps/<app_id>/versions/<version> is deprecated. Please do not use it.
 
 ### Request
 
@@ -204,10 +206,6 @@ ID of the image to use for your app. The image must be a snapshot already upload
 **reasonForUpdate**    
 _string_    
 A brief description of the changes made which necessitate this update.     
-
-**version**    
-_string_    
-The version to mark this update as.
 
 **osVersion**    
 _string_    
@@ -261,7 +259,7 @@ curl -X PATCH \
         }
         ]
     }' \
-    https://api.digitalocean.com/api/v1/vendor-portal/apps/$APP_ID/versions/$VERSION_ID
+    https://api.digitalocean.com/api/v1/vendor-portal/apps/$APP_ID
 ```
 
 ### Responses
@@ -345,7 +343,7 @@ where mp-submit.sh is
 
 IMG_ID=$(jq '.builds[-1].artifact_id | split(":")[1] | tonumber' manifest.json)
 
-curl -X PATCH -H "Content-Type: application/json" -H "Authorization: Bearer ${DIGITALOCEAN_API_TOKEN}" -d "{\"reasonForUpdate\": \"new version\", \"version\": \"${APP_VERSION}\", \"imageId\": ${IMG_ID}}" https://api.digitalocean.com/api/v1/vendor-portal/apps/${APP_ID}/versions/${APP_VERSION}
+curl -X PATCH -H "Content-Type: application/json" -H "Authorization: Bearer ${DIGITALOCEAN_API_TOKEN}" -d "{\"reasonForUpdate\": \"new version\", \"version\": \"${APP_VERSION}\", \"imageId\": ${IMG_ID}}" https://api.digitalocean.com/api/v1/vendor-portal/apps/${APP_ID}
 ```
 
 You will need to set env variables DIGITALOCEAN_API_TOKEN, APP_VERSION, and APP_ID in your terminal to use this script. It uses jq to parse the manifest Packer creates for the snapshot ID, then uses cURL to submit it to the API endpoint.
