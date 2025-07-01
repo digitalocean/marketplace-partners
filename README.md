@@ -370,6 +370,8 @@ We currently support the following OSes:
 - AlmaLinux 9.x
 - Rocky Linux 8.x
 - Rocky Linux 9.x
+- CloudLinux 8.x
+- CloudLinux 9.x
 
 All supported operating systems are available as base images to build on in the DigitalOcean cloud.
 
