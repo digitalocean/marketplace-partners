@@ -366,6 +366,7 @@ We currently support the following OSes:
 - CentOS 8.x
 - CentOS Stream 8
 - CentOS Stream 9
+- CentOS Stream 10
 - AlmaLinux 8.x
 - AlmaLinux 9.x
 - Rocky Linux 8.x
