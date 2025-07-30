@@ -547,6 +547,8 @@ elif [[ $OS == "CentOS Stream" ]]; then
         osv=1
     elif [[ $VER == "9" ]]; then
         osv=1
+    elif [[ $VER == "10" ]]; then
+        osv=1
     else
         osv=2
     fi
