@@ -525,6 +525,9 @@ elif [[ "$OS" =~ Debian.* ]]; then
         12)
             osv=1
             ;;
+        13)
+            osv=1
+            ;;
         *)
             osv=2
             ;;
