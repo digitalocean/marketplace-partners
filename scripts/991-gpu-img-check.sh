@@ -135,10 +135,6 @@ function checkAMDToolKit() {
 }
 
 function checkNvidiaRuntimeCfg() {
-    if command -v nvidia-container-cli>/dev/null 2>&1; then 
-       container_version=$(nvidia-container-cli -V 2>/dev/null | awk '{print $NF}') # why we need this variable?
-   fi
-
    # Check Docker integration if Docker is installed
    if command -v docker>/dev/null 2>&1; then
        if docker info 2>/dev/null | grep -q "nvidia"; then
