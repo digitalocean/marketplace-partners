@@ -63,11 +63,11 @@ function checkNvidia() {
 function checkAMD() {
     if command -v rocm-smi>/dev/null 2>&1 ; then
         # Get ROCm version
-        rocm_version=$(rocm-smi --version 2>/dev/null | grep "ROCm" | awk '{print $NF}')
+        rocm_version=$(rocm-smi --version 2>/dev/null | grep -E "ROCM-SMI version|ROCm" | awk '{print $NF}')
         hardware=$(rocm-smi --showproductname 2>/dev/null | grep "GPU" | awk -F: '{print $2}' | xargs)
         echo -en "\e[32m[PASS]\e[0m AMD GPU hardware detected: ${hardware}.\n"
         # Check hardware detection
-        if rocm-smi --showallinfo 2>/dev/null | grep -q "GPU ID" ; then
+        if rocm-smi --showallinfo 2>/dev/null | grep -Eq "GPU ID|GPU\["; then
             # Driver can see hardware
             add_component "hardware"
             echo -en "\e[32m[PASS]\e[0m AMD driver can see hardware.\n"
@@ -84,12 +84,12 @@ function checkAMD() {
             echo -en "\e[93m[WARN]\e[0m Unable to determine AMD driver version.\n"
             ((WARN++))
         else
-            if [[ $rocm_major -lt 5 ]] ; then # Example threshold
+            if [[ $rocm_major -lt 5 ]] ; then
                 # Flag potentially outdated driver
-                echo -en "\e[93m[WARN]\e[0m Flag potentially outdated AMD driver.\n"
+                echo -en "\e[93m[WARN]\e[0m Flag potentially outdated AMD driver version: ${rocm_version} .\n"
                 ((WARN++))
             else
-                echo -en "\e[32m[PASS]\e[0m Not outdated AMD version: ${rocm_version}.\n"
+                echo -en "\e[32m[PASS]\e[0m Not outdated AMD driver version: ${rocm_version}.\n"
                 ((PASS++))
             fi
         fi
@@ -101,6 +101,7 @@ function checkAMD() {
 
 function checkNvidiaToolKit() {
     if command -v nvcc > /dev/null 2>&1; then
+        add_component "cuda"
         echo -en "\e[32m[PASS]\e[0m NVIDIA CUDA Toolkit is installed.\n"
         ((PASS++))
     else
@@ -120,6 +121,7 @@ function checkNvidiaToolKit() {
 
 function checkAMDToolKit() {
     if dpkg -l | grep -q "rocm-dev"; then
+        add_component "hip"
         echo -en "\e[32m[PASS]\e[0m AMD ROCm Development Toolkit is installed.\n"
         ((PASS++))
     else
@@ -139,29 +141,34 @@ function checkNvidiaRuntimeCfg() {
    if command -v docker>/dev/null 2>&1; then
        if docker info 2>/dev/null | grep -q "nvidia"; then
            # Docker has NVIDIA runtime configured
-            echo -en "\e[32m[PASS]\e[0m There is docker runtime configuration for NVIDIA.\n"
+            echo -en "\e[32m[PASS]\e[0m There is docker runtime configuration for NVIDIA GPU.\n"
             ((PASS++))
             add_component "docker"
             return 0
        fi
-
+        echo -en "\e[93m[WARN]\e[0m Docker is installed, but NVIDIA GPU runtime is not detected\nConsider configuring Docker for NVIDIA GPU support.\n"
+        ((WARN++))
+        return 0
    fi
 
-    echo -en "\e[93m[WARN]\e[0m Docker installed but NVIDIA GPU runtime not detected Consider configuring Docker for AMD GPU support.\n"
+    echo -en "\e[93m[WARN]\e[0m Docker is not installed\n"
     ((WARN++))
 }
 
 function checkAMDRuntimeCfg() {
      if command -v docker >/dev/null 2>&1 && [ -f /etc/docker/daemon.json ]; then
        if grep -q "amd\|rocm" /etc/docker/daemon.json 2>/dev/null; then
-            echo -en "\e[32m[PASS]\e[0m There is docker runtime configuration for AMD.\n"
+            echo -en "\e[32m[PASS]\e[0m There is docker runtime configuration for AMD GPU.\n"
             ((PASS++))
             add_component "docker"
             return 0
        fi
+       echo -en "\e[93m[WARN]\e[0m Docker is installed but AMD GPU runtime not detected\mConsider configuring Docker for AMD GPU support.\n"
+       ((WARN++))
+       return 0
    fi
 
-    echo -en "\e[93m[WARN]\e[0m Docker installed but AMD GPU runtime not detected Consider configuring Docker for AMD GPU support.\n"
+    echo -en "\e[93m[WARN]\e[0m Docker is not installed\n"
     ((WARN++))
 }
 
@@ -183,15 +190,22 @@ function checkNvidiaBootAndSecurity() {
 }
 
 function checkAMDBootAndSecurity() {
-     if grep -q "amdgpu" /etc/modules 2>/dev/null || ls /etc/modules-load.d/*amd* >/dev/null 2>&1; then
-        echo -en "\e[32m[PASS]\e[0m AMD driver loads on boot.\n"
+    # Check if AMD GPU drivers are configured to load at boot
+    if ls /etc/modules-load.d/*amd* >/dev/null 2>&1 || ls /etc/modules-load.d/*gpu* >/dev/null 2>&1; then
+        echo -en "\e[32m[PASS]\e[0m AMD driver is configured to load at boot.\n"
+        ((PASS++))
+        add_component "boot"
+    elif grep -q amdgpu /proc/modules || [ -d /sys/module/amdgpu ]; then
+        echo -en "\e[32m[PASS]\e[0m AMD driver is configured to load at boot.\n"
         ((PASS++))
         add_component "boot"
     else
-        echo -en "\e[41m[FAIL]\e[0m AMD driver not configured to load at boot.\n"
+        echo -en "\e[41m[FAIL]\e[0m AMD driver is not configured to load at boot.\n"
         ((FAIL++))
     fi
-    echo -en "\e[34m[INFO]\e[0m Visit https://www.amd.com/en/corporate/product-security to verify if driver version is not outdated\n"
+
+    # Provide a security info message
+    echo -en "\e[34m[INFO]\e[0m Visit https://www.amd.com/en/corporate/product-security to verify if driver version is not outdated.\n"
 }
 
 driver="NOT_FOUND"
