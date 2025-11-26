@@ -624,7 +624,6 @@ checkAgent
 # Source GPU compatibility check
 if [ -f "$(dirname "$0")/check_gpu_support.sh" ]; then
     source "$(dirname "$0")/check_gpu_support.sh"
-    checkGPUSupport
 else
     echo "GPU check script not found. Skipping GPU compatibility checks."
 fi
