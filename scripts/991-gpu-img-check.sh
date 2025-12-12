@@ -173,7 +173,7 @@ function checkAMDRuntimeCfg() {
 }
 
 function checkNvidiaBootAndSecurity() {
-    if grep -q "nvidia" /etc/modules 2>/dev/null || ls /etc/modules-load.d/*nvidia* >/dev/null 2>&1; then
+    if grep -q "nvidia" /etc/modules 2>/dev/null || ls /etc/modules-load.d/*nvidia* >/dev/null 2>&1 || ls /etc/modprobe.d/*nvidia* >/dev/null 2>&1; then
         echo -en "\e[32m[PASS]\e[0m NVIDIA driver loads on boot.\n"
         ((PASS++))
         add_component "boot"
