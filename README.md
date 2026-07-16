@@ -360,6 +360,7 @@ We currently support the following OSes:
 - Debian 11 (Bullseye)
 - Debian 12 (Bookworm)
 - Debian 13 (Trixie)
+- Ubuntu 26.04 (LTS)
 - Ubuntu 24.04 (LTS)
 - Ubuntu 22.04 (LTS)
 - Ubuntu 20.04 (LTS)
