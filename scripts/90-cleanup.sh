@@ -19,10 +19,10 @@ if [ -n "$(command -v yum)" ]; then
   yum clean all
 elif [ -n "$(command -v apt-get)" ]; then
   export DEBIAN_FRONTEND=noninteractive
-  apt-get -y update
-  apt-get -o Dpkg::Options::="--force-confold" upgrade -q -y --force-yes
-  apt-get -y autoremove
-  apt-get -y autoclean
+  apt-get -o DPkg::Lock::Timeout=3 -y update
+  apt-get -o DPkg::Lock::Timeout=3 -o Dpkg::Options::="--force-confold" upgrade -q -y --force-yes
+  apt-get -o DPkg::Lock::Timeout=3 -y autoremove
+  apt-get -o DPkg::Lock::Timeout=3 -y autoclean
 fi
 
 rm -rf /tmp/* /var/tmp/*
