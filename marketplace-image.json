@@ -15,7 +15,8 @@
       "region": "nyc3",
       "size": "s-1vcpu-1gb",
       "ssh_username": "root",
-      "snapshot_name": "{{user `image_name`}}"
+      "snapshot_name": "{{user `image_name`}}",
+      "droplet_agent": false
     }
   ],
   "provisioners": [
