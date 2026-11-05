@@ -55,8 +55,11 @@ The overall process for creating an image that you can submit as a Droplet based
 [Packer](https://www.packer.io/intro) is a tool for creating images from a single source configuration. Using this Packer template reduces the entire process of creating, configuring, validating, and snapshotting a build Droplet to a single command:
 
 ```
+packer init config.pkr.hcl
 packer build marketplace-image.json
 ```
+
+Starting with Packer [1.8.7](https://github.com/hashicorp/packer/releases/tag/v1.8.7), the DigitalOcean builder plugin is not included by default. Run `packer init config.pkr.hcl` once (or again after upgrading Packer) to install the plugin declared in [`config.pkr.hcl`](config.pkr.hcl). Without this step, `packer build` fails with `Unknown builder digitalocean`.
 
 By doing this, there is a reduced likelihood of having to submit an image multiple times as a result of falling in any of the next steps:
 
@@ -69,7 +72,7 @@ This repository is itself a Packer template for a LAMP stack. You can modify thi
 
 ## Usage
 
-To run the LAMP stack in this template, you'll need to [install Packer](https://www.packer.io/intro/getting-started/install.html) and [create a DigitalOcean personal access token](https://docs.digitalocean.com/reference/api/create-personal-access-token/) and set it to the `DIGITALOCEAN_TOKEN` environment variable. Running `packer build marketplace-image.json` without any other modifications will create a build Droplet configured with LAMP, clean and verify it, then power it down and snapshot it.
+To run the LAMP stack in this template, you'll need to [install Packer](https://www.packer.io/intro/getting-started/install.html), run `packer init config.pkr.hcl` to install the DigitalOcean builder plugin (required for Packer 1.8.7 and later), [create a DigitalOcean personal access token](https://docs.digitalocean.com/reference/api/create-personal-access-token/) and set it to the `DIGITALOCEAN_TOKEN` environment variable. Running `packer build marketplace-image.json` without any other modifications will create a build Droplet configured with LAMP, clean and verify it, then power it down and snapshot it.
 
 To start adapting this template for your own image, you can customize some variables in `marketplace-image.json`:
 
@@ -83,6 +86,7 @@ Please see the [RStudio Server 1-Click Scripts](https://github.com/pachadotdev/r
 A successful run would look like this output:
 
 ```
+pacha@pop-os:~/github/marketplace-partners$ packer init config.pkr.hcl
 pacha@pop-os:~/github/marketplace-partners$ packer build marketplace-image.json
 digitalocean output will be in this color.
 
@@ -320,6 +324,8 @@ _Example response body:_
 
 
 ### Automating with Packer
+
+If you are using Packer 1.8.7 or later, install the DigitalOcean builder plugin with `packer init config.pkr.hcl` before building (see [Build Automation with Packer](#build-automation-with-packer)).
 
 If you are using Packer, you can add a set of post-processor actions to automatically submit your new image to update your app, via the [manifest](https://developer.hashicorp.com/packer/docs/post-processors/manifest) and [shell-local](https://developer.hashicorp.com/packer/docs/post-processors/shell-local) post-processors, such as:
 
